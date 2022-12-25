@@ -54,7 +54,7 @@ export const Landing: React.FC<{}> = () => {
           <GroupSkeleton tasks={1} className="max-w-min">
             <div className="relative flex h-full max-h-20 w-64 flex-1 items-center justify-center rounded-lg bg-gray-200">
               <div className="absolute -mt-24 flex max-h-32 w-80 flex-col gap-2 rounded-lg bg-white p-4 shadow-lg">
-                <h2 className="text-lg font-bold subpixel-antialiased">
+                <h2 className="text-lg font-semibold subpixel-antialiased">
                   How to increase the landing page conversion
                 </h2>
                 <span className="max-w-min rounded-full bg-purple-100 px-2 py-1 pt-0 text-sm font-semibold text-purple-700">
