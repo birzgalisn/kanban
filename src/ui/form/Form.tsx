@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import clsx from "clsx";
 import {
   FieldValues,
   FormProvider,
@@ -8,7 +9,6 @@ import {
   UseFormReturn,
 } from "react-hook-form";
 
-import clsx from "clsx";
 import type { ComponentProps } from "react";
 import type { TypeOf, ZodSchema } from "zod";
 
@@ -27,21 +27,6 @@ export const useForm = <T extends ZodSchema<any>>({
     resolver: zodResolver(schema),
   });
 };
-
-export function addServerErrors<T>(
-  errors: { [P in keyof T]?: string[] },
-  setError: (
-    fieldName: keyof T,
-    error: { type: string; message: string },
-  ) => void,
-) {
-  return Object.keys(errors).forEach((key) => {
-    setError(key as keyof T, {
-      type: "server",
-      message: errors[key as keyof T]!.join(". "),
-    });
-  });
-}
 
 /**
  * Omit the native `onSubmit` event in favor of `SubmitHandler` event
