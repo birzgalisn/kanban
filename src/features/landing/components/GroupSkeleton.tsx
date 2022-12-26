@@ -9,7 +9,7 @@ export const GroupSkeleton: React.FC<{
   tasks: number;
 }> = ({ className, children, tasks }) => {
   return (
-    <div className={clsx("flex w-full flex-col gap-2", className)}>
+    <div className={clsx("flex flex-col gap-2", className)}>
       <TextSkeleton className="h-3 w-20" />
       {children}
       {Array(tasks)
