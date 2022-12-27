@@ -3,7 +3,6 @@
   "scripts": {
     "dev": "concurrently -n \"codegen,next\" -c \"magenta,cyan\" \"npm run generate-schema && npm run codegen -- --watch\" \"next dev\"",
     "build": "next build",
-    "prebuild": "npm run generate-schema && npm run codegen",
     "start": "next start",
     "generate-schema": "tsx src/lib/buildGraphqlSchema.ts",
     "codegen": "graphql-codegen --config codegen.ts"
