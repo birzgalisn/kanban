@@ -23,7 +23,7 @@ export const Landing: React.FC<{}> = () => {
     <Container footer={<Footer />}>
       <nav className="mb-12 flex h-12 w-full flex-row items-center justify-between gap-2 lg:mb-20">
         <div className="flex flex-row items-center gap-2 text-xl font-semibold">
-          <Image src="/kanban.svg" alt="kanban logo" width={21} height={21} />
+          <Image src="/kanban.svg" alt="Kanban logo" width={21} height={21} />
           Kanban
         </div>
         <ul className="flex flex-row items-center gap-4 lg:gap-12">
