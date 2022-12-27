@@ -4,13 +4,13 @@ import { Landing } from "@/features/landing";
 
 import type { NextPage } from "next";
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Kanban - Manage projects easily</title>
+        <title>Manage projects easily - Kanban</title>
         <link rel="icon" href="/favicon.ico" />
-        <meta name="description" content="Manage your kanban projects easily" />
+        <meta name="description" content="Manage your Kanban projects easily" />
       </Head>
 
       <Landing />
@@ -18,4 +18,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default HomePage;

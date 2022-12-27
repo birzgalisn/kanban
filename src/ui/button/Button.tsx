@@ -5,15 +5,16 @@ import { Spinner } from "@/ui/spinner";
 
 const variants = {
   primary: "bg-kanban-blue text-white",
-  inverse: "bg-white text-kanban-blue",
+  secondary: "bg-gray-100 border border-transparent hover:border-gray-300",
+  transparent: "bg-transparent hover:bg-gray-100",
   danger: "bg-red-600 text-white",
-  secondary: "bg-kanban-gray text-white",
+  custom: "",
 };
 
 const sizes = {
-  sm: "py-2 px-4 text-sm",
-  md: "py-2 px-6 text-md",
-  lg: "py-3 px-8 text-lg",
+  sm: "py-2 px-4 text-sm h-10",
+  md: "py-2 px-6 text-md h-12",
+  lg: "py-3 px-8 text-lg h-14",
 };
 
 type IconProps =
@@ -46,7 +47,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type={type}
         className={clsx(
-          "flex items-center justify-center rounded text-base font-medium shadow-sm outline-none duration-300 ease-in-out hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-70",
+          "flex items-center justify-center rounded-lg text-base font-medium outline-none duration-300 ease-in-out hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-70",
           variants[variant],
           sizes[size],
           className,

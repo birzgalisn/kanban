@@ -18,7 +18,7 @@ interface UseFormProps<T extends ZodSchema<any>>
   schema: T;
 }
 
-export const useForm = <T extends ZodSchema<any>>({
+export const useZodForm = <T extends ZodSchema<any>>({
   schema,
   ...formConfig
 }: UseFormProps<T>) => {
@@ -55,9 +55,16 @@ export const Form = <T extends FieldValues>({
   return (
     <FormProvider {...form}>
       {/** The `form` passed here is return value of useForm() hook */}
-      <form onSubmit={form.handleSubmit(onSubmit)} {...props}>
+      <form
+        className="w-full"
+        onSubmit={form.handleSubmit(onSubmit)}
+        {...props}
+      >
         <fieldset
-          className={clsx("w-full", className ?? "flex flex-col gap-4")}
+          className={clsx(
+            "w-inherit",
+            className ?? "flex flex-col gap-4 lg:gap-6",
+          )}
           disabled={form.formState.isSubmitting}
         >
           {children}

@@ -1,6 +1,8 @@
 import clsx from "clsx";
 import { ComponentProps, forwardRef } from "react";
 import { useFormContext } from "react-hook-form";
+
+import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import { FieldError } from "./FieldError";
 
 interface InputProps extends ComponentProps<"input"> {
@@ -26,26 +28,31 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   const message = errors[name]?.message as string;
 
   return (
-    <div className="relative flex w-full flex-col">
-      <label className="w-inherit flex flex-col gap-1 text-sm font-normal">
+    <div>
+      <label
+        className="flex w-full flex-col gap-1 text-sm font-normal"
+        htmlFor={name}
+      >
         {label}
+      </label>
+      <div
+        className={clsx(
+          "flex h-12 w-full flex-row items-center rounded-lg border border-gray-300 bg-white/10 px-4 text-base font-light outline-none duration-300 ease-in-out placeholder:text-gray-700 hover:bg-white/[20%]",
+          message && "border-red-300 bg-red-50",
+          className,
+        )}
+      >
         <input
-          className={clsx(
-            "w-inherit rounded border border-gray-300 bg-white/10 p-2 px-3 text-sm font-light outline-none duration-300 ease-in-out placeholder:text-gray-700 hover:bg-white/[20%]",
-            message && "ring-1 ring-red-500",
-            className,
-          )}
+          className="w-full bg-transparent placeholder-gray-300 outline-none"
           type={type}
           ref={ref}
           {...props}
         />
-      </label>
-      {message && (
-        <FieldError
-          className="absolute left-0 -bottom-6 whitespace-nowrap"
-          message={message}
-        />
-      )}
+        {message && (
+          <HiOutlineExclamationCircle className="h-6 w-6 stroke-1 text-red-500" />
+        )}
+      </div>
+      {message && <FieldError message={message} />}
     </div>
   );
 });
