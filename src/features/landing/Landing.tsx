@@ -31,7 +31,7 @@ export const Landing: React.FC<{}> = () => {
               />
               Kanban
             </div>
-            <ul className="flex flex-row items-center gap-12">
+            <ul className="flex flex-row items-center gap-4 lg:gap-12">
               <li>
                 <Link
                   className="whitespace-nowrap rounded py-2 px-6 text-sm font-medium text-gray-700 outline-none duration-300 ease-in-out hover:text-kanban-blue"
