@@ -1,7 +1,8 @@
 import { builder } from "@/graphql/builder";
 import { db } from "@/lib/db";
-import { Prisma } from "@prisma/client";
 import { hash } from "bcrypt";
+import { ZodError } from "zod";
+import { InputError } from "../errors";
 
 import { input as createUserValidateError } from "@/fixtures/auth/error";
 
@@ -70,7 +71,7 @@ const CreateUserInput = builder.inputType("CreateUserInput", {
       required: true,
       validate: {
         minLength: [
-          1,
+          6,
           { message: createUserValidateError.password.length.tooSmall },
         ],
         maxLength: [
@@ -85,32 +86,37 @@ const CreateUserInput = builder.inputType("CreateUserInput", {
 builder.mutationField("createUser", (t) =>
   t.prismaField({
     type: UserObject,
+    errors: {
+      types: [ZodError],
+    },
     args: {
       input: t.arg({ type: CreateUserInput, required: true }),
     },
     async resolve(query, root, { input }, ctx, info) {
-      try {
-        return db.user.create({
-          ...query,
-          data: {
-            email: input.email,
-            name: input.name,
-            hashedPassword: await hash(input.password, 10),
-          },
-        });
-      } catch (e) {
-        if (e instanceof Prisma.PrismaClientKnownRequestError) {
-          const target = e.meta?.target as Array<string>;
-          /**
-           * P2022: Unique constraint failed
-           * Prisma error codes: https://www.prisma.io/docs/reference/api-reference/error-reference#error-codes
-           */
-          if (e.code === "P2002" && target.includes("email")) {
-            throw new Error("Email address is already taken");
-          }
-        }
-        throw e;
+      const user = await db.user.findFirst({
+        select: {
+          id: true,
+        },
+        where: {
+          email: input.email,
+        },
+      });
+
+      if (user) {
+        throw new InputError("Email address is already taken", [
+          "input",
+          "email",
+        ]);
       }
+
+      return db.user.create({
+        ...query,
+        data: {
+          email: input.email,
+          name: input.name,
+          hashedPassword: await hash(input.password, 10),
+        },
+      });
     },
   }),
 );

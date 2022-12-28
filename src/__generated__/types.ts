@@ -36,13 +36,24 @@ export type CreateUserInput = {
   password: Scalars["String"];
 };
 
+export type Error = {
+  message: Scalars["String"];
+};
+
 export type Mutation = {
   __typename?: "Mutation";
-  createUser: User;
+  createUser: MutationCreateUserResult;
 };
 
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+export type MutationCreateUserResult = MutationCreateUserSuccess | ZodError;
+
+export type MutationCreateUserSuccess = {
+  __typename?: "MutationCreateUserSuccess";
+  data: User;
 };
 
 export type Query = {
@@ -65,6 +76,18 @@ export type User = {
   name?: Maybe<Scalars["String"]>;
   role: Roles;
   updatedAt: Scalars["DateTime"];
+};
+
+export type ZodError = Error & {
+  __typename?: "ZodError";
+  fieldErrors: Array<ZodFieldError>;
+  message: Scalars["String"];
+};
+
+export type ZodFieldError = {
+  __typename?: "ZodFieldError";
+  message: Scalars["String"];
+  path: Array<Scalars["String"]>;
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -178,12 +201,19 @@ export type ResolversTypes = {
   CreateUserInput: CreateUserInput;
   Date: ResolverTypeWrapper<Scalars["Date"]>;
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
+  Error: ResolversTypes["ZodError"];
   ID: ResolverTypeWrapper<Scalars["ID"]>;
   Mutation: ResolverTypeWrapper<{}>;
+  MutationCreateUserResult:
+    | ResolversTypes["MutationCreateUserSuccess"]
+    | ResolversTypes["ZodError"];
+  MutationCreateUserSuccess: ResolverTypeWrapper<MutationCreateUserSuccess>;
   Query: ResolverTypeWrapper<{}>;
   Roles: Roles;
   String: ResolverTypeWrapper<Scalars["String"]>;
   User: ResolverTypeWrapper<User>;
+  ZodError: ResolverTypeWrapper<ZodError>;
+  ZodFieldError: ResolverTypeWrapper<ZodFieldError>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -192,11 +222,18 @@ export type ResolversParentTypes = {
   CreateUserInput: CreateUserInput;
   Date: Scalars["Date"];
   DateTime: Scalars["DateTime"];
+  Error: ResolversParentTypes["ZodError"];
   ID: Scalars["ID"];
   Mutation: {};
+  MutationCreateUserResult:
+    | ResolversParentTypes["MutationCreateUserSuccess"]
+    | ResolversParentTypes["ZodError"];
+  MutationCreateUserSuccess: MutationCreateUserSuccess;
   Query: {};
   String: Scalars["String"];
   User: User;
+  ZodError: ZodError;
+  ZodFieldError: ZodFieldError;
 };
 
 export interface DateScalarConfig
@@ -209,16 +246,43 @@ export interface DateTimeScalarConfig
   name: "DateTime";
 }
 
+export type ErrorResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Error"] = ResolversParentTypes["Error"],
+> = {
+  __resolveType: TypeResolveFn<"ZodError", ParentType, ContextType>;
+  message?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+};
+
 export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"],
 > = {
   createUser?: Resolver<
-    ResolversTypes["User"],
+    ResolversTypes["MutationCreateUserResult"],
     ParentType,
     ContextType,
     RequireFields<MutationCreateUserArgs, "input">
   >;
+};
+
+export type MutationCreateUserResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationCreateUserResult"] = ResolversParentTypes["MutationCreateUserResult"],
+> = {
+  __resolveType: TypeResolveFn<
+    "MutationCreateUserSuccess" | "ZodError",
+    ParentType,
+    ContextType
+  >;
+};
+
+export type MutationCreateUserSuccessResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationCreateUserSuccess"] = ResolversParentTypes["MutationCreateUserSuccess"],
+> = {
+  data?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<
@@ -242,10 +306,37 @@ export type UserResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type ZodErrorResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["ZodError"] = ResolversParentTypes["ZodError"],
+> = {
+  fieldErrors?: Resolver<
+    Array<ResolversTypes["ZodFieldError"]>,
+    ParentType,
+    ContextType
+  >;
+  message?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ZodFieldErrorResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["ZodFieldError"] = ResolversParentTypes["ZodFieldError"],
+> = {
+  message?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  path?: Resolver<Array<ResolversTypes["String"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Date?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
+  Error?: ErrorResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  MutationCreateUserResult?: MutationCreateUserResultResolvers<ContextType>;
+  MutationCreateUserSuccess?: MutationCreateUserSuccessResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  ZodError?: ZodErrorResolvers<ContextType>;
+  ZodFieldError?: ZodFieldErrorResolvers<ContextType>;
 };

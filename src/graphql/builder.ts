@@ -35,7 +35,4 @@ export const builder = new SchemaBuilder<{
   authScopes: async ({ token }) => ({
     user: !!token,
   }),
-  errorOptions: {
-    defaultTypes: [Error],
-  },
 });

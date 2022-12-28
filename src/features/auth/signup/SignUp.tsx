@@ -1,5 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
+import { signIn } from "next-auth/react";
 import React from "react";
 import { z } from "zod";
 import {
@@ -7,33 +7,32 @@ import {
   CreateUserMutationVariables,
 } from "./__generated__/SignUp.generated";
 
+import { Container } from "@/components/container";
 import { Button } from "@/ui/button";
 import { Form, Input, useZodForm } from "@/ui/form";
-
-import { Container } from "@/components/container";
-import { input as signUpValidateError } from "@/fixtures/auth/error";
 import { Heading } from "../components/Heading";
 import { Modal } from "../components/Modal";
+
+import { input as signUpValidateError } from "@/fixtures/auth/error";
+
+const PasswordValidate = z
+  .string()
+  .min(6, { message: signUpValidateError.password.length.tooSmall })
+  .max(64, { message: signUpValidateError.password.length.tooBig });
 
 const SignUpSchema = z
   .object({
     email: z
       .string()
-      .min(6, { message: signUpValidateError.email.length.tooSmall })
+      .min(8, { message: signUpValidateError.email.length.tooSmall })
       .max(32, { message: signUpValidateError.email.length.tooBig })
       .email({ message: signUpValidateError.email.invalid }),
     name: z
       .string()
       .min(1, { message: signUpValidateError.name.length.tooSmall })
       .max(32, { message: signUpValidateError.name.length.tooBig }),
-    password: z
-      .string()
-      .min(6, { message: signUpValidateError.password.length.tooSmall })
-      .max(64, { message: signUpValidateError.password.length.tooBig }),
-    confirmPassword: z
-      .string()
-      .min(6, { message: signUpValidateError.password.length.tooSmall })
-      .max(64, { message: signUpValidateError.password.length.tooBig }),
+    password: PasswordValidate,
+    confirmPassword: PasswordValidate,
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
@@ -41,7 +40,6 @@ const SignUpSchema = z
   });
 
 export const SignUp: React.FC<{}> = () => {
-  const router = useRouter();
   const form = useZodForm({ schema: SignUpSchema });
   const [createUser] = useMutation<
     CreateUserMutation,
@@ -50,7 +48,17 @@ export const SignUp: React.FC<{}> = () => {
     gql`
       mutation CreateUser($input: CreateUserInput!) {
         createUser(input: $input) {
-          id
+          ... on MutationCreateUserSuccess {
+            data {
+              id
+            }
+          }
+          ... on ZodError {
+            fieldErrors {
+              message
+              path
+            }
+          }
         }
       }
     `,
@@ -71,7 +79,24 @@ export const SignUp: React.FC<{}> = () => {
           href: "/auth/signin",
         }}
       >
-        <Form form={form} onSubmit={({ confirmPassword, ...input }) => ({})}>
+        <Form
+          form={form}
+          onSubmit={async ({ confirmPassword, ...input }) => {
+            const createUserResult = await createUser({ variables: { input } });
+            const data = createUserResult?.data?.createUser;
+            if (data?.__typename === "ZodError") {
+              return data.fieldErrors.forEach((error) => {
+                const field = error.path.pop() as any;
+                form.setError(field, { message: error.message });
+              });
+            }
+            await signIn("credentials", {
+              email: input.email,
+              password: input.password,
+              redirectUrl: "/",
+            });
+          }}
+        >
           <Input
             label="Email"
             placeholder="Enter your email"

@@ -8,7 +8,6 @@ import { Container } from "@/components/container";
 import { Button } from "@/ui/button";
 import { Form, Input, useZodForm } from "@/ui/form";
 import { Avatar } from "./components/Avatar";
-import { Footer } from "./components/Footer";
 import { GroupSkeleton } from "./components/GroupSkeleton";
 
 const SignInSchema = z.object({
@@ -20,7 +19,7 @@ export const Landing: React.FC<{}> = () => {
   const form = useZodForm({ schema: SignInSchema });
 
   return (
-    <Container footer={<Footer />}>
+    <Container>
       <nav className="mb-12 flex h-12 w-full flex-row items-center justify-between gap-2 lg:mb-20">
         <div className="flex flex-row items-center gap-2 text-xl font-semibold">
           <Image src="/kanban.svg" alt="Kanban logo" width={21} height={21} />

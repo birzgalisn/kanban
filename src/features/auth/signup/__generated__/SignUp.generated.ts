@@ -8,13 +8,35 @@ export type CreateUserMutationVariables = Types.Exact<{
 
 export type CreateUserMutation = {
   __typename?: "Mutation";
-  createUser: { __typename?: "User"; id: string };
+  createUser:
+    | {
+        __typename?: "MutationCreateUserSuccess";
+        data: { __typename?: "User"; id: string };
+      }
+    | {
+        __typename?: "ZodError";
+        fieldErrors: Array<{
+          __typename?: "ZodFieldError";
+          message: string;
+          path: Array<string>;
+        }>;
+      };
 };
 
 export const CreateUserDocument = gql`
   mutation CreateUser($input: CreateUserInput!) {
     createUser(input: $input) {
-      id
+      ... on MutationCreateUserSuccess {
+        data {
+          id
+        }
+      }
+      ... on ZodError {
+        fieldErrors {
+          message
+          path
+        }
+      }
     }
   }
 `;

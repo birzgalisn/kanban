@@ -14,8 +14,18 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+interface Error {
+  message: String!
+}
+
 type Mutation {
-  createUser(input: CreateUserInput!): User!
+  createUser(input: CreateUserInput!): MutationCreateUserResult!
+}
+
+union MutationCreateUserResult = MutationCreateUserSuccess | ZodError
+
+type MutationCreateUserSuccess {
+  data: User!
 }
 
 type Query {
@@ -36,4 +46,14 @@ type User {
   name: String
   role: Roles!
   updatedAt: DateTime!
+}
+
+type ZodError implements Error {
+  fieldErrors: [ZodFieldError!]!
+  message: String!
+}
+
+type ZodFieldError {
+  message: String!
+  path: [String!]!
 }
