@@ -69,7 +69,7 @@ export const SignIn: React.FC<{}> = () => {
         <Button
           variant="secondary"
           startIcon={<FaGithub />}
-          onClick={() => signInWith("discord", { callbackUrl: "/" })}
+          onClick={() => signInWith("github", { callbackUrl: "/" })}
         >
           Sign in with GitHub
         </Button>
