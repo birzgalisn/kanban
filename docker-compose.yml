@@ -1,0 +1,21 @@
+version: "3.9"
+
+name: "kanban-dev"
+
+services:
+  mysql:
+    container_name: "mysql"
+    image: mysql:oracle
+    restart: always
+    environment:
+      MYSQL_DATABASE: "kanban-dev"
+      MYSQL_ROOT_PASSWORD: "toor"
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql: {}

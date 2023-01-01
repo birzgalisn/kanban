@@ -10,7 +10,7 @@ export const TaskSkeleton: React.FC<{ className?: string }> = ({
   return (
     <div
       className={clsx(
-        "relative flex max-h-20 w-64 flex-1 flex-col gap-2 rounded-lg bg-white p-4 shadow-xl",
+        "relative flex max-h-20 w-64 flex-1 flex-col gap-2 rounded-lg border border-gray-200 bg-white p-4 shadow-lg",
         className,
       )}
     >

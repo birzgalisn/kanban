@@ -3,7 +3,7 @@ import { flattenErrors } from "@/lib/flattenErrors";
 import { DateResolver, DateTimeResolver } from "graphql-scalars";
 import { ZodError } from "zod";
 
-import "./resolvers/user";
+import "./resolvers";
 
 const ErrorInterface = builder.interfaceRef<Error>("Error").implement({
   fields: (t) => ({

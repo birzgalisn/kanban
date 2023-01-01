@@ -10,10 +10,9 @@ generator pothos {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
-  relationMode      = "prisma"
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model Account {
@@ -71,8 +70,136 @@ model User {
   accounts       Account[]
   sessions       Session[]
 
+  workspaces Member[]
+  invites    Invite[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([email])
+}
+
+model Invite {
+  id       String  @id @default(cuid())
+  user     User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String?
+  member   Member? @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  memberId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([memberId])
+}
+
+model Workspace {
+  id      String   @id @default(cuid())
+  title   String
+  members Member[]
+  boards  Board[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Member {
+  id          String     @id @default(cuid())
+  user        User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String?
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String?
+  isOwner     Boolean    @default(false)
+  invites     Invite[]
+  comments    Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([workspaceId])
+}
+
+model Board {
+  id          String    @id @default(cuid())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  title       String
+  lists       List[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([workspaceId])
+}
+
+model List {
+  id      String @id @default(cuid())
+  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  boardId String
+  title   String
+  cards   Card[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([boardId])
+}
+
+model Card {
+  id          String    @id @default(cuid())
+  list        List      @relation(fields: [listId], references: [id], onDelete: Cascade)
+  listId      String
+  title       String
+  description String?   @db.Text
+  deadline    DateTime?
+  tags        Tag[]
+  todos       Todo[]
+  comments    Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([listId])
+}
+
+model Tag {
+  id       String  @id @default(cuid())
+  card     Card    @relation(fields: [cardId], references: [id])
+  cardId   String
+  title    String
+  colorHex String? @default("#f8bd1c")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([cardId])
+}
+
+model Todo {
+  id          String  @id @default(cuid())
+  card        Card    @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  cardId      String
+  done        Boolean @default(false)
+  description String  @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([cardId])
+}
+
+model Comment {
+  id       String @id @default(cuid())
+  card     Card   @relation(fields: [cardId], references: [id])
+  cardId   String
+  member   Member @relation(fields: [memberId], references: [id])
+  memberId String
+  comment  String @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([cardId])
+  @@index([memberId])
 }

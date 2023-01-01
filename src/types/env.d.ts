@@ -6,5 +6,6 @@ namespace NodeJS {
     DISCORD_CLIENT_SECRET: string;
     GITHUB_ID: string;
     GITHUB_SECRET: string;
+    NEXT_PUBLIC_URL: string;
   }
 }

@@ -26,7 +26,7 @@ export const Modal: React.FC<{
       <div className="flex w-full flex-1 pb-12 lg:justify-end lg:pb-20">
         <div
           className={clsx(
-            "mx-auto flex w-full max-w-lg flex-1 flex-col gap-4 rounded-lg bg-white px-6 pb-6 shadow-lg lg:mx-0 lg:gap-6 lg:px-10 lg:pb-10",
+            "mx-auto flex w-full max-w-lg flex-1 flex-col gap-4 rounded-lg border border-gray-200 bg-white px-6 pb-6 shadow-lg lg:mx-0 lg:gap-6 lg:px-10 lg:pb-10",
             link ? "pt-3 lg:pt-5" : "pt-6 lg:pt-10",
           )}
         >

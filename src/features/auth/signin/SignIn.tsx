@@ -3,6 +3,11 @@ import { useRouter } from "next/router";
 import React from "react";
 import { z } from "zod";
 
+import type { BuiltInProviderType } from "next-auth/providers";
+import type { SignInOptions, SignInResponse } from "next-auth/react";
+
+import { input as signInValidateError } from "@/fixtures/auth/error";
+
 import { Container } from "@/components/container";
 import { Button } from "@/ui/button";
 import { Form, Input, useZodForm } from "@/ui/form";
@@ -10,11 +15,6 @@ import { FaDiscord, FaGithub } from "react-icons/fa";
 import { Divider } from "../components/Divider";
 import { Heading } from "../components/Heading";
 import { Modal } from "../components/Modal";
-
-import type { BuiltInProviderType } from "next-auth/providers";
-import type { SignInOptions, SignInResponse } from "next-auth/react";
-
-import { input as signInValidateError } from "@/fixtures/auth/error";
 
 const SignInSchema = z.object({
   email: z
@@ -69,14 +69,14 @@ export const SignIn: React.FC<{}> = () => {
         <Button
           variant="secondary"
           startIcon={<FaGithub />}
-          onClick={() => signInWith("github", { callbackUrl: "/" })}
+          onClick={() => signInWith("github", { callbackUrl: "/workspaces" })}
         >
           Sign in with GitHub
         </Button>
         <Button
           variant="secondary"
           startIcon={<FaDiscord />}
-          onClick={() => signInWith("discord", { callbackUrl: "/" })}
+          onClick={() => signInWith("discord", { callbackUrl: "/workspaces" })}
         >
           Sign in with Discord
         </Button>
@@ -89,22 +89,28 @@ export const SignIn: React.FC<{}> = () => {
             signInWith("credentials", {
               email,
               password,
-              callbackUrl: "/",
+              callbackUrl: "/workspaces",
             })
           }
+          autoComplete="on"
         >
           <Input
+            type="email"
             label="Email"
             placeholder="Enter your email address"
+            autoComplete="email"
             {...form.register("email")}
           />
           <Input
             type="password"
             label="Password"
             placeholder="• • • • • • • •"
+            autoComplete="current-password"
             {...form.register("password")}
           />
-          <Button type="submit">Sign in</Button>
+          <Button type="submit" isLoading={form.formState.isSubmitting}>
+            Sign in
+          </Button>
         </Form>
       </Modal>
     </Container>

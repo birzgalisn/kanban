@@ -9,7 +9,7 @@ const SignUpPage: NextPage = () => {
     <>
       <Head>
         <title>Sign up - Kanban</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/assets/images/favicon.ico" />
         <meta name="description" content="Sign up for your Kanban account" />
       </Head>
 

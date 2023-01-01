@@ -1,13 +1,13 @@
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { z } from "zod";
 
 import { Container } from "@/components/container";
+import { Avatar } from "@/ui/avatar/Avatar";
 import { Button } from "@/ui/button";
 import { Form, Input, useZodForm } from "@/ui/form";
-import { Avatar } from "./components/Avatar";
+import { Logo } from "@/ui/logo";
 import { GroupSkeleton } from "./components/GroupSkeleton";
 
 const SignInSchema = z.object({
@@ -21,10 +21,7 @@ export const Landing: React.FC<{}> = () => {
   return (
     <Container>
       <nav className="mb-12 flex h-12 w-full flex-row items-center justify-between gap-2 lg:mb-20">
-        <div className="flex flex-row items-center gap-2 text-xl font-semibold">
-          <Image src="/kanban.svg" alt="Kanban logo" width={21} height={21} />
-          Kanban
-        </div>
+        <Logo wrap width={21} height={21} />
         <ul className="flex flex-row items-center gap-4 lg:gap-12">
           <li>
             <Link href={"/auth/signin"}>
@@ -52,9 +49,7 @@ export const Landing: React.FC<{}> = () => {
         >
           <Input
             className="rounded-r-none"
-            type="email"
             placeholder="Enter your email address"
-            autoComplete="email"
             {...form.register("email")}
           />
           <Button className="rounded-l-none" type="submit">
@@ -68,14 +63,17 @@ export const Landing: React.FC<{}> = () => {
         <GroupSkeleton tasks={1} />
         <GroupSkeleton tasks={2}>
           <div className="relative h-20 w-full rounded-lg bg-gray-200">
-            <div className="absolute -mt-20 -ml-8 flex h-32 w-80 flex-col gap-2 rounded-lg bg-white p-4 shadow-lg">
+            <div className="absolute -mt-20 -ml-8 flex h-32 w-80 flex-col gap-2 rounded-lg border border-gray-200 bg-white p-4 shadow-2xl">
               <h2 className="text-lg font-semibold subpixel-antialiased">
                 How to increase the landing page conversion
               </h2>
               <span className="max-w-min rounded-full bg-purple-100 px-2 py-1 text-sm font-medium text-purple-700">
                 Research
               </span>
-              <Avatar className="absolute bottom-0 right-0 mb-4 mr-4 h-8 w-8" />
+              <Avatar
+                className="absolute bottom-0 right-0 mb-4 mr-4"
+                sizes="w-8 h-8"
+              />
             </div>
           </div>
         </GroupSkeleton>

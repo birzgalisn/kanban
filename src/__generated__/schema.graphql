@@ -1,3 +1,38 @@
+type Board {
+  createdAt: DateTime!
+  id: ID!
+  lists: [List!]!
+  title: String!
+  updatedAt: DateTime!
+  workspace: Workspace!
+  workspaceId: String!
+}
+
+type Card {
+  comments: [Comment!]!
+  createdAt: DateTime!
+  deadline: DateTime
+  description: String
+  id: ID!
+  list: List!
+  listId: String!
+  tags: [Tag!]!
+  title: String!
+  todos: [Todo!]!
+  updatedAt: DateTime!
+}
+
+type Comment {
+  card: Card!
+  cardId: String
+  comment: String!
+  createdAt: DateTime!
+  id: ID!
+  member: Member!
+  memberId: String
+  updatedAt: DateTime!
+}
+
 input CreateUserInput {
   email: String!
   name: String!
@@ -18,6 +53,39 @@ interface Error {
   message: String!
 }
 
+type Invite {
+  createdAt: DateTime!
+  id: ID!
+  member: Member!
+  memberId: String
+  updatedAt: DateTime!
+  user: User!
+  userId: String
+}
+
+type List {
+  board: Board!
+  boardId: String!
+  cards: [Card!]!
+  createdAt: DateTime!
+  id: ID!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type Member {
+  comments: [Comment!]!
+  createdAt: DateTime!
+  id: ID!
+  invites: [Invite!]!
+  isOwner: Boolean!
+  updatedAt: DateTime!
+  user: User!
+  userId: String
+  workspace: Workspace!
+  workspaceId: String
+}
+
 type Mutation {
   createUser(input: CreateUserInput!): MutationCreateUserResult!
 }
@@ -30,6 +98,7 @@ type MutationCreateUserSuccess {
 
 type Query {
   me: User!
+  workspaces: [Workspace!]
 }
 
 """User roles"""
@@ -38,13 +107,45 @@ enum Roles {
   USER
 }
 
+type Tag {
+  card: Card!
+  cardId: String!
+  colorHex: String
+  createdAt: DateTime!
+  id: ID!
+  title: String!
+  updatedAt: DateTime!
+}
+
+type Todo {
+  card: Card!
+  cardId: String!
+  createdAt: DateTime!
+  description: String!
+  done: Boolean!
+  id: ID!
+  updatedAt: DateTime!
+}
+
 type User {
   createdAt: DateTime!
   email: String
+  emailVerified: DateTime
   id: ID!
   image: String
+  invites: [Invite!]!
   name: String
   role: Roles!
+  updatedAt: DateTime!
+  workspaces: [Member!]!
+}
+
+type Workspace {
+  boards: [Board!]!
+  createdAt: DateTime!
+  id: ID!
+  members: [Member!]!
+  title: String!
   updatedAt: DateTime!
 }
 

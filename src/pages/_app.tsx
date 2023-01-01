@@ -11,6 +11,7 @@ export default function App({
   pageProps: { session, ...pageProps },
 }: AppProps) {
   const client = useApollo(pageProps);
+
   return (
     <SessionProvider session={session}>
       <ApolloProvider client={client}>

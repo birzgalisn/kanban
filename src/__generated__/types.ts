@@ -30,6 +30,44 @@ export type Scalars = {
   DateTime: any;
 };
 
+export type Board = {
+  __typename?: "Board";
+  createdAt: Scalars["DateTime"];
+  id: Scalars["ID"];
+  lists: Array<List>;
+  title: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+  workspace: Workspace;
+  workspaceId: Scalars["String"];
+};
+
+export type Card = {
+  __typename?: "Card";
+  comments: Array<Comment>;
+  createdAt: Scalars["DateTime"];
+  deadline?: Maybe<Scalars["DateTime"]>;
+  description?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  list: List;
+  listId: Scalars["String"];
+  tags: Array<Tag>;
+  title: Scalars["String"];
+  todos: Array<Todo>;
+  updatedAt: Scalars["DateTime"];
+};
+
+export type Comment = {
+  __typename?: "Comment";
+  card: Card;
+  cardId?: Maybe<Scalars["String"]>;
+  comment: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  id: Scalars["ID"];
+  member: Member;
+  memberId?: Maybe<Scalars["String"]>;
+  updatedAt: Scalars["DateTime"];
+};
+
 export type CreateUserInput = {
   email: Scalars["String"];
   name: Scalars["String"];
@@ -38,6 +76,42 @@ export type CreateUserInput = {
 
 export type Error = {
   message: Scalars["String"];
+};
+
+export type Invite = {
+  __typename?: "Invite";
+  createdAt: Scalars["DateTime"];
+  id: Scalars["ID"];
+  member: Member;
+  memberId?: Maybe<Scalars["String"]>;
+  updatedAt: Scalars["DateTime"];
+  user: User;
+  userId?: Maybe<Scalars["String"]>;
+};
+
+export type List = {
+  __typename?: "List";
+  board: Board;
+  boardId: Scalars["String"];
+  cards: Array<Card>;
+  createdAt: Scalars["DateTime"];
+  id: Scalars["ID"];
+  title: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type Member = {
+  __typename?: "Member";
+  comments: Array<Comment>;
+  createdAt: Scalars["DateTime"];
+  id: Scalars["ID"];
+  invites: Array<Invite>;
+  isOwner: Scalars["Boolean"];
+  updatedAt: Scalars["DateTime"];
+  user: User;
+  userId?: Maybe<Scalars["String"]>;
+  workspace: Workspace;
+  workspaceId?: Maybe<Scalars["String"]>;
 };
 
 export type Mutation = {
@@ -59,6 +133,7 @@ export type MutationCreateUserSuccess = {
 export type Query = {
   __typename?: "Query";
   me: User;
+  workspaces?: Maybe<Array<Workspace>>;
 };
 
 /** User roles */
@@ -67,14 +142,49 @@ export enum Roles {
   User = "USER",
 }
 
+export type Tag = {
+  __typename?: "Tag";
+  card: Card;
+  cardId: Scalars["String"];
+  colorHex?: Maybe<Scalars["String"]>;
+  createdAt: Scalars["DateTime"];
+  id: Scalars["ID"];
+  title: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
+export type Todo = {
+  __typename?: "Todo";
+  card: Card;
+  cardId: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  description: Scalars["String"];
+  done: Scalars["Boolean"];
+  id: Scalars["ID"];
+  updatedAt: Scalars["DateTime"];
+};
+
 export type User = {
   __typename?: "User";
   createdAt: Scalars["DateTime"];
   email?: Maybe<Scalars["String"]>;
+  emailVerified?: Maybe<Scalars["DateTime"]>;
   id: Scalars["ID"];
   image?: Maybe<Scalars["String"]>;
+  invites: Array<Invite>;
   name?: Maybe<Scalars["String"]>;
   role: Roles;
+  updatedAt: Scalars["DateTime"];
+  workspaces: Array<Member>;
+};
+
+export type Workspace = {
+  __typename?: "Workspace";
+  boards: Array<Board>;
+  createdAt: Scalars["DateTime"];
+  id: Scalars["ID"];
+  members: Array<Member>;
+  title: Scalars["String"];
   updatedAt: Scalars["DateTime"];
 };
 
@@ -197,12 +307,18 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Board: ResolverTypeWrapper<Board>;
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
+  Card: ResolverTypeWrapper<Card>;
+  Comment: ResolverTypeWrapper<Comment>;
   CreateUserInput: CreateUserInput;
   Date: ResolverTypeWrapper<Scalars["Date"]>;
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
   Error: ResolversTypes["ZodError"];
   ID: ResolverTypeWrapper<Scalars["ID"]>;
+  Invite: ResolverTypeWrapper<Invite>;
+  List: ResolverTypeWrapper<List>;
+  Member: ResolverTypeWrapper<Member>;
   Mutation: ResolverTypeWrapper<{}>;
   MutationCreateUserResult:
     | ResolversTypes["MutationCreateUserSuccess"]
@@ -211,19 +327,28 @@ export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
   Roles: Roles;
   String: ResolverTypeWrapper<Scalars["String"]>;
+  Tag: ResolverTypeWrapper<Tag>;
+  Todo: ResolverTypeWrapper<Todo>;
   User: ResolverTypeWrapper<User>;
+  Workspace: ResolverTypeWrapper<Workspace>;
   ZodError: ResolverTypeWrapper<ZodError>;
   ZodFieldError: ResolverTypeWrapper<ZodFieldError>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Board: Board;
   Boolean: Scalars["Boolean"];
+  Card: Card;
+  Comment: Comment;
   CreateUserInput: CreateUserInput;
   Date: Scalars["Date"];
   DateTime: Scalars["DateTime"];
   Error: ResolversParentTypes["ZodError"];
   ID: Scalars["ID"];
+  Invite: Invite;
+  List: List;
+  Member: Member;
   Mutation: {};
   MutationCreateUserResult:
     | ResolversParentTypes["MutationCreateUserSuccess"]
@@ -231,9 +356,71 @@ export type ResolversParentTypes = {
   MutationCreateUserSuccess: MutationCreateUserSuccess;
   Query: {};
   String: Scalars["String"];
+  Tag: Tag;
+  Todo: Todo;
   User: User;
+  Workspace: Workspace;
   ZodError: ZodError;
   ZodFieldError: ZodFieldError;
+};
+
+export type BoardResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Board"] = ResolversParentTypes["Board"],
+> = {
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  lists?: Resolver<Array<ResolversTypes["List"]>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  workspace?: Resolver<ResolversTypes["Workspace"], ParentType, ContextType>;
+  workspaceId?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CardResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Card"] = ResolversParentTypes["Card"],
+> = {
+  comments?: Resolver<
+    Array<ResolversTypes["Comment"]>,
+    ParentType,
+    ContextType
+  >;
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  deadline?: Resolver<
+    Maybe<ResolversTypes["DateTime"]>,
+    ParentType,
+    ContextType
+  >;
+  description?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  list?: Resolver<ResolversTypes["List"], ParentType, ContextType>;
+  listId?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  tags?: Resolver<Array<ResolversTypes["Tag"]>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  todos?: Resolver<Array<ResolversTypes["Todo"]>, ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type CommentResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Comment"] = ResolversParentTypes["Comment"],
+> = {
+  card?: Resolver<ResolversTypes["Card"], ParentType, ContextType>;
+  cardId?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  comment?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  member?: Resolver<ResolversTypes["Member"], ParentType, ContextType>;
+  memberId?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export interface DateScalarConfig
@@ -252,6 +439,59 @@ export type ErrorResolvers<
 > = {
   __resolveType: TypeResolveFn<"ZodError", ParentType, ContextType>;
   message?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+};
+
+export type InviteResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Invite"] = ResolversParentTypes["Invite"],
+> = {
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  member?: Resolver<ResolversTypes["Member"], ParentType, ContextType>;
+  memberId?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  userId?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ListResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["List"] = ResolversParentTypes["List"],
+> = {
+  board?: Resolver<ResolversTypes["Board"], ParentType, ContextType>;
+  boardId?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  cards?: Resolver<Array<ResolversTypes["Card"]>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MemberResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Member"] = ResolversParentTypes["Member"],
+> = {
+  comments?: Resolver<
+    Array<ResolversTypes["Comment"]>,
+    ParentType,
+    ContextType
+  >;
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  invites?: Resolver<Array<ResolversTypes["Invite"]>, ParentType, ContextType>;
+  isOwner?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  userId?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  workspace?: Resolver<ResolversTypes["Workspace"], ParentType, ContextType>;
+  workspaceId?: Resolver<
+    Maybe<ResolversTypes["String"]>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationResolvers<
@@ -290,6 +530,39 @@ export type QueryResolvers<
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"],
 > = {
   me?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  workspaces?: Resolver<
+    Maybe<Array<ResolversTypes["Workspace"]>>,
+    ParentType,
+    ContextType
+  >;
+};
+
+export type TagResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Tag"] = ResolversParentTypes["Tag"],
+> = {
+  card?: Resolver<ResolversTypes["Card"], ParentType, ContextType>;
+  cardId?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  colorHex?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type TodoResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Todo"] = ResolversParentTypes["Todo"],
+> = {
+  card?: Resolver<ResolversTypes["Card"], ParentType, ContextType>;
+  cardId?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
+  done?: Resolver<ResolversTypes["Boolean"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type UserResolvers<
@@ -298,10 +571,34 @@ export type UserResolvers<
 > = {
   createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   email?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  emailVerified?: Resolver<
+    Maybe<ResolversTypes["DateTime"]>,
+    ParentType,
+    ContextType
+  >;
   id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
   image?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
+  invites?: Resolver<Array<ResolversTypes["Invite"]>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes["String"]>, ParentType, ContextType>;
   role?: Resolver<ResolversTypes["Roles"], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  workspaces?: Resolver<
+    Array<ResolversTypes["Member"]>,
+    ParentType,
+    ContextType
+  >;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type WorkspaceResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["Workspace"] = ResolversParentTypes["Workspace"],
+> = {
+  boards?: Resolver<Array<ResolversTypes["Board"]>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes["ID"], ParentType, ContextType>;
+  members?: Resolver<Array<ResolversTypes["Member"]>, ParentType, ContextType>;
+  title?: Resolver<ResolversTypes["String"], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes["DateTime"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -329,14 +626,23 @@ export type ZodFieldErrorResolvers<
 };
 
 export type Resolvers<ContextType = any> = {
+  Board?: BoardResolvers<ContextType>;
+  Card?: CardResolvers<ContextType>;
+  Comment?: CommentResolvers<ContextType>;
   Date?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
   Error?: ErrorResolvers<ContextType>;
+  Invite?: InviteResolvers<ContextType>;
+  List?: ListResolvers<ContextType>;
+  Member?: MemberResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   MutationCreateUserResult?: MutationCreateUserResultResolvers<ContextType>;
   MutationCreateUserSuccess?: MutationCreateUserSuccessResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Tag?: TagResolvers<ContextType>;
+  Todo?: TodoResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  Workspace?: WorkspaceResolvers<ContextType>;
   ZodError?: ZodErrorResolvers<ContextType>;
   ZodFieldError?: ZodFieldErrorResolvers<ContextType>;
 };

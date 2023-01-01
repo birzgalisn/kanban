@@ -7,13 +7,13 @@ import {
   CreateUserMutationVariables,
 } from "./__generated__/SignUp.generated";
 
+import { input as signUpValidateError } from "@/fixtures/auth/error";
+
 import { Container } from "@/components/container";
 import { Button } from "@/ui/button";
 import { Form, Input, useZodForm } from "@/ui/form";
 import { Heading } from "../components/Heading";
 import { Modal } from "../components/Modal";
-
-import { input as signUpValidateError } from "@/fixtures/auth/error";
 
 const PasswordValidate = z
   .string()
@@ -93,33 +93,41 @@ export const SignUp: React.FC<{}> = () => {
             await signIn("credentials", {
               email: input.email,
               password: input.password,
-              redirectUrl: "/",
+              callbackUrl: "/workspaces",
             });
           }}
+          autoComplete="on"
         >
           <Input
+            type="email"
             label="Email"
             placeholder="Enter your email"
+            autoComplete="email"
             {...form.register("email")}
           />
           <Input
             label="Name"
             placeholder="Enter your name"
+            autoComplete="given-name"
             {...form.register("name")}
           />
           <Input
             type="password"
             label="Password"
             placeholder="• • • • • • • •"
+            autoComplete="new-password"
             {...form.register("password")}
           />
           <Input
             type="password"
             label="Confirm password"
             placeholder="• • • • • • • •"
+            autoComplete="new-password"
             {...form.register("confirmPassword")}
           />
-          <Button type="submit">Sign up</Button>
+          <Button type="submit" isLoading={form.formState.isSubmitting}>
+            Sign up
+          </Button>
         </Form>
       </Modal>
     </Container>

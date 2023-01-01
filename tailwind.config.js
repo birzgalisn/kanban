@@ -11,6 +11,10 @@ module.exports = {
           gray: "#dfdfe4",
         },
       },
+      screens: {
+        xs: "540px",
+        // => @media (min-width: 540px) { ... }
+      },
     },
   },
   plugins: [],
