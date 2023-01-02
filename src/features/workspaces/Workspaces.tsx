@@ -1,8 +1,9 @@
 import { gql, useMutation, useQuery } from "@apollo/client";
+import { useRouter } from "next/router";
 import React, { useRef } from "react";
 import { z } from "zod";
 
-import {
+import type {
   CreateWorkspaceMutation,
   CreateWorkspaceMutationVariables,
   WorkspacesQuery,
@@ -17,7 +18,6 @@ import { Bar } from "./components/Bar";
 import { WorkspacesPreview } from "./components/WorkspacesPreview";
 
 import { input as workspaceValidateError } from "@/fixtures/workspace/error";
-import { useRouter } from "next/router";
 
 const WorkspaceSchema = z.object({
   title: z
@@ -96,7 +96,7 @@ export const Workspaces: React.FC<{}> = () => {
         )
           return;
 
-        // router.push(`/workspaces/${data.createWorkspace.data.id}`);
+        router.push(`/workspaces/${data.createWorkspace.data.id}`);
       },
     },
   );

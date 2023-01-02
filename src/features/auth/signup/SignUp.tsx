@@ -2,7 +2,8 @@ import { gql, useMutation } from "@apollo/client";
 import { signIn } from "next-auth/react";
 import React from "react";
 import { z } from "zod";
-import {
+
+import type {
   CreateUserMutation,
   CreateUserMutationVariables,
 } from "./__generated__/SignUp.generated";
