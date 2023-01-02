@@ -66,7 +66,11 @@ export const Workspaces: React.FC<{}> = () => {
           isLoading={workspacesResult.loading}
           modalRef={workspaceModalRef}
         />
-        <Modal title="Create a workspace" ref={workspaceModalRef}>
+        <Modal
+          title="Create a workspace"
+          subtitle="The beginning is always now"
+          ref={workspaceModalRef}
+        >
           <Form
             form={workspaceForm}
             onSubmit={(input) => {
