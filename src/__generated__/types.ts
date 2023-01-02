@@ -74,6 +74,10 @@ export type CreateUserInput = {
   password: Scalars["String"];
 };
 
+export type CreateWorkspaceInput = {
+  title: Scalars["String"];
+};
+
 export type Error = {
   message: Scalars["String"];
 };
@@ -117,10 +121,15 @@ export type Member = {
 export type Mutation = {
   __typename?: "Mutation";
   createUser: MutationCreateUserResult;
+  createWorkspace: MutationCreateWorkspaceResult;
 };
 
 export type MutationCreateUserArgs = {
   input: CreateUserInput;
+};
+
+export type MutationCreateWorkspaceArgs = {
+  input: CreateWorkspaceInput;
 };
 
 export type MutationCreateUserResult = MutationCreateUserSuccess | ZodError;
@@ -128,6 +137,15 @@ export type MutationCreateUserResult = MutationCreateUserSuccess | ZodError;
 export type MutationCreateUserSuccess = {
   __typename?: "MutationCreateUserSuccess";
   data: User;
+};
+
+export type MutationCreateWorkspaceResult =
+  | MutationCreateWorkspaceSuccess
+  | ZodError;
+
+export type MutationCreateWorkspaceSuccess = {
+  __typename?: "MutationCreateWorkspaceSuccess";
+  data: Workspace;
 };
 
 export type Query = {
@@ -312,6 +330,7 @@ export type ResolversTypes = {
   Card: ResolverTypeWrapper<Card>;
   Comment: ResolverTypeWrapper<Comment>;
   CreateUserInput: CreateUserInput;
+  CreateWorkspaceInput: CreateWorkspaceInput;
   Date: ResolverTypeWrapper<Scalars["Date"]>;
   DateTime: ResolverTypeWrapper<Scalars["DateTime"]>;
   Error: ResolversTypes["ZodError"];
@@ -324,6 +343,10 @@ export type ResolversTypes = {
     | ResolversTypes["MutationCreateUserSuccess"]
     | ResolversTypes["ZodError"];
   MutationCreateUserSuccess: ResolverTypeWrapper<MutationCreateUserSuccess>;
+  MutationCreateWorkspaceResult:
+    | ResolversTypes["MutationCreateWorkspaceSuccess"]
+    | ResolversTypes["ZodError"];
+  MutationCreateWorkspaceSuccess: ResolverTypeWrapper<MutationCreateWorkspaceSuccess>;
   Query: ResolverTypeWrapper<{}>;
   Roles: Roles;
   String: ResolverTypeWrapper<Scalars["String"]>;
@@ -342,6 +365,7 @@ export type ResolversParentTypes = {
   Card: Card;
   Comment: Comment;
   CreateUserInput: CreateUserInput;
+  CreateWorkspaceInput: CreateWorkspaceInput;
   Date: Scalars["Date"];
   DateTime: Scalars["DateTime"];
   Error: ResolversParentTypes["ZodError"];
@@ -354,6 +378,10 @@ export type ResolversParentTypes = {
     | ResolversParentTypes["MutationCreateUserSuccess"]
     | ResolversParentTypes["ZodError"];
   MutationCreateUserSuccess: MutationCreateUserSuccess;
+  MutationCreateWorkspaceResult:
+    | ResolversParentTypes["MutationCreateWorkspaceSuccess"]
+    | ResolversParentTypes["ZodError"];
+  MutationCreateWorkspaceSuccess: MutationCreateWorkspaceSuccess;
   Query: {};
   String: Scalars["String"];
   Tag: Tag;
@@ -504,6 +532,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateUserArgs, "input">
   >;
+  createWorkspace?: Resolver<
+    ResolversTypes["MutationCreateWorkspaceResult"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateWorkspaceArgs, "input">
+  >;
 };
 
 export type MutationCreateUserResultResolvers<
@@ -522,6 +556,25 @@ export type MutationCreateUserSuccessResolvers<
   ParentType extends ResolversParentTypes["MutationCreateUserSuccess"] = ResolversParentTypes["MutationCreateUserSuccess"],
 > = {
   data?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationCreateWorkspaceResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationCreateWorkspaceResult"] = ResolversParentTypes["MutationCreateWorkspaceResult"],
+> = {
+  __resolveType: TypeResolveFn<
+    "MutationCreateWorkspaceSuccess" | "ZodError",
+    ParentType,
+    ContextType
+  >;
+};
+
+export type MutationCreateWorkspaceSuccessResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationCreateWorkspaceSuccess"] = ResolversParentTypes["MutationCreateWorkspaceSuccess"],
+> = {
+  data?: Resolver<ResolversTypes["Workspace"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -638,6 +691,8 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   MutationCreateUserResult?: MutationCreateUserResultResolvers<ContextType>;
   MutationCreateUserSuccess?: MutationCreateUserSuccessResolvers<ContextType>;
+  MutationCreateWorkspaceResult?: MutationCreateWorkspaceResultResolvers<ContextType>;
+  MutationCreateWorkspaceSuccess?: MutationCreateWorkspaceSuccessResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Tag?: TagResolvers<ContextType>;
   Todo?: TodoResolvers<ContextType>;

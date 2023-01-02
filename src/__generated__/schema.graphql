@@ -39,6 +39,10 @@ input CreateUserInput {
   password: String!
 }
 
+input CreateWorkspaceInput {
+  title: String!
+}
+
 """
 A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -88,12 +92,19 @@ type Member {
 
 type Mutation {
   createUser(input: CreateUserInput!): MutationCreateUserResult!
+  createWorkspace(input: CreateWorkspaceInput!): MutationCreateWorkspaceResult!
 }
 
 union MutationCreateUserResult = MutationCreateUserSuccess | ZodError
 
 type MutationCreateUserSuccess {
   data: User!
+}
+
+union MutationCreateWorkspaceResult = MutationCreateWorkspaceSuccess | ZodError
+
+type MutationCreateWorkspaceSuccess {
+  data: Workspace!
 }
 
 type Query {

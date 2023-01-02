@@ -1,8 +1,12 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import React, { useRef } from "react";
 import { z } from "zod";
 
-import { WorkspacesQuery } from "./__generated__/Workspaces.generated";
+import {
+  CreateWorkspaceMutation,
+  CreateWorkspaceMutationVariables,
+  WorkspacesQuery,
+} from "./__generated__/Workspaces.generated";
 
 import { Layout } from "@/components/layout";
 import { Modal, ModalHandle } from "@/components/modal";
@@ -13,6 +17,7 @@ import { Bar } from "./components/Bar";
 import { WorkspacesPreview } from "./components/WorkspacesPreview";
 
 import { input as workspaceValidateError } from "@/fixtures/workspace/error";
+import { useRouter } from "next/router";
 
 const WorkspaceSchema = z.object({
   title: z
@@ -21,24 +26,80 @@ const WorkspaceSchema = z.object({
     .max(50, { message: workspaceValidateError.title.length.tooBig }),
 });
 
+const WORKSPACE_PREVIEW_FIELDS = gql`
+  fragment WorkspacePreviewFields on Workspace {
+    id
+    title
+    members {
+      id
+      user {
+        image
+      }
+    }
+  }
+`;
+
 export const Workspaces: React.FC<{}> = () => {
-  const workspacesResult = useQuery<WorkspacesQuery>(gql`
-    query Workspaces {
-      workspaces {
-        id
-        title
-        members {
-          id
-          user {
-            image
+  const router = useRouter();
+  const workspaceForm = useZodForm({ schema: WorkspaceSchema });
+  const workspaceModalRef = useRef<ModalHandle>(null);
+
+  const workspacesResult = useQuery<WorkspacesQuery>(
+    gql`
+      query Workspaces {
+        workspaces {
+          ...WorkspacePreviewFields
+        }
+      }
+      ${WORKSPACE_PREVIEW_FIELDS}
+    `,
+    {
+      fetchPolicy: "cache-and-network",
+    },
+  );
+  const [createWorkspace] = useMutation<
+    CreateWorkspaceMutation,
+    CreateWorkspaceMutationVariables
+  >(
+    gql`
+      mutation CreateWorkspace($input: CreateWorkspaceInput!) {
+        createWorkspace(input: $input) {
+          ... on MutationCreateWorkspaceSuccess {
+            data {
+              ...WorkspacePreviewFields
+            }
           }
         }
       }
-    }
-  `);
+      ${WORKSPACE_PREVIEW_FIELDS}
+    `,
+    {
+      update(cache, { data }) {
+        if (
+          data?.createWorkspace.__typename !== "MutationCreateWorkspaceSuccess"
+        )
+          return;
 
-  const workspaceForm = useZodForm({ schema: WorkspaceSchema });
-  const workspaceModalRef = useRef<ModalHandle>(null);
+        /** Merge cached `workspaces` query with `createWorkspace` mutation result */
+        const newWorkspace = data.createWorkspace.data;
+        cache.modify({
+          fields: {
+            workspaces(existingWorkspaces = []) {
+              return [...existingWorkspaces, newWorkspace];
+            },
+          },
+        });
+      },
+      onCompleted(data) {
+        if (
+          data.createWorkspace.__typename !== "MutationCreateWorkspaceSuccess"
+        )
+          return;
+
+        // router.push(`/workspaces/${data.createWorkspace.data.id}`);
+      },
+    },
+  );
 
   return (
     <Layout>
@@ -73,7 +134,8 @@ export const Workspaces: React.FC<{}> = () => {
         >
           <Form
             form={workspaceForm}
-            onSubmit={(input) => {
+            onSubmit={async (input) => {
+              await createWorkspace({ variables: { input } });
               if (workspaceModalRef.current) {
                 workspaceForm.reset();
                 workspaceModalRef.current.toggleVisibility();
