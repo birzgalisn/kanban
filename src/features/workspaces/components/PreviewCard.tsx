@@ -12,7 +12,7 @@ export const PreviewCard: React.FC<{
 }> = ({ title, href, children, ...props }) => {
   return (
     <div
-      className="min-h-24 flex h-full w-80 shrink-0 flex-col justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
+      className="min-h-24 flex w-80 shrink-0 flex-col justify-between rounded-lg border border-gray-200 bg-white p-4 shadow-lg"
       {...props}
     >
       <Link className="mb-2 text-lg font-semibold" {...{ href }}>
