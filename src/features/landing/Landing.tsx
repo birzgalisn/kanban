@@ -24,12 +24,12 @@ export const Landing: React.FC<{}> = () => {
         <Logo wrap width={21} height={21} />
         <ul className="flex flex-row items-center gap-4 lg:gap-12">
           <li>
-            <Link href={"/auth/signin"}>
+            <Link href="/auth/signin">
               <Button variant="custom">Sign in</Button>
             </Link>
           </li>
           <li>
-            <Link href={"/auth/signup"}>
+            <Link href="/auth/signup">
               <Button variant="secondary">Sign up</Button>
             </Link>
           </li>
