@@ -18,6 +18,8 @@ import { Bar } from "./components/Bar";
 import { WorkspacesPreview } from "./components/WorkspacesPreview";
 
 import { input as workspaceValidateError } from "@/fixtures/workspace/error";
+import { CreateButton } from "./components/CreateButton";
+import { Scrollable } from "./components/Scrollable";
 
 const WorkspaceSchema = z.object({
   title: z
@@ -123,7 +125,7 @@ export const Workspaces: React.FC<{}> = () => {
         }
       >
         <WorkspacesPreview
-          workspaces={workspacesResult?.data}
+          workspaces={workspacesResult?.data?.workspaces}
           isLoading={workspacesResult.loading}
           modalRef={workspaceModalRef}
         />
@@ -155,6 +157,20 @@ export const Workspaces: React.FC<{}> = () => {
             </Button>
           </Form>
         </Modal>
+      </Bar>
+      <Bar
+        className="mt-4"
+        title="Starred"
+        subtitle="Your hand picked workspaces"
+      >
+        <Scrollable>
+          <CreateButton title="Star a workspace" />
+        </Scrollable>
+      </Bar>
+      <Bar className="mt-4" title="Archived" subtitle="Your unused workspaces">
+        <Scrollable>
+          <CreateButton title="Archive a workspace" />
+        </Scrollable>
       </Bar>
     </Layout>
   );
