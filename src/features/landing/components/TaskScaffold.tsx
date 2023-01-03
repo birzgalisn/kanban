@@ -1,10 +1,9 @@
 import clsx from "clsx";
 import React from "react";
 
-import { AvatarSkeleton } from "./AvatarSkeleton";
-import { TextSkeleton } from "./TextSkeleton";
+import { AvatarSkeleton, TextSkeleton } from "@/components/skeleton";
 
-export const TaskSkeleton: React.FC<{ className?: string }> = ({
+export const TaskScaffold: React.FC<{ className?: string }> = ({
   className,
 }) => {
   return (
@@ -16,7 +15,7 @@ export const TaskSkeleton: React.FC<{ className?: string }> = ({
     >
       <TextSkeleton className="h-4 w-36" />
       <TextSkeleton className="h-3 w-16" />
-      <AvatarSkeleton />
+      <AvatarSkeleton className="absolute bottom-0 right-0 mb-4 mr-4 h-6 w-6" />
     </div>
   );
 };

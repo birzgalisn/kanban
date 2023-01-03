@@ -1,9 +1,10 @@
 import clsx from "clsx";
 import React from "react";
-import { TaskSkeleton } from "./TaskSkeleton";
-import { TextSkeleton } from "./TextSkeleton";
 
-export const GroupSkeleton: React.FC<{
+import { TextSkeleton } from "@/components/skeleton";
+import { TaskScaffold } from "./TaskScaffold";
+
+export const GroupScaffold: React.FC<{
   className?: string;
   children?: React.ReactNode;
   tasks: number;
@@ -15,7 +16,7 @@ export const GroupSkeleton: React.FC<{
       {Array(tasks)
         .fill(0)
         .map((_, idx) => (
-          <TaskSkeleton key={idx} />
+          <TaskScaffold key={idx} />
         ))}
     </div>
   );

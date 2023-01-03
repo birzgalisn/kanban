@@ -8,7 +8,7 @@ import { Avatar } from "@/ui/avatar/Avatar";
 import { Button } from "@/ui/button";
 import { Form, Input, useZodForm } from "@/ui/form";
 import { Logo } from "@/ui/logo";
-import { GroupSkeleton } from "./components/GroupSkeleton";
+import { GroupScaffold } from "./components/GroupScaffold";
 
 const SignInSchema = z.object({
   email: z.string().nullish(),
@@ -59,9 +59,9 @@ export const Landing: React.FC<{}> = () => {
       </section>
 
       <section className="flex-start mx-auto mt-16 flex w-full gap-12 pb-12 lg:pb-20">
-        <GroupSkeleton tasks={2} className="-ml-[36rem] lg:-ml-24" />
-        <GroupSkeleton tasks={1} />
-        <GroupSkeleton tasks={2}>
+        <GroupScaffold tasks={2} className="-ml-[36rem] lg:-ml-24" />
+        <GroupScaffold tasks={1} />
+        <GroupScaffold tasks={2}>
           <div className="relative h-20 w-full rounded-lg bg-gray-200">
             <div className="absolute -mt-20 -ml-8 flex h-32 w-80 flex-col gap-2 rounded-lg border border-gray-200 bg-white p-4 shadow-2xl">
               <h2 className="text-lg font-semibold subpixel-antialiased">
@@ -72,13 +72,13 @@ export const Landing: React.FC<{}> = () => {
               </span>
               <Avatar
                 className="absolute bottom-0 right-0 mb-4 mr-4"
-                sizes="w-8 h-8"
+                size="w-8 h-8"
               />
             </div>
           </div>
-        </GroupSkeleton>
-        <GroupSkeleton tasks={2} />
-        <GroupSkeleton tasks={1} />
+        </GroupScaffold>
+        <GroupScaffold tasks={2} />
+        <GroupScaffold tasks={1} />
       </section>
     </Container>
   );
