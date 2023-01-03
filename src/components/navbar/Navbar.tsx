@@ -9,7 +9,7 @@ import { VerticalDivider } from "@/ui/verticalDivider";
 import {
   HiOutlineArrowLeftOnRectangle,
   HiOutlineBell,
-  HiOutlineRectangleStack,
+  HiOutlineFolder,
 } from "react-icons/hi2";
 
 export const Navbar: React.FC<{}> = () => {
@@ -23,9 +23,10 @@ export const Navbar: React.FC<{}> = () => {
         <div className="flex min-w-fit items-center gap-4">
           <VerticalDivider />
           <ActiveLink
-            icon={<HiOutlineRectangleStack className="h-4 w-4" />}
+            icon={<HiOutlineFolder className="h-4 w-4" />}
             title="Workspaces"
             href="/workspaces"
+            wrap
           />
         </div>
         {user && (
@@ -37,7 +38,7 @@ export const Navbar: React.FC<{}> = () => {
               disabled
             />
             <div className="relative">
-              <Avatar src={user?.image} alt={user?.name} sizes="w-8 h-8" />
+              <Avatar src={user?.image} alt={user?.name} size="w-8 h-8" />
               <div className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-green-500 ring-2 ring-white"></div>
             </div>
             <Button
