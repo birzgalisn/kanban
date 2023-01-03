@@ -31,7 +31,7 @@ export const WorkspacesPreview: React.FC<{
                   className="-ml-2"
                   key={member.id}
                   src={member.user.image}
-                  sizes="w-6 h-6"
+                  size="w-6 h-6"
                 />
               ))}
             </PreviewCard>

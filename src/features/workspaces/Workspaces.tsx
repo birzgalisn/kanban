@@ -13,13 +13,13 @@ import { Layout } from "@/components/layout";
 import { Modal, ModalHandle } from "@/components/modal";
 import { Button } from "@/ui/button";
 import { Form, Input, useZodForm } from "@/ui/form";
-import { HiOutlinePlus } from "react-icons/hi2";
+import { HiPlus } from "react-icons/hi2";
 import { Bar } from "./components/Bar";
+import { CreateButton } from "./components/CreateButton";
+import { Scrollable } from "./components/Scrollable";
 import { WorkspacesPreview } from "./components/WorkspacesPreview";
 
 import { input as workspaceValidateError } from "@/fixtures/workspace/error";
-import { CreateButton } from "./components/CreateButton";
-import { Scrollable } from "./components/Scrollable";
 
 const WorkspaceSchema = z.object({
   title: z
@@ -111,7 +111,7 @@ export const Workspaces: React.FC<{}> = () => {
         action={
           <Button
             className="ml-2"
-            startIcon={<HiOutlinePlus className="h-4 w-4" />}
+            startIcon={<HiPlus className="h-4 w-4" />}
             size="sm"
             wrap
             onClick={() => {
@@ -162,14 +162,40 @@ export const Workspaces: React.FC<{}> = () => {
         className="mt-4"
         title="Starred"
         subtitle="Your hand picked workspaces"
+        action={
+          <Button
+            className="ml-2"
+            startIcon={<HiPlus className="h-4 w-4" />}
+            size="sm"
+            wrap
+            disabled
+          >
+            Star
+          </Button>
+        }
       >
         <Scrollable>
-          <CreateButton title="Star a workspace" />
+          <CreateButton title="Star a workspace" disabled />
         </Scrollable>
       </Bar>
-      <Bar className="mt-4" title="Archived" subtitle="Your unused workspaces">
+      <Bar
+        className="mt-4"
+        title="Archived"
+        subtitle="Your unused workspaces"
+        action={
+          <Button
+            className="ml-2"
+            startIcon={<HiPlus className="h-4 w-4" />}
+            size="sm"
+            wrap
+            disabled
+          >
+            Archive
+          </Button>
+        }
+      >
         <Scrollable>
-          <CreateButton title="Archive a workspace" />
+          <CreateButton title="Archive a workspace" disabled />
         </Scrollable>
       </Bar>
     </Layout>
