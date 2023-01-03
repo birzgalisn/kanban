@@ -4,11 +4,13 @@ import React from "react";
 export const TextSkeleton: React.FC<{
   className?: string;
   fluid?: boolean;
-}> = ({ className, fluid = false }) => {
+  animate?: boolean;
+}> = ({ className, animate = true, fluid = false }) => {
   return (
     <div
       className={clsx(
-        "animate-pulse rounded-full bg-gray-200",
+        "rounded-full bg-gray-200",
+        animate && "animate-pulse",
         fluid && "w-full",
         className,
       )}
