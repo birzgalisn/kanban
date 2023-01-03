@@ -21,7 +21,7 @@ export const PreviewCard: React.FC<{
       <div className="flex w-full flex-row items-center justify-between overflow-hidden">
         {children && <div className="mx-2 flex w-full flex-1">{children}</div>}
         <Link className="flex w-full justify-end" {...{ href }}>
-          <HiOutlineArrowRight className="h-5 w-5 stroke-gray-400 stroke-2 duration-300 ease-in-out hover:-rotate-45 hover:stroke-black" />
+          <HiOutlineArrowRight className="h-4 w-4 stroke-gray-400 stroke-2 duration-300 ease-in-out hover:-rotate-45 hover:stroke-black" />
         </Link>
       </div>
     </div>

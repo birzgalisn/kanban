@@ -12,7 +12,7 @@ const variants = {
   custom: "",
 };
 
-const sizes = {
+export const sizes = {
   sm: "py-2 px-4 text-sm h-10",
   md: "py-2 px-6 text-md h-12",
   lg: "py-3 px-8 text-lg h-14",
@@ -28,6 +28,8 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: keyof typeof sizes;
   isLoading?: boolean;
   wrap?: boolean;
+  left?: boolean;
+  fluid?: boolean;
 } & IconProps;
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -39,6 +41,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       size = "md",
       isLoading = false,
       wrap = false,
+      left = false,
+      fluid = false,
       startIcon,
       endIcon,
       ...props
@@ -50,9 +54,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type={type}
         className={clsx(
-          "flex items-center justify-center rounded-lg text-base font-medium outline-none duration-300 ease-in-out hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-70",
+          "flex items-center rounded-lg text-base font-medium outline-none duration-300 ease-in-out hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-70",
           variants[variant],
           sizes[size],
+          !left && "justify-center",
+          fluid && "w-full",
           className,
         )}
         {...props}

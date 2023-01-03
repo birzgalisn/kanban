@@ -12,7 +12,7 @@ export const Bar: React.FC<{
         <div className="flex flex-col">
           <h1 className="text-3xl font-bold">{title}</h1>
           {subtitle && (
-            <p className="font-semibold text-gray-900">{subtitle}</p>
+            <p className="mt-2 font-semibold text-gray-900">{subtitle}</p>
           )}
         </div>
         {action}

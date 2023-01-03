@@ -13,7 +13,7 @@ export const PreviewCardSekeleton: React.FC<{}> = () => {
           <div className="-ml-2 h-6 w-6 rounded-full bg-gray-200"></div>
         </div>
         <div className="flex w-full justify-end">
-          <HiOutlineArrowRight className="h-5 w-5 stroke-gray-400 stroke-2 opacity-70" />
+          <HiOutlineArrowRight className="h-4 w-4 stroke-gray-400 stroke-2 opacity-70" />
         </div>
       </div>
     </div>

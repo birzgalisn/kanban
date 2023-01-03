@@ -26,7 +26,7 @@ const WorkspaceSchema = z.object({
     .max(50, { message: workspaceValidateError.title.length.tooBig }),
 });
 
-const WORKSPACE_PREVIEW_FIELDS = gql`
+export const WORKSPACE_PREVIEW_FIELDS = gql`
   fragment WorkspacePreviewFields on Workspace {
     id
     title
@@ -109,7 +109,7 @@ export const Workspaces: React.FC<{}> = () => {
         action={
           <Button
             className="ml-2"
-            startIcon={<HiOutlinePlus className="h-5 w-5" />}
+            startIcon={<HiOutlinePlus className="h-4 w-4" />}
             size="sm"
             wrap
             onClick={() => {

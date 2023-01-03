@@ -109,6 +109,7 @@ type MutationCreateWorkspaceSuccess {
 
 type Query {
   me: User!
+  workspace(id: String!): Workspace!
   workspaces: [Workspace!]
 }
 

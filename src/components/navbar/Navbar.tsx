@@ -1,29 +1,29 @@
 import { signOut, useSession } from "next-auth/react";
 import React from "react";
 
+import { ActiveLink } from "@/ui/activeLink";
 import { Avatar } from "@/ui/avatar";
 import { Button } from "@/ui/button";
 import { Logo } from "@/ui/logo";
+import { VerticalDivider } from "@/ui/verticalDivider";
 import {
   HiOutlineArrowLeftOnRectangle,
   HiOutlineBell,
-  HiOutlineHome,
+  HiOutlineRectangleStack,
 } from "react-icons/hi2";
-import { ActiveLink } from "./components/ActiveLink";
-import { VerticalDivider } from "./components/VerticalDivider";
 
 export const Navbar: React.FC<{}> = () => {
   const { data: session } = useSession();
   const user = session?.user;
 
   return (
-    <div className="flex h-20 w-full items-center border-b border-gray-200 bg-white px-6 py-2">
+    <div className="flex h-16 w-full items-center border-b border-gray-200 bg-white px-6 py-2">
       <Logo className="mr-4" wrap width={21} height={21} href="/workspaces" />
       <div className="flex w-full items-center justify-between">
         <div className="flex min-w-fit items-center gap-4">
           <VerticalDivider />
           <ActiveLink
-            icon={<HiOutlineHome className="h-5 w-5" />}
+            icon={<HiOutlineRectangleStack className="h-4 w-4" />}
             title="Workspaces"
             href="/workspaces"
           />
@@ -31,7 +31,7 @@ export const Navbar: React.FC<{}> = () => {
         {user && (
           <div className="ml-4 flex items-center justify-end gap-4">
             <Button
-              startIcon={<HiOutlineBell className="h-5 w-5" />}
+              startIcon={<HiOutlineBell className="h-4 w-4" />}
               variant="transparent"
               size="sm"
               disabled
@@ -41,7 +41,7 @@ export const Navbar: React.FC<{}> = () => {
               <div className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-green-500 ring-2 ring-white"></div>
             </div>
             <Button
-              startIcon={<HiOutlineArrowLeftOnRectangle className="h-5 w-5" />}
+              startIcon={<HiOutlineArrowLeftOnRectangle className="h-4 w-4" />}
               variant="transparent"
               size="sm"
               onClick={() => signOut({ callbackUrl: "/" })}

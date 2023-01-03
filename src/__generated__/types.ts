@@ -151,7 +151,12 @@ export type MutationCreateWorkspaceSuccess = {
 export type Query = {
   __typename?: "Query";
   me: User;
+  workspace: Workspace;
   workspaces?: Maybe<Array<Workspace>>;
+};
+
+export type QueryWorkspaceArgs = {
+  id: Scalars["String"];
 };
 
 /** User roles */
@@ -583,6 +588,12 @@ export type QueryResolvers<
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"],
 > = {
   me?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
+  workspace?: Resolver<
+    ResolversTypes["Workspace"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryWorkspaceArgs, "id">
+  >;
   workspaces?: Resolver<
     Maybe<Array<ResolversTypes["Workspace"]>>,
     ParentType,

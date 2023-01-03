@@ -17,6 +17,32 @@ export const WorkspaceObject = builder.prismaObject("Workspace", {
   }),
 });
 
+builder.queryField("workspace", (t) =>
+  t.prismaField({
+    type: WorkspaceObject,
+    authScopes: {
+      user: true,
+    },
+    args: {
+      id: t.arg({ type: "String", required: true }),
+    },
+    resolve: async (query, root, { id }, { token }, info) => {
+      const memberOf = await db.member.findFirstOrThrow({
+        include: {
+          workspace: {
+            ...query,
+          },
+        },
+        where: {
+          workspaceId: id,
+          userId: token.sub,
+        },
+      });
+      return memberOf?.workspace as WorkspaceType;
+    },
+  }),
+);
+
 builder.queryField("workspaces", (t) =>
   t.prismaField({
     type: [WorkspaceObject],
