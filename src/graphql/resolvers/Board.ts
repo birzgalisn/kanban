@@ -2,6 +2,8 @@ import { builder } from "@/graphql/builder";
 import { db } from "@/lib/db";
 import { ZodError } from "zod";
 
+import type { Board as BoardType } from "@/__generated__/types";
+
 import { input as boardValidateError } from "@/fixtures/board/error";
 
 export const BoardObject = builder.prismaObject("Board", {
@@ -15,6 +17,27 @@ export const BoardObject = builder.prismaObject("Board", {
     updatedAt: t.expose("updatedAt", { type: "DateTime" }),
   }),
 });
+
+builder.queryField("board", (t) =>
+  t.prismaField({
+    type: BoardObject,
+    authScopes: {
+      user: true,
+    },
+    args: {
+      id: t.arg({ type: "String", required: true }),
+    },
+    resolve: async (query, root, { id }, { token }, info) => {
+      const board = await db.board.findFirstOrThrow({
+        ...query,
+        where: {
+          id,
+        },
+      });
+      return board as BoardType;
+    },
+  }),
+);
 
 const CreateBoardInput = builder.inputType("CreateBoardInput", {
   fields: (t) => ({

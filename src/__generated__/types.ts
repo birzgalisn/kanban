@@ -167,9 +167,14 @@ export type MutationCreateWorkspaceSuccess = {
 
 export type Query = {
   __typename?: "Query";
+  board: Board;
   me: User;
   workspace: Workspace;
   workspaces?: Maybe<Array<Workspace>>;
+};
+
+export type QueryBoardArgs = {
+  id: Scalars["String"];
 };
 
 export type QueryWorkspaceArgs = {
@@ -639,6 +644,12 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Query"] = ResolversParentTypes["Query"],
 > = {
+  board?: Resolver<
+    ResolversTypes["Board"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryBoardArgs, "id">
+  >;
   me?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   workspace?: Resolver<
     ResolversTypes["Workspace"],
