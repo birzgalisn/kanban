@@ -101,13 +101,12 @@ export const Workspaces: React.FC<{}> = () => {
   );
 
   return (
-    <Layout>
+    <Layout className="gap-4">
       <Bar
         title="Workspaces"
         subtitle="Your most recent workspaces"
         action={
           <Button
-            className="ml-2"
             startIcon={<HiPlus className="h-4 w-4" />}
             size="sm"
             wrap
@@ -156,12 +155,10 @@ export const Workspaces: React.FC<{}> = () => {
         </Modal>
       </Bar>
       <Bar
-        className="mt-4"
         title="Starred"
         subtitle="Your hand picked workspaces"
         action={
           <Button
-            className="ml-2"
             startIcon={<HiPlus className="h-4 w-4" />}
             size="sm"
             wrap
@@ -176,12 +173,10 @@ export const Workspaces: React.FC<{}> = () => {
         </Scrollable>
       </Bar>
       <Bar
-        className="mt-4"
         title="Archived"
         subtitle="Your unused workspaces"
         action={
           <Button
-            className="ml-2"
             startIcon={<HiPlus className="h-4 w-4" />}
             size="sm"
             wrap

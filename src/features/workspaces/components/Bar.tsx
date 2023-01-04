@@ -10,7 +10,7 @@ export const Bar: React.FC<{
 }> = ({ title, subtitle, action, children, className }) => {
   return (
     <div className={clsx("flex flex-col", className)}>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex justify-between">
         <div className="flex flex-col">
           <h1 className="text-3xl font-bold">{title}</h1>
           {subtitle && (
