@@ -7,12 +7,12 @@ type IconProps = { startIcon?: React.ReactElement };
 
 type CreateButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   title: string;
-  modalRef?: React.RefObject<ModalHandle>;
+  createModalRef?: React.RefObject<ModalHandle>;
   className?: string;
 } & IconProps;
 
 export const CreateButton = forwardRef<HTMLButtonElement, CreateButtonProps>(
-  ({ title, startIcon, modalRef, className, ...props }, ref) => {
+  ({ title, startIcon, createModalRef, className, ...props }, ref) => {
     return (
       <button
         ref={ref}
@@ -21,8 +21,8 @@ export const CreateButton = forwardRef<HTMLButtonElement, CreateButtonProps>(
           className,
         )}
         onClick={() => {
-          if (modalRef && modalRef.current) {
-            modalRef.current.toggleVisibility();
+          if (createModalRef && createModalRef.current) {
+            createModalRef.current.toggleVisibility();
           }
         }}
         {...props}

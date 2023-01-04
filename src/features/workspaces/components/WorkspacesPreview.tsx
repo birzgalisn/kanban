@@ -11,8 +11,8 @@ import { Scrollable } from "./Scrollable";
 export const WorkspacesPreview: React.FC<{
   workspaces?: WorkspacesQuery["workspaces"];
   isLoading: boolean;
-  modalRef: React.RefObject<ModalHandle>;
-}> = ({ workspaces, isLoading, modalRef }) => {
+  createWorkspaceModalRef: React.RefObject<ModalHandle>;
+}> = ({ workspaces, isLoading, createWorkspaceModalRef }) => {
   return (
     <Scrollable>
       {isLoading
@@ -36,7 +36,10 @@ export const WorkspacesPreview: React.FC<{
               ))}
             </PreviewCard>
           ))}
-      <CreateButton title="Create a workspace" {...{ modalRef }} />
+      <CreateButton
+        title="Create a workspace"
+        createModalRef={createWorkspaceModalRef}
+      />
     </Scrollable>
   );
 };

@@ -51,7 +51,7 @@ const WORKSPACE_PREVIEW_FIELDS = gql`
 export const Workspaces: React.FC<{}> = () => {
   const router = useRouter();
   const workspaceForm = useZodForm({ schema: WorkspaceSchema });
-  const workspaceModalRef = useRef<ModalHandle>(null);
+  const createWorkspaceModalRef = useRef<ModalHandle>(null);
 
   const workspacesResult = useQuery<WorkspacesQuery>(
     gql`
@@ -118,8 +118,8 @@ export const Workspaces: React.FC<{}> = () => {
             size="sm"
             wrap
             onClick={() => {
-              if (workspaceModalRef.current) {
-                workspaceModalRef.current.toggleVisibility();
+              if (createWorkspaceModalRef.current) {
+                createWorkspaceModalRef.current.toggleVisibility();
               }
             }}
           >
@@ -130,20 +130,20 @@ export const Workspaces: React.FC<{}> = () => {
         <WorkspacesPreview
           workspaces={workspacesResult?.data?.workspaces}
           isLoading={workspacesResult.loading}
-          modalRef={workspaceModalRef}
+          createWorkspaceModalRef={createWorkspaceModalRef}
         />
         <Modal
           title="Create a workspace"
           subtitle="The beginning is always now"
-          ref={workspaceModalRef}
+          ref={createWorkspaceModalRef}
         >
           <Form
             form={workspaceForm}
             onSubmit={async (input) => {
               await createWorkspace({ variables: { input } });
-              if (workspaceModalRef.current) {
+              if (createWorkspaceModalRef.current) {
                 workspaceForm.reset();
-                workspaceModalRef.current.toggleVisibility();
+                createWorkspaceModalRef.current.toggleVisibility();
               }
             }}
           >
