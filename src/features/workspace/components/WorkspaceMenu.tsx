@@ -6,7 +6,7 @@ import type { ModalHandle } from "@/components/modal";
 import { ButtonSkeleton } from "@/components/skeleton";
 import { ActiveLink } from "@/ui/activeLink";
 import { Button } from "@/ui/button";
-import { HiOutlinePlus } from "react-icons/hi2";
+import { HiPlus } from "react-icons/hi2";
 
 type Board = { __typename?: string; id: string; title: string };
 
@@ -36,7 +36,7 @@ export const WorkspaceMenu: React.FC<{
               />
             ))}
         <Button
-          startIcon={<HiOutlinePlus className="h-4 w-4" />}
+          startIcon={<HiPlus className="h-4 w-4" />}
           size="sm"
           fluid
           onClick={() => {
