@@ -55,9 +55,6 @@ export const Workspaces: React.FC<{}> = () => {
       }
       ${WORKSPACE_PREVIEW_FIELDS}
     `,
-    {
-      fetchPolicy: "cache-and-network",
-    },
   );
   const [createWorkspace] = useMutation<
     CreateWorkspaceMutation,
