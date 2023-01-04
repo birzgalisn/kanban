@@ -3,19 +3,16 @@ import { useRouter } from "next/router";
 import React, { useRef } from "react";
 import { z } from "zod";
 
-import { WORKSPACE_PREVIEW_FIELDS } from "../workspaces";
-
 import type { ModalHandle } from "@/components/modal";
 import type {
   CreateBoardMutation,
   CreateBoardMutationVariables,
   WorkspaceQuery,
+  WorkspaceQueryVariables,
 } from "./__generated__/Workspace.generated";
 
-import { Layout } from "@/components/layout";
 import { Modal } from "@/components/modal";
 import { WorkspaceLayout } from "@/components/workspaceLayout/WorkspaceLayout";
-import { WorkspaceNavbar } from "@/components/workspaceNavbar";
 import { Button } from "@/ui/button";
 import { Form, Input, useZodForm } from "@/ui/form";
 import {
@@ -39,27 +36,30 @@ const BoardSchema = z.object({
 export const workspaceQuery = gql`
   query Workspace($id: String!) {
     workspace(id: $id) {
-      ...WorkspacePreviewFields
+      id
+      title
       boards {
         id
         title
       }
     }
   }
-  ${WORKSPACE_PREVIEW_FIELDS}
 `;
 
 export const Workspace: React.FC<{}> = () => {
   const router = useRouter();
   const workspaceId = router.query.workspaceId as string;
-  const workspaceResult = useQuery<WorkspaceQuery>(workspaceQuery, {
-    variables: {
-      id: workspaceId,
+  const workspaceResult = useQuery<WorkspaceQuery, WorkspaceQueryVariables>(
+    workspaceQuery,
+    {
+      variables: {
+        id: workspaceId,
+      },
+      // IMPORTANT: Need to pause the request, before router is ready, in order,
+      // to avoid making request with incorrect variables
+      skip: !router.isReady,
     },
-    // IMPORTANT: Need to pause the request, before router is ready, in order,
-    // to avoid making request with incorrect variables
-    skip: !router.isReady,
-  });
+  );
   const [createBoard] = useMutation<
     CreateBoardMutation,
     CreateBoardMutationVariables
@@ -102,94 +102,91 @@ export const Workspace: React.FC<{}> = () => {
   const createBoardModalRef = useRef<ModalHandle>(null);
 
   return (
-    <Layout noMargin>
-      <WorkspaceNavbar
-        title={workspace?.title}
-        members={workspace?.members}
-        isLoading={workspaceResult.loading}
+    <WorkspaceLayout
+      title={workspace?.title}
+      isLoading={workspaceResult.loading}
+      noMargin
+    >
+      <WorkspaceMenu
+        boards={workspace?.boards}
+        isBoardsLoading={workspaceResult.loading}
+        createBoardModalRef={createBoardModalRef}
       />
-      <WorkspaceLayout>
-        <WorkspaceMenu
-          boards={workspace?.boards}
-          isBoardsLoading={workspaceResult.loading}
-          createBoardModalRef={createBoardModalRef}
-        />
-        <Modal
-          title="Create a new board"
-          subtitle="The secret to getting ahead is getting started"
-          ref={createBoardModalRef}
+      <Modal
+        title="Create a new board"
+        subtitle="The secret to getting ahead is getting started"
+        ref={createBoardModalRef}
+      >
+        <Form
+          form={boardForm}
+          onSubmit={async (input) => {
+            await createBoard({
+              variables: {
+                input,
+                workspaceId: router.query.workspaceId as string,
+              },
+            });
+            if (createBoardModalRef.current) {
+              boardForm.reset();
+              createBoardModalRef.current.toggleVisibility();
+            }
+          }}
         >
-          <Form
-            form={boardForm}
-            onSubmit={async (input) => {
-              await createBoard({
-                variables: {
-                  input,
-                  workspaceId: router.query.workspaceId as string,
-                },
-              });
-              if (createBoardModalRef.current) {
-                boardForm.reset();
-                createBoardModalRef.current.toggleVisibility();
-              }
-            }}
-          >
-            <Input
-              label="Title"
-              placeholder="Enter the new board title"
-              {...boardForm.register("title")}
-            />
-            <Button type="submit" isLoading={boardForm.formState.isSubmitting}>
-              Create
-            </Button>
-          </Form>
-        </Modal>
-        <GreetingModal
-          title="Great, you have a workspace already!"
-          subtitle="Let's start with basics. What would you like to do first?"
+          <Input
+            label="Title"
+            placeholder="Enter the new board title"
+            {...boardForm.register("title")}
+          />
+          <Button type="submit" isLoading={boardForm.formState.isSubmitting}>
+            Create
+          </Button>
+        </Form>
+      </Modal>
+      <GreetingModal
+        title="Great, you have a workspace already!"
+        subtitle="Let's start with basics. What would you like to do first?"
+      >
+        <Button
+          variant="transparent"
+          startIcon={<HiPlus className="h-4 w-4" />}
+          left
+          fluid
+          onClick={() => {
+            if (createBoardModalRef && createBoardModalRef.current) {
+              createBoardModalRef.current.toggleVisibility();
+            }
+          }}
         >
-          <Button
-            variant="transparent"
-            startIcon={<HiPlus className="h-4 w-4" />}
-            left
-            fluid
-            onClick={() => {
-              if (createBoardModalRef && createBoardModalRef.current) {
-                createBoardModalRef.current.toggleVisibility();
-              }
-            }}
-          >
-            Create a new board
-          </Button>
-          <Button
-            variant="transparent"
-            startIcon={<HiOutlineUserPlus className="h-4 w-4" />}
-            left
-            fluid
-            disabled
-          >
-            Invite people to the workspace
-          </Button>
-          <Button
-            variant="transparent"
-            startIcon={<HiOutlineStar className="h-4 w-4" />}
-            left
-            fluid
-            disabled
-          >
-            Star the workspace
-          </Button>
-          <Button
-            variant="transparent"
-            startIcon={<HiOutlineGlobeEuropeAfrica className="h-4 w-4" />}
-            left
-            fluid
-            disabled
-          >
-            Make the workspace public
-          </Button>
-        </GreetingModal>
-      </WorkspaceLayout>
-    </Layout>
+          Create a new board
+        </Button>
+        <Button
+          variant="transparent"
+          startIcon={<HiOutlineUserPlus className="h-4 w-4" />}
+          left
+          fluid
+          disabled
+        >
+          Invite people to the workspace
+        </Button>
+        <Button
+          variant="transparent"
+          startIcon={<HiOutlineStar className="h-4 w-4" />}
+          left
+          fluid
+          disabled
+        >
+          Star the workspace
+        </Button>
+        <Button
+          variant="transparent"
+          startIcon={<HiOutlineGlobeEuropeAfrica className="h-4 w-4" />}
+          left
+          fluid
+          disabled
+        >
+          Make the workspace public
+        </Button>
+      </GreetingModal>
+    </WorkspaceLayout>
   );
 };

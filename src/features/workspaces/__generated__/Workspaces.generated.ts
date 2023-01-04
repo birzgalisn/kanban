@@ -2,6 +2,15 @@ import * as Types from "../../../__generated__/types";
 
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
+export type WorkspacePreviewMembersFragment = {
+  __typename?: "Workspace";
+  members: Array<{
+    __typename?: "Member";
+    id: string;
+    user: { __typename?: "User"; image?: string | null };
+  }>;
+};
+
 export type WorkspacePreviewFieldsFragment = {
   __typename?: "Workspace";
   id: string;
@@ -52,10 +61,8 @@ export type CreateWorkspaceMutation = {
     | { __typename?: "ZodError" };
 };
 
-export const WorkspacePreviewFieldsFragmentDoc = gql`
-  fragment WorkspacePreviewFields on Workspace {
-    id
-    title
+export const WorkspacePreviewMembersFragmentDoc = gql`
+  fragment WorkspacePreviewMembers on Workspace {
     members {
       id
       user {
@@ -63,6 +70,14 @@ export const WorkspacePreviewFieldsFragmentDoc = gql`
       }
     }
   }
+`;
+export const WorkspacePreviewFieldsFragmentDoc = gql`
+  fragment WorkspacePreviewFields on Workspace {
+    id
+    title
+    ...WorkspacePreviewMembers
+  }
+  ${WorkspacePreviewMembersFragmentDoc}
 `;
 export const WorkspacesDocument = gql`
   query Workspaces {

@@ -1,6 +1,14 @@
+import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+
+import { WORKSPACE_PREVIEW_MEMBERS } from "@/features/workspaces";
+
+import type {
+  WorkspaceMembersQuery,
+  WorkspaceMembersQueryVariables,
+} from "./__generated__/WorkspaceNavbar.generated";
 
 import { Avatar } from "@/ui/avatar";
 import { Button } from "@/ui/button";
@@ -14,23 +22,34 @@ import {
 } from "react-icons/hi2";
 import { AvatarGroupSkeleton, TextSkeleton } from "../skeleton";
 
-type Member = {
-  __typename?: string;
-  id: string;
-  user: {
-    __typename?: string;
-    image?: string | null;
-  };
-};
-
 export const WorkspaceNavbar: React.FC<{
-  title?: string | React.ReactElement;
-  members?: Array<Member>;
+  title?: string;
   isLoading: boolean;
-}> = ({ title, members, isLoading }) => {
+}> = ({ title, isLoading }) => {
   const router = useRouter();
   const isInBoardPage = router.asPath.match("boards");
-  const workspaceId = router.query.workspaceId;
+  const workspaceId = router.query.workspaceId as string;
+  const membersResult = useQuery<
+    WorkspaceMembersQuery,
+    WorkspaceMembersQueryVariables
+  >(
+    gql`
+      query WorkspaceMembers($id: String!) {
+        workspace(id: $id) {
+          ...WorkspacePreviewMembers
+        }
+      }
+      ${WORKSPACE_PREVIEW_MEMBERS}
+    `,
+    {
+      variables: {
+        id: workspaceId,
+      },
+      skip: !router.isReady,
+    },
+  );
+
+  const members = membersResult.data?.workspace.members;
 
   return (
     <div className="flex h-16 w-full items-center border-b border-gray-200 bg-white px-6 py-2">
@@ -78,7 +97,7 @@ export const WorkspaceNavbar: React.FC<{
         </div>
       </div>
       <div className="hidden items-center xs:ml-6 xs:flex">
-        {isLoading ? (
+        {membersResult.loading ? (
           <AvatarGroupSkeleton count={5} size="-ml-3 h-8 w-8" />
         ) : (
           members &&

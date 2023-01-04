@@ -28,10 +28,8 @@ const WorkspaceSchema = z.object({
     .max(50, { message: workspaceValidateError.title.length.tooBig }),
 });
 
-export const WORKSPACE_PREVIEW_FIELDS = gql`
-  fragment WorkspacePreviewFields on Workspace {
-    id
-    title
+export const WORKSPACE_PREVIEW_MEMBERS = gql`
+  fragment WorkspacePreviewMembers on Workspace {
     members {
       id
       user {
@@ -39,6 +37,15 @@ export const WORKSPACE_PREVIEW_FIELDS = gql`
       }
     }
   }
+`;
+
+const WORKSPACE_PREVIEW_FIELDS = gql`
+  fragment WorkspacePreviewFields on Workspace {
+    id
+    title
+    ...WorkspacePreviewMembers
+  }
+  ${WORKSPACE_PREVIEW_MEMBERS}
 `;
 
 export const Workspaces: React.FC<{}> = () => {
