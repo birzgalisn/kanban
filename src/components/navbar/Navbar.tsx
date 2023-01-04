@@ -9,7 +9,7 @@ import { VerticalDivider } from "@/ui/verticalDivider";
 import {
   HiOutlineArrowLeftOnRectangle,
   HiOutlineBell,
-  HiOutlineFolder,
+  HiOutlineHome,
 } from "react-icons/hi2";
 
 export const Navbar: React.FC<{}> = () => {
@@ -23,8 +23,8 @@ export const Navbar: React.FC<{}> = () => {
         <div className="flex min-w-fit items-center gap-4">
           <VerticalDivider />
           <ActiveLink
-            icon={<HiOutlineFolder className="h-4 w-4" />}
-            title="Workspaces"
+            icon={<HiOutlineHome className="h-4 w-4" />}
+            title="Home"
             href="/workspaces"
             wrap
           />

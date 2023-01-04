@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import React from "react";
 
+import type { ModalHandle } from "@/components/modal";
+
 import { ButtonSkeleton } from "@/components/skeleton";
 import { ActiveLink } from "@/ui/activeLink";
 import { Button } from "@/ui/button";
@@ -11,7 +13,8 @@ type Board = { __typename?: string; id: string; title: string };
 export const WorkspaceMenu: React.FC<{
   boards?: Array<Board>;
   isBoardsLoading: boolean;
-}> = ({ boards, isBoardsLoading }) => {
+  createBoardModalRef?: React.RefObject<ModalHandle>;
+}> = ({ boards, isBoardsLoading, createBoardModalRef }) => {
   const workspaceId = useRouter().query.workspaceId;
   const boardCount = boards?.length ?? 3;
 
@@ -36,6 +39,11 @@ export const WorkspaceMenu: React.FC<{
           startIcon={<HiOutlinePlus className="h-4 w-4" />}
           size="sm"
           fluid
+          onClick={() => {
+            if (createBoardModalRef && createBoardModalRef.current) {
+              createBoardModalRef.current.toggleVisibility();
+            }
+          }}
         >
           Board
         </Button>

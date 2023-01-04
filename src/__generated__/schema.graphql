@@ -33,6 +33,10 @@ type Comment {
   updatedAt: DateTime!
 }
 
+input CreateBoardInput {
+  title: String!
+}
+
 input CreateUserInput {
   email: String!
   name: String!
@@ -91,8 +95,15 @@ type Member {
 }
 
 type Mutation {
+  createBoard(input: CreateBoardInput!, workspaceId: String!): MutationCreateBoardResult!
   createUser(input: CreateUserInput!): MutationCreateUserResult!
   createWorkspace(input: CreateWorkspaceInput!): MutationCreateWorkspaceResult!
+}
+
+union MutationCreateBoardResult = MutationCreateBoardSuccess | ZodError
+
+type MutationCreateBoardSuccess {
+  data: Board!
 }
 
 union MutationCreateUserResult = MutationCreateUserSuccess | ZodError

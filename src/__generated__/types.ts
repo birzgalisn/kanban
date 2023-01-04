@@ -68,6 +68,10 @@ export type Comment = {
   updatedAt: Scalars["DateTime"];
 };
 
+export type CreateBoardInput = {
+  title: Scalars["String"];
+};
+
 export type CreateUserInput = {
   email: Scalars["String"];
   name: Scalars["String"];
@@ -120,8 +124,14 @@ export type Member = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  createBoard: MutationCreateBoardResult;
   createUser: MutationCreateUserResult;
   createWorkspace: MutationCreateWorkspaceResult;
+};
+
+export type MutationCreateBoardArgs = {
+  input: CreateBoardInput;
+  workspaceId: Scalars["String"];
 };
 
 export type MutationCreateUserArgs = {
@@ -130,6 +140,13 @@ export type MutationCreateUserArgs = {
 
 export type MutationCreateWorkspaceArgs = {
   input: CreateWorkspaceInput;
+};
+
+export type MutationCreateBoardResult = MutationCreateBoardSuccess | ZodError;
+
+export type MutationCreateBoardSuccess = {
+  __typename?: "MutationCreateBoardSuccess";
+  data: Board;
 };
 
 export type MutationCreateUserResult = MutationCreateUserSuccess | ZodError;
@@ -334,6 +351,7 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars["Boolean"]>;
   Card: ResolverTypeWrapper<Card>;
   Comment: ResolverTypeWrapper<Comment>;
+  CreateBoardInput: CreateBoardInput;
   CreateUserInput: CreateUserInput;
   CreateWorkspaceInput: CreateWorkspaceInput;
   Date: ResolverTypeWrapper<Scalars["Date"]>;
@@ -344,6 +362,10 @@ export type ResolversTypes = {
   List: ResolverTypeWrapper<List>;
   Member: ResolverTypeWrapper<Member>;
   Mutation: ResolverTypeWrapper<{}>;
+  MutationCreateBoardResult:
+    | ResolversTypes["MutationCreateBoardSuccess"]
+    | ResolversTypes["ZodError"];
+  MutationCreateBoardSuccess: ResolverTypeWrapper<MutationCreateBoardSuccess>;
   MutationCreateUserResult:
     | ResolversTypes["MutationCreateUserSuccess"]
     | ResolversTypes["ZodError"];
@@ -369,6 +391,7 @@ export type ResolversParentTypes = {
   Boolean: Scalars["Boolean"];
   Card: Card;
   Comment: Comment;
+  CreateBoardInput: CreateBoardInput;
   CreateUserInput: CreateUserInput;
   CreateWorkspaceInput: CreateWorkspaceInput;
   Date: Scalars["Date"];
@@ -379,6 +402,10 @@ export type ResolversParentTypes = {
   List: List;
   Member: Member;
   Mutation: {};
+  MutationCreateBoardResult:
+    | ResolversParentTypes["MutationCreateBoardSuccess"]
+    | ResolversParentTypes["ZodError"];
+  MutationCreateBoardSuccess: MutationCreateBoardSuccess;
   MutationCreateUserResult:
     | ResolversParentTypes["MutationCreateUserSuccess"]
     | ResolversParentTypes["ZodError"];
@@ -531,6 +558,12 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes["Mutation"] = ResolversParentTypes["Mutation"],
 > = {
+  createBoard?: Resolver<
+    ResolversTypes["MutationCreateBoardResult"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateBoardArgs, "input" | "workspaceId">
+  >;
   createUser?: Resolver<
     ResolversTypes["MutationCreateUserResult"],
     ParentType,
@@ -543,6 +576,25 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateWorkspaceArgs, "input">
   >;
+};
+
+export type MutationCreateBoardResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationCreateBoardResult"] = ResolversParentTypes["MutationCreateBoardResult"],
+> = {
+  __resolveType: TypeResolveFn<
+    "MutationCreateBoardSuccess" | "ZodError",
+    ParentType,
+    ContextType
+  >;
+};
+
+export type MutationCreateBoardSuccessResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationCreateBoardSuccess"] = ResolversParentTypes["MutationCreateBoardSuccess"],
+> = {
+  data?: Resolver<ResolversTypes["Board"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type MutationCreateUserResultResolvers<
@@ -700,6 +752,8 @@ export type Resolvers<ContextType = any> = {
   List?: ListResolvers<ContextType>;
   Member?: MemberResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  MutationCreateBoardResult?: MutationCreateBoardResultResolvers<ContextType>;
+  MutationCreateBoardSuccess?: MutationCreateBoardSuccessResolvers<ContextType>;
   MutationCreateUserResult?: MutationCreateUserResultResolvers<ContextType>;
   MutationCreateUserSuccess?: MutationCreateUserSuccessResolvers<ContextType>;
   MutationCreateWorkspaceResult?: MutationCreateWorkspaceResultResolvers<ContextType>;
