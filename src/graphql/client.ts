@@ -18,15 +18,8 @@ function createApolloClient() {
         List: {
           fields: {
             cards: {
-              merge(existing = [], incoming: any[]) {
-                return deepmerge(existing, incoming, {
-                  arrayMerge: (destinationArray, sourceArray) => [
-                    ...sourceArray,
-                    ...destinationArray.filter((d) =>
-                      sourceArray.every((s) => isEqual(d, s)),
-                    ),
-                  ],
-                });
+              merge(existing, incoming) {
+                return incoming;
               },
             },
           },
