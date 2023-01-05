@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import React, { useRef } from "react";
 import { z } from "zod";
 
+import { WORKSPACE_PREVIEW_FIELDS } from "@/features/workspaces";
+
 import type { ModalHandle } from "@/components/modal";
 import type {
   CreateBoardMutation,
@@ -12,7 +14,7 @@ import type {
 } from "./__generated__/Workspace.generated";
 
 import { Modal } from "@/components/modal";
-import { WorkspaceLayout } from "@/components/workspaceLayout/WorkspaceLayout";
+import { WorkspaceLayout } from "@/components/workspaceLayout";
 import { Button } from "@/ui/button";
 import { Form, Input, useZodForm } from "@/ui/form";
 import {
@@ -33,30 +35,39 @@ const BoardSchema = z.object({
     .max(50, { message: boardValidateError.title.length.tooBig }),
 });
 
-export const workspaceQuery = gql`
+export const BOARD_PREVIEW_FIELDS = gql`
+  fragment BoardPreviewFields on Board {
+    id
+    title
+  }
+`;
+
+export const GET_WORKSPACE = gql`
   query Workspace($id: String!) {
     workspace(id: $id) {
-      id
-      title
+      ...WorkspacePreviewFields
       boards {
-        id
-        title
+        ...BoardPreviewFields
       }
     }
   }
+  ${WORKSPACE_PREVIEW_FIELDS}
+  ${BOARD_PREVIEW_FIELDS}
 `;
 
 export const Workspace: React.FC<{}> = () => {
   const router = useRouter();
   const workspaceId = router.query.workspaceId as string;
   const workspaceResult = useQuery<WorkspaceQuery, WorkspaceQueryVariables>(
-    workspaceQuery,
+    GET_WORKSPACE,
     {
       variables: {
         id: workspaceId,
       },
-      // IMPORTANT: Need to pause the request, before router is ready, in order,
-      // to avoid making request with incorrect variables
+      /**
+       * IMPORTANT: Need to pause the request, before router is ready, in order,
+       * to avoid making request with incorrect variables
+       */
       skip: !router.isReady,
     },
   );
@@ -69,27 +80,39 @@ export const Workspace: React.FC<{}> = () => {
         createBoard(input: $input, workspaceId: $workspaceId) {
           ... on MutationCreateBoardSuccess {
             data {
-              id
-              title
+              ...BoardPreviewFields
             }
           }
         }
       }
+      ${BOARD_PREVIEW_FIELDS}
     `,
     {
       update(cache, { data }) {
-        if (data?.createBoard.__typename !== "MutationCreateBoardSuccess")
-          return;
+        const createdBoard = data?.createBoard;
+
+        if (createdBoard?.__typename !== "MutationCreateBoardSuccess") return;
 
         /** Merge cached `workspace` query field `boards` with `createBoard` mutation result */
-        const newBoard = data.createBoard.data;
-        cache.writeQuery({
-          query: workspaceQuery,
+        const existingWorkspace = cache.readQuery<
+          WorkspaceQuery,
+          WorkspaceQueryVariables
+        >({
+          query: GET_WORKSPACE,
+          variables: {
+            id: workspaceId,
+          },
+        })?.workspace;
+
+        if (!existingWorkspace) return;
+
+        cache.writeQuery<WorkspaceQuery, WorkspaceQueryVariables>({
+          query: GET_WORKSPACE,
           variables: { id: workspaceId },
           data: {
             workspace: {
-              ...workspaceResult.data?.workspace,
-              boards: workspaceResult.data?.workspace.boards.concat(newBoard),
+              ...existingWorkspace,
+              boards: existingWorkspace.boards.concat(createdBoard.data),
             },
           },
         });
@@ -98,13 +121,14 @@ export const Workspace: React.FC<{}> = () => {
   );
 
   const workspace = workspaceResult.data?.workspace;
-  const boardForm = useZodForm({ schema: BoardSchema });
+  const createBoardForm = useZodForm({ schema: BoardSchema });
   const createBoardModalRef = useRef<ModalHandle>(null);
 
   return (
     <WorkspaceLayout
-      title={workspace?.title}
       isLoading={workspaceResult.loading}
+      title={workspace?.title}
+      members={workspace?.members}
       noMargin
     >
       <WorkspaceMenu
@@ -118,16 +142,11 @@ export const Workspace: React.FC<{}> = () => {
         ref={createBoardModalRef}
       >
         <Form
-          form={boardForm}
+          form={createBoardForm}
           onSubmit={async (input) => {
-            await createBoard({
-              variables: {
-                input,
-                workspaceId: router.query.workspaceId as string,
-              },
-            });
+            await createBoard({ variables: { input, workspaceId } });
             if (createBoardModalRef.current) {
-              boardForm.reset();
+              createBoardForm.reset();
               createBoardModalRef.current.toggleVisibility();
             }
           }}
@@ -135,9 +154,12 @@ export const Workspace: React.FC<{}> = () => {
           <Input
             label="Title"
             placeholder="Enter the new board title"
-            {...boardForm.register("title")}
+            {...createBoardForm.register("title")}
           />
-          <Button type="submit" isLoading={boardForm.formState.isSubmitting}>
+          <Button
+            type="submit"
+            isLoading={createBoardForm.formState.isSubmitting}
+          >
             Create
           </Button>
         </Form>

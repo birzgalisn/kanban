@@ -3,7 +3,7 @@ import { WorkspacesQuery } from "../__generated__/Workspaces.generated";
 import type { ModalHandle } from "@/components/modal";
 
 import { Avatar } from "@/ui/avatar";
-import { CreateButton } from "./CreateButton";
+import { BoardButton } from "@/ui/boardButton";
 import { PreviewCard } from "./PreviewCard";
 import { PreviewCardSekeleton } from "./PreviewCardSkeleton";
 import { Scrollable } from "./Scrollable";
@@ -36,7 +36,7 @@ export const WorkspacesPreview: React.FC<{
               ))}
             </PreviewCard>
           ))}
-      <CreateButton
+      <BoardButton
         title="Create a workspace"
         createModalRef={createWorkspaceModalRef}
       />

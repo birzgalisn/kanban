@@ -1,7 +1,14 @@
 import * as Types from "../../../__generated__/types";
 
 import { gql } from "@apollo/client";
+import { WorkspacePreviewFieldsFragmentDoc } from "../../workspaces/__generated__/Workspaces.generated";
 import * as Apollo from "@apollo/client";
+export type BoardPreviewFieldsFragment = {
+  __typename?: "Board";
+  id: string;
+  title: string;
+};
+
 export type WorkspaceQueryVariables = Types.Exact<{
   id: Types.Scalars["String"];
 }>;
@@ -13,6 +20,11 @@ export type WorkspaceQuery = {
     id: string;
     title: string;
     boards: Array<{ __typename?: "Board"; id: string; title: string }>;
+    members: Array<{
+      __typename?: "Member";
+      id: string;
+      user: { __typename?: "User"; image?: string | null };
+    }>;
   };
 };
 
@@ -31,17 +43,23 @@ export type CreateBoardMutation = {
     | { __typename?: "ZodError" };
 };
 
+export const BoardPreviewFieldsFragmentDoc = gql`
+  fragment BoardPreviewFields on Board {
+    id
+    title
+  }
+`;
 export const WorkspaceDocument = gql`
   query Workspace($id: String!) {
     workspace(id: $id) {
-      id
-      title
+      ...WorkspacePreviewFields
       boards {
-        id
-        title
+        ...BoardPreviewFields
       }
     }
   }
+  ${WorkspacePreviewFieldsFragmentDoc}
+  ${BoardPreviewFieldsFragmentDoc}
 `;
 export type WorkspaceQueryResult = Apollo.QueryResult<
   WorkspaceQuery,
@@ -52,12 +70,12 @@ export const CreateBoardDocument = gql`
     createBoard(input: $input, workspaceId: $workspaceId) {
       ... on MutationCreateBoardSuccess {
         data {
-          id
-          title
+          ...BoardPreviewFields
         }
       }
     }
   }
+  ${BoardPreviewFieldsFragmentDoc}
 `;
 export type CreateBoardMutationFn = Apollo.MutationFunction<
   CreateBoardMutation,

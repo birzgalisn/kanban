@@ -1,6 +1,6 @@
 import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
-import merge from "deepmerge";
-import isEqual from "lodash/isEqual";
+import deepmerge from "deepmerge";
+import { isEqual } from "lodash";
 
 import type { NormalizedCacheObject } from "@apollo/client";
 
@@ -13,7 +13,26 @@ function createApolloClient() {
     ssrMode: typeof window === "undefined",
     connectToDevTools: process.env.NODE_ENV !== "production",
     link: createHttpLink({ uri: "/api/graphql" }),
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        List: {
+          fields: {
+            cards: {
+              merge(existing = [], incoming: any[]) {
+                return deepmerge(existing, incoming, {
+                  arrayMerge: (destinationArray, sourceArray) => [
+                    ...sourceArray,
+                    ...destinationArray.filter((d) =>
+                      sourceArray.every((s) => isEqual(d, s)),
+                    ),
+                  ],
+                });
+              },
+            },
+          },
+        },
+      },
+    }),
   });
 }
 
@@ -21,7 +40,7 @@ export function initializeApollo(initialState?: any) {
   const _apolloClient = apolloClient ?? createApolloClient();
   if (initialState) {
     const existingCache = _apolloClient.cache.extract();
-    const data = merge(initialState, existingCache, {
+    const data = deepmerge(initialState, existingCache, {
       arrayMerge: (destinationArray, sourceArray) => [
         ...sourceArray,
         ...destinationArray.filter((d) =>

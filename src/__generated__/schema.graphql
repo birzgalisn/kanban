@@ -37,6 +37,14 @@ input CreateBoardInput {
   title: String!
 }
 
+input CreateCardInput {
+  title: String!
+}
+
+input CreateListInput {
+  title: String!
+}
+
 input CreateUserInput {
   email: String!
   name: String!
@@ -96,14 +104,29 @@ type Member {
 
 type Mutation {
   createBoard(input: CreateBoardInput!, workspaceId: String!): MutationCreateBoardResult!
+  createCard(input: CreateCardInput!, listId: String!): MutationCreateCardResult!
+  createList(boardId: String!, input: CreateListInput!): MutationCreateListResult!
   createUser(input: CreateUserInput!): MutationCreateUserResult!
   createWorkspace(input: CreateWorkspaceInput!): MutationCreateWorkspaceResult!
+  moveCard(destination: String!, id: String!): Card!
 }
 
 union MutationCreateBoardResult = MutationCreateBoardSuccess | ZodError
 
 type MutationCreateBoardSuccess {
   data: Board!
+}
+
+union MutationCreateCardResult = MutationCreateCardSuccess | ZodError
+
+type MutationCreateCardSuccess {
+  data: Card!
+}
+
+union MutationCreateListResult = MutationCreateListSuccess | ZodError
+
+type MutationCreateListSuccess {
+  data: List!
 }
 
 union MutationCreateUserResult = MutationCreateUserSuccess | ZodError
@@ -120,6 +143,7 @@ type MutationCreateWorkspaceSuccess {
 
 type Query {
   board(id: String!): Board!
+  list(id: String!): List!
   me: User!
   workspace(id: String!): Workspace!
   workspaces: [Workspace!]

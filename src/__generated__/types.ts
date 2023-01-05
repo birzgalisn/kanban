@@ -72,6 +72,14 @@ export type CreateBoardInput = {
   title: Scalars["String"];
 };
 
+export type CreateCardInput = {
+  title: Scalars["String"];
+};
+
+export type CreateListInput = {
+  title: Scalars["String"];
+};
+
 export type CreateUserInput = {
   email: Scalars["String"];
   name: Scalars["String"];
@@ -125,13 +133,26 @@ export type Member = {
 export type Mutation = {
   __typename?: "Mutation";
   createBoard: MutationCreateBoardResult;
+  createCard: MutationCreateCardResult;
+  createList: MutationCreateListResult;
   createUser: MutationCreateUserResult;
   createWorkspace: MutationCreateWorkspaceResult;
+  moveCard: Card;
 };
 
 export type MutationCreateBoardArgs = {
   input: CreateBoardInput;
   workspaceId: Scalars["String"];
+};
+
+export type MutationCreateCardArgs = {
+  input: CreateCardInput;
+  listId: Scalars["String"];
+};
+
+export type MutationCreateListArgs = {
+  boardId: Scalars["String"];
+  input: CreateListInput;
 };
 
 export type MutationCreateUserArgs = {
@@ -142,11 +163,30 @@ export type MutationCreateWorkspaceArgs = {
   input: CreateWorkspaceInput;
 };
 
+export type MutationMoveCardArgs = {
+  destination: Scalars["String"];
+  id: Scalars["String"];
+};
+
 export type MutationCreateBoardResult = MutationCreateBoardSuccess | ZodError;
 
 export type MutationCreateBoardSuccess = {
   __typename?: "MutationCreateBoardSuccess";
   data: Board;
+};
+
+export type MutationCreateCardResult = MutationCreateCardSuccess | ZodError;
+
+export type MutationCreateCardSuccess = {
+  __typename?: "MutationCreateCardSuccess";
+  data: Card;
+};
+
+export type MutationCreateListResult = MutationCreateListSuccess | ZodError;
+
+export type MutationCreateListSuccess = {
+  __typename?: "MutationCreateListSuccess";
+  data: List;
 };
 
 export type MutationCreateUserResult = MutationCreateUserSuccess | ZodError;
@@ -168,12 +208,17 @@ export type MutationCreateWorkspaceSuccess = {
 export type Query = {
   __typename?: "Query";
   board: Board;
+  list: List;
   me: User;
   workspace: Workspace;
   workspaces?: Maybe<Array<Workspace>>;
 };
 
 export type QueryBoardArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryListArgs = {
   id: Scalars["String"];
 };
 
@@ -357,6 +402,8 @@ export type ResolversTypes = {
   Card: ResolverTypeWrapper<Card>;
   Comment: ResolverTypeWrapper<Comment>;
   CreateBoardInput: CreateBoardInput;
+  CreateCardInput: CreateCardInput;
+  CreateListInput: CreateListInput;
   CreateUserInput: CreateUserInput;
   CreateWorkspaceInput: CreateWorkspaceInput;
   Date: ResolverTypeWrapper<Scalars["Date"]>;
@@ -371,6 +418,14 @@ export type ResolversTypes = {
     | ResolversTypes["MutationCreateBoardSuccess"]
     | ResolversTypes["ZodError"];
   MutationCreateBoardSuccess: ResolverTypeWrapper<MutationCreateBoardSuccess>;
+  MutationCreateCardResult:
+    | ResolversTypes["MutationCreateCardSuccess"]
+    | ResolversTypes["ZodError"];
+  MutationCreateCardSuccess: ResolverTypeWrapper<MutationCreateCardSuccess>;
+  MutationCreateListResult:
+    | ResolversTypes["MutationCreateListSuccess"]
+    | ResolversTypes["ZodError"];
+  MutationCreateListSuccess: ResolverTypeWrapper<MutationCreateListSuccess>;
   MutationCreateUserResult:
     | ResolversTypes["MutationCreateUserSuccess"]
     | ResolversTypes["ZodError"];
@@ -397,6 +452,8 @@ export type ResolversParentTypes = {
   Card: Card;
   Comment: Comment;
   CreateBoardInput: CreateBoardInput;
+  CreateCardInput: CreateCardInput;
+  CreateListInput: CreateListInput;
   CreateUserInput: CreateUserInput;
   CreateWorkspaceInput: CreateWorkspaceInput;
   Date: Scalars["Date"];
@@ -411,6 +468,14 @@ export type ResolversParentTypes = {
     | ResolversParentTypes["MutationCreateBoardSuccess"]
     | ResolversParentTypes["ZodError"];
   MutationCreateBoardSuccess: MutationCreateBoardSuccess;
+  MutationCreateCardResult:
+    | ResolversParentTypes["MutationCreateCardSuccess"]
+    | ResolversParentTypes["ZodError"];
+  MutationCreateCardSuccess: MutationCreateCardSuccess;
+  MutationCreateListResult:
+    | ResolversParentTypes["MutationCreateListSuccess"]
+    | ResolversParentTypes["ZodError"];
+  MutationCreateListSuccess: MutationCreateListSuccess;
   MutationCreateUserResult:
     | ResolversParentTypes["MutationCreateUserSuccess"]
     | ResolversParentTypes["ZodError"];
@@ -569,6 +634,18 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateBoardArgs, "input" | "workspaceId">
   >;
+  createCard?: Resolver<
+    ResolversTypes["MutationCreateCardResult"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateCardArgs, "input" | "listId">
+  >;
+  createList?: Resolver<
+    ResolversTypes["MutationCreateListResult"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationCreateListArgs, "boardId" | "input">
+  >;
   createUser?: Resolver<
     ResolversTypes["MutationCreateUserResult"],
     ParentType,
@@ -580,6 +657,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationCreateWorkspaceArgs, "input">
+  >;
+  moveCard?: Resolver<
+    ResolversTypes["Card"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationMoveCardArgs, "destination" | "id">
   >;
 };
 
@@ -599,6 +682,44 @@ export type MutationCreateBoardSuccessResolvers<
   ParentType extends ResolversParentTypes["MutationCreateBoardSuccess"] = ResolversParentTypes["MutationCreateBoardSuccess"],
 > = {
   data?: Resolver<ResolversTypes["Board"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationCreateCardResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationCreateCardResult"] = ResolversParentTypes["MutationCreateCardResult"],
+> = {
+  __resolveType: TypeResolveFn<
+    "MutationCreateCardSuccess" | "ZodError",
+    ParentType,
+    ContextType
+  >;
+};
+
+export type MutationCreateCardSuccessResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationCreateCardSuccess"] = ResolversParentTypes["MutationCreateCardSuccess"],
+> = {
+  data?: Resolver<ResolversTypes["Card"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationCreateListResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationCreateListResult"] = ResolversParentTypes["MutationCreateListResult"],
+> = {
+  __resolveType: TypeResolveFn<
+    "MutationCreateListSuccess" | "ZodError",
+    ParentType,
+    ContextType
+  >;
+};
+
+export type MutationCreateListSuccessResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationCreateListSuccess"] = ResolversParentTypes["MutationCreateListSuccess"],
+> = {
+  data?: Resolver<ResolversTypes["List"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -649,6 +770,12 @@ export type QueryResolvers<
     ParentType,
     ContextType,
     RequireFields<QueryBoardArgs, "id">
+  >;
+  list?: Resolver<
+    ResolversTypes["List"],
+    ParentType,
+    ContextType,
+    RequireFields<QueryListArgs, "id">
   >;
   me?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   workspace?: Resolver<
@@ -765,6 +892,10 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   MutationCreateBoardResult?: MutationCreateBoardResultResolvers<ContextType>;
   MutationCreateBoardSuccess?: MutationCreateBoardSuccessResolvers<ContextType>;
+  MutationCreateCardResult?: MutationCreateCardResultResolvers<ContextType>;
+  MutationCreateCardSuccess?: MutationCreateCardSuccessResolvers<ContextType>;
+  MutationCreateListResult?: MutationCreateListResultResolvers<ContextType>;
+  MutationCreateListSuccess?: MutationCreateListSuccessResolvers<ContextType>;
   MutationCreateUserResult?: MutationCreateUserResultResolvers<ContextType>;
   MutationCreateUserSuccess?: MutationCreateUserSuccessResolvers<ContextType>;
   MutationCreateWorkspaceResult?: MutationCreateWorkspaceResultResolvers<ContextType>;

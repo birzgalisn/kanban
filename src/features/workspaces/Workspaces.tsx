@@ -11,11 +11,11 @@ import type {
 
 import { Layout } from "@/components/layout";
 import { Modal, ModalHandle } from "@/components/modal";
+import { BoardButton } from "@/ui/boardButton";
 import { Button } from "@/ui/button";
 import { Form, Input, useZodForm } from "@/ui/form";
 import { HiPlus } from "react-icons/hi2";
 import { Bar } from "./components/Bar";
-import { CreateButton } from "./components/CreateButton";
 import { Scrollable } from "./components/Scrollable";
 import { WorkspacesPreview } from "./components/WorkspacesPreview";
 
@@ -28,8 +28,10 @@ const WorkspaceSchema = z.object({
     .max(50, { message: workspaceValidateError.title.length.tooBig }),
 });
 
-export const WORKSPACE_PREVIEW_MEMBERS = gql`
-  fragment WorkspacePreviewMembers on Workspace {
+export const WORKSPACE_PREVIEW_FIELDS = gql`
+  fragment WorkspacePreviewFields on Workspace {
+    id
+    title
     members {
       id
       user {
@@ -39,20 +41,10 @@ export const WORKSPACE_PREVIEW_MEMBERS = gql`
   }
 `;
 
-const WORKSPACE_PREVIEW_FIELDS = gql`
-  fragment WorkspacePreviewFields on Workspace {
-    id
-    title
-    ...WorkspacePreviewMembers
-  }
-  ${WORKSPACE_PREVIEW_MEMBERS}
-`;
-
 export const Workspaces: React.FC<{}> = () => {
   const router = useRouter();
   const workspaceForm = useZodForm({ schema: WorkspaceSchema });
   const createWorkspaceModalRef = useRef<ModalHandle>(null);
-
   const workspacesResult = useQuery<WorkspacesQuery>(
     gql`
       query Workspaces {
@@ -176,7 +168,7 @@ export const Workspaces: React.FC<{}> = () => {
         }
       >
         <Scrollable>
-          <CreateButton title="Star a workspace" disabled />
+          <BoardButton title="Star a workspace" disabled />
         </Scrollable>
       </Bar>
       <Bar
@@ -194,7 +186,7 @@ export const Workspaces: React.FC<{}> = () => {
         }
       >
         <Scrollable>
-          <CreateButton title="Archive a workspace" disabled />
+          <BoardButton title="Archive a workspace" disabled />
         </Scrollable>
       </Bar>
     </Layout>
