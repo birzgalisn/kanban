@@ -23,7 +23,9 @@ export const List: React.FC<ListProps> = ({ list, action }) => {
   return (
     <div className="flex h-full w-64 flex-col gap-4" key={list.id}>
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold">{list.title}</h2>
+        <h2 className="text-2xl font-bold">
+          {list.title} ({list.cards.length})
+        </h2>
         {action}
       </div>
       <Droppable droppableId={list.id}>
