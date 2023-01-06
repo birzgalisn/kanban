@@ -20,6 +20,27 @@ export const CardObject = builder.prismaObject("Card", {
   }),
 });
 
+builder.queryField("card", (t) =>
+  t.prismaField({
+    type: CardObject,
+    authScopes: {
+      user: true,
+    },
+    args: {
+      id: t.arg({ type: "String", required: true }),
+    },
+    resolve: async (query, root, { id }, { token }, info) => {
+      const card = await db.card.findFirstOrThrow({
+        ...query,
+        where: {
+          id,
+        },
+      });
+      return card;
+    },
+  }),
+);
+
 builder.mutationField("moveCard", (t) =>
   t.prismaField({
     type: CardObject,
@@ -75,6 +96,50 @@ builder.mutationField("createCard", (t) =>
           list: {
             connect: { id: listId },
           },
+        },
+      });
+    },
+  }),
+);
+
+const UpdateCardInput = builder.inputType("UpdateCardInput", {
+  fields: (t) => ({
+    description: t.string({
+      required: true,
+      validate: {
+        minLength: [
+          1,
+          { message: cardValidateError.description.length.tooSmall },
+        ],
+        maxLength: [
+          255,
+          { message: cardValidateError.description.length.tooBig },
+        ],
+      },
+    }),
+  }),
+});
+
+builder.mutationField("updateCard", (t) =>
+  t.prismaField({
+    type: CardObject,
+    errors: {
+      types: [ZodError],
+    },
+    authScopes: {
+      user: true,
+    },
+    args: {
+      input: t.arg({ type: UpdateCardInput, required: true }),
+      cardId: t.arg({ type: "String", required: true }),
+    },
+    resolve: async (query, root, { input, cardId }, { token }, info) => {
+      return db.card.update({
+        data: {
+          description: input.description,
+        },
+        where: {
+          id: cardId,
         },
       });
     },

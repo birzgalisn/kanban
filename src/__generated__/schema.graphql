@@ -109,6 +109,7 @@ type Mutation {
   createUser(input: CreateUserInput!): MutationCreateUserResult!
   createWorkspace(input: CreateWorkspaceInput!): MutationCreateWorkspaceResult!
   moveCard(destination: String!, id: String!): Card!
+  updateCard(cardId: String!, input: UpdateCardInput!): MutationUpdateCardResult!
 }
 
 union MutationCreateBoardResult = MutationCreateBoardSuccess | ZodError
@@ -141,8 +142,15 @@ type MutationCreateWorkspaceSuccess {
   data: Workspace!
 }
 
+union MutationUpdateCardResult = MutationUpdateCardSuccess | ZodError
+
+type MutationUpdateCardSuccess {
+  data: Card!
+}
+
 type Query {
   board(id: String!): Board!
+  card(id: String!): Card!
   list(id: String!): List!
   me: User!
   workspace(id: String!): Workspace!
@@ -173,6 +181,10 @@ type Todo {
   done: Boolean!
   id: ID!
   updatedAt: DateTime!
+}
+
+input UpdateCardInput {
+  description: String!
 }
 
 type User {

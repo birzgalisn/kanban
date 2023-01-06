@@ -7,13 +7,20 @@ const Draggable = dynamic(
   { ssr: false },
 );
 
-import type { Cards } from "../Cards";
+import type { Cards, CardsProps } from "../Cards";
 
 type Card = Cards[0];
 
-export const Card: React.FC<{ card: Card; index: number }> = ({
+type CardPreviewProps = {
+  card: Card;
+  index: number;
+  viewCard: CardsProps["viewCard"];
+};
+
+export const CardPreview: React.FC<CardPreviewProps> = ({
   card,
   index,
+  viewCard,
 }) => {
   return (
     <Draggable draggableId={card.id} index={index}>
@@ -23,6 +30,7 @@ export const Card: React.FC<{ card: Card; index: number }> = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          onClick={() => viewCard(card.id)}
         >
           <h2>{card.title}</h2>
         </div>

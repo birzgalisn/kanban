@@ -14,12 +14,13 @@ import { Cards } from "../../cards";
 
 type List = Lists[0];
 
-type ListProps = {
+export type ListProps = {
   list: List;
   action: React.ReactElement;
+  viewCard: (id: string) => void;
 };
 
-export const List: React.FC<ListProps> = ({ list, action }) => {
+export const List: React.FC<ListProps> = ({ list, action, viewCard }) => {
   return (
     <div className="flex h-full w-64 flex-col gap-4" key={list.id}>
       <div className="flex items-center justify-between">
@@ -38,7 +39,7 @@ export const List: React.FC<ListProps> = ({ list, action }) => {
             ref={provided.innerRef}
             {...provided.droppableProps}
           >
-            <Cards cards={list.cards} />
+            <Cards cards={list.cards} viewCard={viewCard} />
             {provided.placeholder}
           </div>
         )}
