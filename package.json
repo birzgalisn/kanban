@@ -1,11 +1,14 @@
 {
   "private": true,
+  "engines": {
+    "npm": ">=8.0.0",
+    "node": ">=16.0.0"
+  },
   "scripts": {
-    "dev": "concurrently -n \"codegen,next\" -c \"magenta,cyan\" \"npm run generate-schema && npm run codegen -- --watch\" \"next dev\"",
+    "dev": "concurrently -n \"next,codegen\" -c \"cyan,magenta\" \"next dev\" \"npm run codegen -- --watch\"",
     "prebuild": "npx prisma generate",
     "build": "next build",
     "start": "next start",
-    "generate-schema": "tsx src/lib/buildGraphqlSchema.ts",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {

@@ -1,5 +1,7 @@
 import { builder } from "@/graphql/builder";
 import { flattenErrors } from "@/lib/flattenErrors";
+import { writeFileSync } from "fs";
+import { lexicographicSortSchema, printSchema } from "graphql";
 import { DateResolver, DateTimeResolver } from "graphql-scalars";
 import { ZodError } from "zod";
 
@@ -42,4 +44,9 @@ builder.mutationType({});
 builder.addScalarType("Date", DateResolver, {});
 builder.addScalarType("DateTime", DateTimeResolver, {});
 
-export const schema = builder.toSchema({});
+const schema = builder.toSchema({});
+
+const schemaAsString = printSchema(lexicographicSortSchema(schema));
+writeFileSync("src/__generated__/schema.graphql", schemaAsString);
+
+export { schema };

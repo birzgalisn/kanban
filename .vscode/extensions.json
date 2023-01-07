@@ -1,8 +1,8 @@
 {
   "recommendations": [
-    "graphql.vscode-graphql",
     "prisma.prisma",
     "esbenp.prettier-vscode",
-    "bradlc.vscode-tailwindcss"
+    "bradlc.vscode-tailwindcss",
+    "apollographql.vscode-apollo"
   ]
 }
