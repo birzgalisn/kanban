@@ -1,15 +1,13 @@
 import clsx from "clsx";
 
 const sizes = {
-  sm: "h-4 w-4",
-  md: "h-8 w-8",
-  lg: "h-16 w-16",
-  xl: "h-24 w-24",
+  sm: "h-3 w-3",
+  md: "h-4 w-4",
+  lg: "h-5 w-5",
 };
 
 const variants = {
-  light: "text-white",
-  primary: "text-blue-600",
+  inherit: "text-inherit",
 };
 
 export type SpinnerProps = {
@@ -20,7 +18,7 @@ export type SpinnerProps = {
 
 export const Spinner = ({
   size = "md",
-  variant = "primary",
+  variant = "inherit",
   className = "",
 }: SpinnerProps) => {
   return (

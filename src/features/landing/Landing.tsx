@@ -25,7 +25,7 @@ export const Landing: React.FC<{}> = () => {
         <ul className="flex flex-row items-center gap-4 lg:gap-12">
           <li>
             <Link href="/auth/signin">
-              <Button variant="custom">Sign in</Button>
+              <Button variant="transparent">Sign in</Button>
             </Link>
           </li>
           <li>

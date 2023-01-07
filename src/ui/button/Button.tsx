@@ -5,11 +5,9 @@ import { Spinner } from "@/ui/spinner";
 
 const variants = {
   primary: "bg-kanban-blue text-white",
-  secondary:
-    "bg-gray-100 border border-transparent enabled:hover:border-gray-300",
-  transparent: "bg-transparent enabled:hover:bg-gray-100",
+  secondary: "bg-gray-100 border border-transparent hover:border-gray-300",
+  transparent: "bg-transparent hover:bg-gray-100",
   danger: "bg-red-600 text-white",
-  custom: "",
 };
 
 export const sizes = {
@@ -18,10 +16,7 @@ export const sizes = {
   lg: "py-3 px-8 text-lg h-14",
 };
 
-type IconProps =
-  | { startIcon: React.ReactElement; endIcon?: never }
-  | { endIcon: React.ReactElement; startIcon?: never }
-  | { endIcon?: undefined; startIcon?: undefined };
+type IconProps = { startIcon?: React.ReactElement };
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: keyof typeof variants;
@@ -39,12 +34,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       className = "",
       variant = "primary",
       size = "md",
+      startIcon,
       isLoading = false,
       wrap = false,
       left = false,
       fluid = false,
-      startIcon,
-      endIcon,
       ...props
     },
     ref,
@@ -61,16 +55,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           fluid && "w-full",
           className,
         )}
+        {...(isLoading && { disabled: true })}
         {...props}
       >
-        {isLoading && <Spinner size="sm" className="text-current" />}
-        {!isLoading && startIcon}
+        {isLoading ? <Spinner size={size} /> : startIcon}
         {props.children && (
           <span className={clsx("mx-2", wrap && "hidden xs:block")}>
             {props.children}
           </span>
         )}
-        {!isLoading && endIcon}
       </button>
     );
   },

@@ -30,7 +30,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   return (
     <div>
       <label
-        className="flex w-full flex-col gap-1 text-sm font-normal"
+        className="flex w-full flex-col gap-1 pl-[0.1rem] text-sm font-normal"
         htmlFor={name}
       >
         {label}
@@ -43,7 +43,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
         )}
       >
         <input
-          className="w-full bg-transparent placeholder-gray-300 outline-none"
+          className={clsx(
+            "w-full bg-transparent outline-none",
+            message ? "placeholder-red-500" : "placeholder-gray-300",
+          )}
           type={type}
           ref={ref}
           {...props}

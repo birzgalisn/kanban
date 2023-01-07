@@ -18,7 +18,10 @@ export const WorkspaceLayout: React.FC<{
     <Layout noMargin>
       <WorkspaceNavbar isLoading={isLoading} title={title} members={members} />
       <div
-        className={clsx("flex h-[calc(100vh-8rem)] w-full", !noMargin && "p-6")}
+        className={clsx(
+          "flex h-[calc(100vh-8rem)] w-full overflow-hidden overflow-x-auto bg-gray-50",
+          !noMargin && "p-6",
+        )}
       >
         {children}
       </div>

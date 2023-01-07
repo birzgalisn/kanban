@@ -11,7 +11,7 @@ export function FieldError({
   /** The useFormContext hook returns the current state of hook form */
   return (
     <span
-      className={clsx("mt-0 flex text-sm font-medium text-red-500", className)}
+      className={clsx("mt-0 flex text-sm text-red-500", className)}
       role="alert"
       aria-label={message}
       {...props}
