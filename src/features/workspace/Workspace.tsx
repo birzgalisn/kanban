@@ -13,10 +13,10 @@ import type {
   WorkspaceQueryVariables,
 } from "./__generated__/Workspace.generated";
 
+import { Form, Input, useZodForm } from "@/components/form";
 import { Modal } from "@/components/modal";
 import { WorkspaceLayout } from "@/components/workspaceLayout";
 import { Button } from "@/ui/button";
-import { Form, Input, useZodForm } from "@/ui/form";
 import {
   HiOutlineGlobeEuropeAfrica,
   HiOutlineStar,
@@ -170,7 +170,7 @@ export const Workspace: React.FC<{}> = () => {
       >
         <Button
           variant="transparent"
-          startIcon={<HiPlus className="h-4 w-4" />}
+          icon={<HiPlus className="h-4 w-4" />}
           left
           fluid
           onClick={() => {
@@ -183,7 +183,7 @@ export const Workspace: React.FC<{}> = () => {
         </Button>
         <Button
           variant="transparent"
-          startIcon={<HiOutlineUserPlus className="h-4 w-4" />}
+          icon={<HiOutlineUserPlus className="h-4 w-4" />}
           left
           fluid
           disabled
@@ -192,7 +192,7 @@ export const Workspace: React.FC<{}> = () => {
         </Button>
         <Button
           variant="transparent"
-          startIcon={<HiOutlineStar className="h-4 w-4" />}
+          icon={<HiOutlineStar className="h-4 w-4" />}
           left
           fluid
           disabled
@@ -201,7 +201,7 @@ export const Workspace: React.FC<{}> = () => {
         </Button>
         <Button
           variant="transparent"
-          startIcon={<HiOutlineGlobeEuropeAfrica className="h-4 w-4" />}
+          icon={<HiOutlineGlobeEuropeAfrica className="h-4 w-4" />}
           left
           fluid
           disabled

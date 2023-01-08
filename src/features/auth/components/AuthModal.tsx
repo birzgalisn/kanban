@@ -4,12 +4,13 @@ import React from "react";
 
 import type { UrlObject } from "url";
 
-export const Modal: React.FC<{
+export const AuthModal: React.FC<{
   title: string;
   aside?: { title: string; subtitle: string };
   link?: { leading: string; href: string | UrlObject; title: string };
+  back?: React.ReactElement | null;
   children: React.ReactNode;
-}> = ({ title, aside, link, children }) => {
+}> = ({ title, aside, link, back, children }) => {
   return (
     <div className="mx-auto flex w-full flex-col lg:my-auto lg:flex-row">
       <div className="mx-auto mb-12 flex w-full max-w-xl flex-1 flex-col lg:mb-20 lg:justify-start">
@@ -30,14 +31,20 @@ export const Modal: React.FC<{
             link ? "pt-3 lg:pt-5" : "pt-6 lg:pt-10",
           )}
         >
-          {link && (
-            <div className="flex flex-row justify-end gap-1">
-              <p>{link.leading}</p>
-              <Link className="text-kanban-blue outline-none" href={link.href}>
-                {link.title}
-              </Link>
-            </div>
-          )}
+          <div className="flex flex-row items-center justify-between">
+            {back}
+            {link && (
+              <div className="flex flex-1 flex-row justify-end gap-1">
+                <p>{link.leading}</p>
+                <Link
+                  className="text-kanban-blue outline-none"
+                  href={link.href}
+                >
+                  {link.title}
+                </Link>
+              </div>
+            )}
+          </div>
 
           <h1 className="text-3xl font-bold">{title}</h1>
 

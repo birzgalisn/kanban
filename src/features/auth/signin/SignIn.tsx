@@ -1,6 +1,6 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 
 import type { BuiltInProviderType } from "next-auth/providers";
@@ -9,12 +9,14 @@ import type { SignInOptions, SignInResponse } from "next-auth/react";
 import { input as signInValidateError } from "@/fixtures/auth/error";
 
 import { Container } from "@/components/container";
+import { Form, Input, useZodForm } from "@/components/form";
 import { Button } from "@/ui/button";
-import { Form, Input, useZodForm } from "@/ui/form";
 import { FaDiscord, FaGithub } from "react-icons/fa";
+import { HiOutlineArrowLeft } from "react-icons/hi2";
+import { AuthModal } from "../components/AuthModal";
 import { Divider } from "../components/Divider";
+import { ErrorMessage } from "../components/ErrorMessage";
 import { Heading } from "../components/Heading";
-import { Modal } from "../components/Modal";
 
 const SignInSchema = z.object({
   email: z
@@ -30,7 +32,25 @@ const SignInSchema = z.object({
 
 export const SignIn: React.FC<{}> = () => {
   const router = useRouter();
+  const error = router.query.error as string;
+  const email = router.query.email as string;
+  const [message, setMessage] = useState<string>();
+  const [withCredentials, setWithCredentials] = useState<boolean>();
   const form = useZodForm({ schema: SignInSchema });
+
+  useEffect(() => {
+    if (error) {
+      setMessage("Hmm... something is wrong with the account");
+    }
+    if (email) {
+      setWithCredentials(true);
+      form.reset({ email });
+    }
+  }, [email, error, form]);
+
+  useEffect(() => {
+    if (message) setTimeout(() => setMessage(undefined), 6000);
+  }, [message]);
 
   const signInWith = async (
     provider: BuiltInProviderType,
@@ -47,14 +67,14 @@ export const SignIn: React.FC<{}> = () => {
     if (res?.ok && options.callbackUrl) {
       return router.push(options.callbackUrl);
     } else if (res?.error) {
-      // TODO: Add invalid credentials sign in toast
+      setMessage("Hmm... either email or password is wrong here");
     }
   };
 
   return (
     <Container>
       <Heading />
-      <Modal
+      <AuthModal
         title="Sign in"
         aside={{
           title: "Welcome back!",
@@ -65,54 +85,80 @@ export const SignIn: React.FC<{}> = () => {
           title: "Sign up",
           href: "/auth/signup",
         }}
+        back={
+          withCredentials ? (
+            <HiOutlineArrowLeft
+              className="h-5 w-5 rounded-lg stroke-gray-500 hover:cursor-pointer hover:stroke-black"
+              onClick={() => setWithCredentials(false)}
+            />
+          ) : null
+        }
       >
-        <Button
-          variant="secondary"
-          startIcon={<FaGithub />}
-          onClick={() => signInWith("github", { callbackUrl: "/workspaces" })}
-        >
-          Sign in with GitHub
-        </Button>
-        <Button
-          variant="secondary"
-          startIcon={<FaDiscord />}
-          onClick={() => signInWith("discord", { callbackUrl: "/workspaces" })}
-        >
-          Sign in with Discord
-        </Button>
-
-        <Divider text="Or" />
-
-        <Form
-          form={form}
-          onSubmit={({ email, password }) =>
-            signInWith("credentials", {
-              email,
-              password,
-              callbackUrl: "/workspaces",
-            })
-          }
-          autoComplete="on"
-        >
-          <Input
-            type="email"
-            label="Email"
-            placeholder="Enter your email address"
-            autoComplete="email"
-            {...form.register("email")}
-          />
-          <Input
-            type="password"
-            label="Password"
-            placeholder="• • • • • • • •"
-            autoComplete="current-password"
-            {...form.register("password")}
-          />
-          <Button type="submit" isLoading={form.formState.isSubmitting}>
-            Sign in
-          </Button>
-        </Form>
-      </Modal>
+        <ErrorMessage message={message} />
+        {!withCredentials ? (
+          <>
+            <Button
+              variant="secondary"
+              icon={<FaGithub />}
+              onClick={() =>
+                signInWith("github", { callbackUrl: "/workspaces" })
+              }
+            >
+              Sign in with GitHub
+            </Button>
+            <Button
+              variant="secondary"
+              icon={<FaDiscord />}
+              onClick={() =>
+                signInWith("discord", { callbackUrl: "/workspaces" })
+              }
+            >
+              Sign in with Discord
+            </Button>
+            <Divider text="Or" />
+            <Button
+              variant="secondary"
+              onClick={() => setWithCredentials(true)}
+            >
+              Continue with email and password
+            </Button>
+            <Button variant="secondary">Continue as guest</Button>
+          </>
+        ) : (
+          <>
+            <Form
+              form={form}
+              onSubmit={({ email, password }) =>
+                signInWith("credentials", {
+                  email,
+                  password,
+                  callbackUrl: "/workspaces",
+                })
+              }
+              autoComplete="on"
+            >
+              <Input
+                type="email"
+                label="Email"
+                placeholder="Enter your email address"
+                autoComplete="email"
+                {...form.register("email")}
+              />
+              <Input
+                type="password"
+                label="Password"
+                placeholder="• • • • • • • •"
+                autoComplete="current-password"
+                {...(email && { autoFocus: true })}
+                {...form.register("password")}
+              />
+              <Button type="submit" isLoading={form.formState.isSubmitting}>
+                Sign in
+              </Button>
+            </Form>
+          </>
+        )}
+      </AuthModal>
     </Container>
   );
 };

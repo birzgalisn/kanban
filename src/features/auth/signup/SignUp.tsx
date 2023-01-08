@@ -11,10 +11,10 @@ import type {
 import { input as signUpValidateError } from "@/fixtures/auth/error";
 
 import { Container } from "@/components/container";
+import { Form, Input, useZodForm } from "@/components/form";
 import { Button } from "@/ui/button";
-import { Form, Input, useZodForm } from "@/ui/form";
+import { AuthModal } from "../components/AuthModal";
 import { Heading } from "../components/Heading";
-import { Modal } from "../components/Modal";
 
 const PasswordValidate = z
   .string()
@@ -68,7 +68,7 @@ export const SignUp: React.FC<{}> = () => {
   return (
     <Container>
       <Heading />
-      <Modal
+      <AuthModal
         title="Sign up"
         aside={{
           title: "Smooth project managament",
@@ -130,7 +130,7 @@ export const SignUp: React.FC<{}> = () => {
             Sign up
           </Button>
         </Form>
-      </Modal>
+      </AuthModal>
     </Container>
   );
 };

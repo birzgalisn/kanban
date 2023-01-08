@@ -36,7 +36,7 @@ export const WorkspaceMenu: React.FC<{
               />
             ))}
         <Button
-          startIcon={<HiPlus className="h-4 w-4" />}
+          icon={<HiPlus className="h-4 w-4" />}
           size="sm"
           fluid
           onClick={() => {

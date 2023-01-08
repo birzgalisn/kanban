@@ -32,7 +32,7 @@ export const WorkspaceNavbar: React.FC<{
           <Button
             variant="transparent"
             size="sm"
-            startIcon={<HiOutlineArrowUturnLeft className="h-4 w-4" />}
+            icon={<HiOutlineArrowUturnLeft className="h-4 w-4" />}
           />
         </Link>
       )}
@@ -49,14 +49,14 @@ export const WorkspaceNavbar: React.FC<{
             <Button
               variant="transparent"
               size="sm"
-              startIcon={<HiOutlineStar className="h-4 w-4" />}
+              icon={<HiOutlineStar className="h-4 w-4" />}
               disabled
             />
             <VerticalDivider />
             <Button
               variant="transparent"
               size="sm"
-              startIcon={<HiOutlineGlobeEuropeAfrica className="h-4 w-4" />}
+              icon={<HiOutlineGlobeEuropeAfrica className="h-4 w-4" />}
               wrap
               disabled
             >
@@ -66,7 +66,7 @@ export const WorkspaceNavbar: React.FC<{
             <Button
               variant="transparent"
               size="sm"
-              startIcon={<HiOutlineServer className="h-4 w-4" />}
+              icon={<HiOutlineServer className="h-4 w-4" />}
               disabled
             />
           </div>
@@ -88,7 +88,7 @@ export const WorkspaceNavbar: React.FC<{
               className="ml-4"
               size="sm"
               variant="transparent"
-              startIcon={<HiOutlineUserPlus className="h-4 w-4" />}
+              icon={<HiOutlineUserPlus className="h-4 w-4" />}
               disabled
             />
           </div>

@@ -36,10 +36,10 @@ import type {
 } from "./__generated__/Lists.generated";
 
 import { Drawer, DrawerHandle } from "@/components/drawer";
+import { Form, Input, useZodForm } from "@/components/form";
 import { Modal, ModalHandle } from "@/components/modal";
 import { BoardButton } from "@/ui/boardButton";
 import { Button } from "@/ui/button";
-import { Form, Input, useZodForm } from "@/ui/form";
 import { HiOutlinePencilSquare, HiPlus } from "react-icons/hi2";
 import { List } from "./components/List";
 import { ListsWrapper } from "./components/ListsWrapper";
@@ -247,7 +247,7 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
               list={list}
               action={
                 <Button
-                  startIcon={<HiPlus className="h-4 w-4" />}
+                  icon={<HiPlus className="h-4 w-4" />}
                   variant="transparent"
                   size="sm"
                   onClick={() => {
@@ -273,7 +273,7 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
           <Button
             size="sm"
             variant="transparent"
-            startIcon={<HiOutlinePencilSquare className="h-4 w-4" />}
+            icon={<HiOutlinePencilSquare className="h-4 w-4" />}
             onClick={() => setIsEditing((prev) => !prev)}
           />
         </div>

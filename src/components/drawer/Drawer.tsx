@@ -39,7 +39,7 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
                 <h1 className="text-3xl font-bold">{title}</h1>
               </div>
               <Button
-                startIcon={<HiXMark className="h-5 w-5" />}
+                icon={<HiXMark className="h-5 w-5" />}
                 variant="transparent"
                 size="sm"
                 onClick={toggleVisibility}

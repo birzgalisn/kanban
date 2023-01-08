@@ -9,7 +9,7 @@ export const TextSkeleton: React.FC<{
   return (
     <div
       className={clsx(
-        "rounded-full bg-gray-200",
+        "rounded bg-gray-200",
         animate && "animate-pulse",
         fluid && "w-full",
         className,

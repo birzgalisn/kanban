@@ -16,7 +16,7 @@ export const Navbar: React.FC<{}> = () => {
       {user && (
         <div className="ml-4 flex items-center gap-4">
           <Button
-            startIcon={<HiOutlineBell className="h-4 w-4" />}
+            icon={<HiOutlineBell className="h-4 w-4" />}
             variant="transparent"
             size="sm"
             disabled
@@ -26,7 +26,7 @@ export const Navbar: React.FC<{}> = () => {
             <div className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-green-500 ring-2 ring-white"></div>
           </div>
           <Button
-            startIcon={<HiOutlineArrowLeftOnRectangle className="h-4 w-4" />}
+            icon={<HiOutlineArrowLeftOnRectangle className="h-4 w-4" />}
             variant="transparent"
             size="sm"
             onClick={() => signOut({ callbackUrl: "/" })}

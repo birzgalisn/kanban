@@ -4,9 +4,9 @@ import React from "react";
 import { z } from "zod";
 
 import { Container } from "@/components/container";
+import { Form, Input, useZodForm } from "@/components/form";
 import { Avatar } from "@/ui/avatar/Avatar";
 import { Button } from "@/ui/button";
-import { Form, Input, useZodForm } from "@/ui/form";
 import { Logo } from "@/ui/logo";
 import { GroupScaffold } from "./components/GroupScaffold";
 
@@ -25,7 +25,7 @@ export const Landing: React.FC<{}> = () => {
         <ul className="flex flex-row items-center gap-4 lg:gap-12">
           <li>
             <Link href="/auth/signin">
-              <Button variant="transparent">Sign in</Button>
+              <Button variant="none">Sign in</Button>
             </Link>
           </li>
           <li>
@@ -52,7 +52,7 @@ export const Landing: React.FC<{}> = () => {
             placeholder="Enter your email address"
             {...form.register("email")}
           />
-          <Button className="rounded-l-none" type="submit">
+          <Button className="shrink-0 rounded-l-none" type="submit">
             Sign in
           </Button>
         </Form>
@@ -67,7 +67,7 @@ export const Landing: React.FC<{}> = () => {
               <h2 className="text-lg font-semibold subpixel-antialiased">
                 How to increase the landing page conversion
               </h2>
-              <span className="max-w-min rounded-full bg-purple-100 px-2 py-1 text-sm font-medium text-purple-700">
+              <span className="max-w-min rounded bg-purple-100 px-2 py-1 text-sm font-medium text-purple-700">
                 Research
               </span>
               <Avatar

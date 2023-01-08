@@ -9,11 +9,11 @@ import type {
   WorkspacesQuery,
 } from "./__generated__/Workspaces.generated";
 
+import { Form, Input, useZodForm } from "@/components/form";
 import { Layout } from "@/components/layout";
 import { Modal, ModalHandle } from "@/components/modal";
 import { BoardButton } from "@/ui/boardButton";
 import { Button } from "@/ui/button";
-import { Form, Input, useZodForm } from "@/ui/form";
 import { HiPlus } from "react-icons/hi2";
 import { Bar } from "./components/Bar";
 import { Scrollable } from "./components/Scrollable";
@@ -106,7 +106,7 @@ export const Workspaces: React.FC<{}> = () => {
         subtitle="Your most recent workspaces"
         action={
           <Button
-            startIcon={<HiPlus className="h-4 w-4" />}
+            icon={<HiPlus className="h-4 w-4" />}
             size="sm"
             wrap
             onClick={() => {
@@ -157,12 +157,7 @@ export const Workspaces: React.FC<{}> = () => {
         title="Starred"
         subtitle="Your hand picked workspaces"
         action={
-          <Button
-            startIcon={<HiPlus className="h-4 w-4" />}
-            size="sm"
-            wrap
-            disabled
-          >
+          <Button icon={<HiPlus className="h-4 w-4" />} size="sm" wrap disabled>
             Star
           </Button>
         }
@@ -175,12 +170,7 @@ export const Workspaces: React.FC<{}> = () => {
         title="Archived"
         subtitle="Your unused workspaces"
         action={
-          <Button
-            startIcon={<HiPlus className="h-4 w-4" />}
-            size="sm"
-            wrap
-            disabled
-          >
+          <Button icon={<HiPlus className="h-4 w-4" />} size="sm" wrap disabled>
             Archive
           </Button>
         }
