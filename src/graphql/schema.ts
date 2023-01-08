@@ -46,7 +46,9 @@ builder.addScalarType("DateTime", DateTimeResolver, {});
 
 const schema = builder.toSchema({});
 
-const schemaAsString = printSchema(lexicographicSortSchema(schema));
-writeFileSync("src/__generated__/schema.graphql", schemaAsString);
+if (process.env.NODE_ENV === "development") {
+  const schemaAsString = printSchema(lexicographicSortSchema(schema));
+  writeFileSync("src/__generated__/schema.graphql", schemaAsString);
+}
 
 export { schema };
