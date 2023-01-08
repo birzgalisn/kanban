@@ -1,9 +1,5 @@
 {
   "private": true,
-  "engines": {
-    "npm": ">=8.0.0",
-    "node": ">=16.0.0"
-  },
   "scripts": {
     "dev": "concurrently -n \"next,codegen\" -c \"cyan,magenta\" \"next dev\" \"npm run codegen -- --watch\"",
     "prebuild": "npx prisma generate",
