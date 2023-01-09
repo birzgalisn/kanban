@@ -11,12 +11,12 @@ import type {
 
 import { Form, Input, useZodForm } from "@/components/form";
 import { Layout } from "@/components/layout";
+import { LayoutWrapper } from "@/components/layoutWrapper";
 import { Modal, ModalHandle } from "@/components/modal";
-import { BoardButton } from "@/ui/boardButton";
+import { Navbar } from "@/components/navbar";
 import { Button } from "@/ui/button";
 import { HiPlus } from "react-icons/hi2";
 import { Bar } from "./components/Bar";
-import { Scrollable } from "./components/Scrollable";
 import { WorkspacesPreview } from "./components/WorkspacesPreview";
 
 import { input as workspaceValidateError } from "@/fixtures/workspace/error";
@@ -43,8 +43,6 @@ export const WORKSPACE_PREVIEW_FIELDS = gql`
 
 export const Workspaces: React.FC<{}> = () => {
   const router = useRouter();
-  const workspaceForm = useZodForm({ schema: WorkspaceSchema });
-  const createWorkspaceModalRef = useRef<ModalHandle>(null);
   const workspacesResult = useQuery<WorkspacesQuery>(
     gql`
       query Workspaces {
@@ -99,86 +97,62 @@ export const Workspaces: React.FC<{}> = () => {
     },
   );
 
+  const workspaceForm = useZodForm({ schema: WorkspaceSchema });
+  const createWorkspaceModalRef = useRef<ModalHandle>(null);
+
   return (
-    <Layout className="gap-4">
-      <Bar
-        title="Workspaces"
-        subtitle="Your most recent workspaces"
-        action={
-          <Button
-            icon={<HiPlus className="h-4 w-4" />}
-            size="sm"
-            wrap
-            onClick={() => {
-              if (createWorkspaceModalRef.current) {
-                createWorkspaceModalRef.current.toggleVisibility();
-              }
-            }}
-          >
-            Workspace
-          </Button>
-        }
-      >
-        <WorkspacesPreview
-          workspaces={workspacesResult?.data?.workspaces}
-          isLoading={workspacesResult.loading}
-          createWorkspaceModalRef={createWorkspaceModalRef}
-        />
-        <Modal
-          title="Create a workspace"
-          subtitle="The beginning is always now"
-          ref={createWorkspaceModalRef}
-        >
-          <Form
-            form={workspaceForm}
-            onSubmit={async (input) => {
-              await createWorkspace({ variables: { input } });
-              if (createWorkspaceModalRef.current) {
-                workspaceForm.reset();
-                createWorkspaceModalRef.current.toggleVisibility();
-              }
-            }}
-          >
-            <Input
-              label="Title"
-              placeholder="Enter the new workspace title"
-              {...workspaceForm.register("title")}
-            />
+    <LayoutWrapper>
+      <Navbar />
+      <Layout>
+        <Bar
+          title="Workspaces"
+          subtitle="Your most recent workspaces"
+          action={
             <Button
-              type="submit"
-              isLoading={workspaceForm.formState.isSubmitting}
+              icon={<HiPlus />}
+              size="sm"
+              wrap
+              onClick={() => {
+                if (createWorkspaceModalRef.current) {
+                  createWorkspaceModalRef.current.toggleVisibility();
+                }
+              }}
             >
-              Create
+              Workspace
             </Button>
-          </Form>
-        </Modal>
-      </Bar>
-      <Bar
-        title="Starred"
-        subtitle="Your hand picked workspaces"
-        action={
-          <Button icon={<HiPlus className="h-4 w-4" />} size="sm" wrap disabled>
-            Star
-          </Button>
-        }
-      >
-        <Scrollable>
-          <BoardButton title="Star a workspace" disabled />
-        </Scrollable>
-      </Bar>
-      <Bar
-        title="Archived"
-        subtitle="Your unused workspaces"
-        action={
-          <Button icon={<HiPlus className="h-4 w-4" />} size="sm" wrap disabled>
-            Archive
-          </Button>
-        }
-      >
-        <Scrollable>
-          <BoardButton title="Archive a workspace" disabled />
-        </Scrollable>
-      </Bar>
-    </Layout>
+          }
+        >
+          <WorkspacesPreview
+            workspaces={workspacesResult?.data?.workspaces}
+            isLoading={workspacesResult.loading}
+            createWorkspaceModalRef={createWorkspaceModalRef}
+          />
+          <Modal
+            title="Create a workspace"
+            subtitle="The beginning is always now"
+            ref={createWorkspaceModalRef}
+          >
+            <Form
+              form={workspaceForm}
+              onSubmit={async (input) => {
+                await createWorkspace({ variables: { input } });
+              }}
+            >
+              <Input
+                label="Title"
+                placeholder="Enter the new workspace title"
+                {...workspaceForm.register("title")}
+              />
+              <Button
+                type="submit"
+                isLoading={workspaceForm.formState.isSubmitting}
+              >
+                Create
+              </Button>
+            </Form>
+          </Modal>
+        </Bar>
+      </Layout>
+    </LayoutWrapper>
   );
 };

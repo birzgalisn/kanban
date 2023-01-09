@@ -13,6 +13,7 @@ const variants = {
 };
 
 export const sizes = {
+  xs: "py-1 px-2 text-sm h-9",
   sm: "py-2 px-4 text-sm h-10",
   md: "py-2 px-6 text-md h-12",
   lg: "py-3 px-8 text-lg h-14",

@@ -1,38 +1,104 @@
 import { signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 import React from "react";
 
+import { ActiveLink } from "@/ui/activeLink";
 import { Avatar } from "@/ui/avatar";
 import { Button } from "@/ui/button";
 import { Logo } from "@/ui/logo";
 import { HiOutlineArrowLeftOnRectangle, HiOutlineBell } from "react-icons/hi2";
+import { AvatarSkeleton, TextSkeleton } from "../skeleton";
+import { Divider } from "./components/Divider";
 
-export const Navbar: React.FC<{}> = () => {
+type Path = {
+  title?: string;
+  url?: string;
+};
+
+export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
+  isLoading = true,
+  path = [],
+}) => {
   const { data: session } = useSession();
   const user = session?.user;
+  const [project] = path;
 
   return (
-    <div className="flex h-16 w-full items-center justify-between border-b border-gray-200 bg-white px-6 py-2">
-      <Logo className="mr-4" wrap width={21} height={21} href="/workspaces" />
-      {user && (
-        <div className="ml-4 flex items-center gap-4">
+    <nav className="flex w-screen flex-col border-b bg-white px-6">
+      <div className="flex h-24 items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Logo noTitle width={21} height={21} href="/workspaces" />
+          <div className="hidden items-center gap-4 xs:flex">
+            <Divider />
+            <Link className="flex items-center gap-2" href="/workspaces">
+              {user ? (
+                <>
+                  <Avatar src={user?.image} alt={user?.name} size="w-7 h-7" />
+                  <span className="font-medium">{user?.name}</span>
+                </>
+              ) : (
+                <>
+                  <AvatarSkeleton className="h-7 w-7" />
+                  <TextSkeleton className="h-6 w-20" />
+                </>
+              )}
+            </Link>
+            {path &&
+              path.map((p) => (
+                <React.Fragment key={p.url}>
+                  <Divider />
+                  {!isLoading ? (
+                    <Link className="font-medium" href={p.url!}>
+                      {p.title}
+                    </Link>
+                  ) : (
+                    <TextSkeleton className="h-6 w-28" />
+                  )}
+                </React.Fragment>
+              ))}
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
           <Button
-            icon={<HiOutlineBell className="h-4 w-4" />}
+            className="hidden xs:flex"
             variant="transparent"
-            size="sm"
+            size="xs"
+            icon={<HiOutlineBell className="h-5 w-5" />}
             disabled
           />
-          <div className="relative">
-            <Avatar src={user?.image} alt={user?.name} size="w-8 h-8" />
-            <div className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-green-500 ring-2 ring-white"></div>
-          </div>
+          <Avatar src={user?.image} alt={user?.name} size="w-7 h-7" />
           <Button
-            icon={<HiOutlineArrowLeftOnRectangle className="h-4 w-4" />}
             variant="transparent"
-            size="sm"
+            size="xs"
+            icon={<HiOutlineArrowLeftOnRectangle className="h-5 w-5" />}
             onClick={() => signOut({ callbackUrl: "/" })}
           />
         </div>
-      )}
-    </div>
+      </div>
+      <div className="relative -left-6 -mb-px flex h-9 w-[calc(100%+3rem)] overflow-hidden overflow-x-auto">
+        <div className="flex first:pl-6 last:pr-6">
+          {!project ? (
+            <>
+              <ActiveLink title="Overview" href="/workspaces" />
+              <ActiveLink title="Settings" href="/settings" disabled />
+            </>
+          ) : (
+            <>
+              <ActiveLink title="Project" href={`${project.url}`} />
+              <ActiveLink
+                title="Members"
+                href={`${project.url}/members`}
+                disabled
+              />
+              <ActiveLink
+                title="Settings"
+                href={`${project.url}/settings`}
+                disabled
+              />
+            </>
+          )}
+        </div>
+      </div>
+    </nav>
   );
 };

@@ -166,7 +166,7 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
             BoardQueryVariables
           >({
             query: GET_BOARD,
-            variables: { id: boardId },
+            variables: { boardId, withWorkspace: false },
           })?.board;
 
           if (!existingBoard) return;
@@ -194,7 +194,7 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
 
           cache.writeQuery<BoardQuery, BoardQueryVariables>({
             query: GET_BOARD,
-            variables: { id: boardId },
+            variables: { boardId, withWorkspace: false },
             data: {
               board: {
                 ...existingBoard,
@@ -238,35 +238,37 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
   const [isEditing, setIsEditing] = useState<boolean>();
 
   return (
-    <ListsWrapper>
-      <DragDropContext onDragEnd={onDragEnd}>
-        {lists &&
-          lists.map((list) => (
-            <List
-              key={list.id}
-              list={list}
-              action={
-                <Button
-                  icon={<HiPlus className="h-4 w-4" />}
-                  variant="transparent"
-                  size="sm"
-                  onClick={() => {
-                    if (createCardModalRef.current) {
-                      setCreateCardParent({ id: list.id, title: list.title });
-                      createCardModalRef.current.toggleVisibility();
-                    }
-                  }}
-                />
-              }
-              viewCard={viewCard}
-            />
-          ))}
-      </DragDropContext>
-      <BoardButton
-        title="Create a new list"
-        sizes="w-64 h-10"
-        createModalRef={createListModalRef}
-      />
+    <>
+      <ListsWrapper>
+        <DragDropContext onDragEnd={onDragEnd}>
+          {lists &&
+            lists.map((list) => (
+              <List
+                key={list.id}
+                list={list}
+                action={
+                  <Button
+                    icon={<HiPlus className="h-5 w-5" />}
+                    variant="transparent"
+                    size="xs"
+                    onClick={() => {
+                      if (createCardModalRef.current) {
+                        setCreateCardParent({ id: list.id, title: list.title });
+                        createCardModalRef.current.toggleVisibility();
+                      }
+                    }}
+                  />
+                }
+                viewCard={viewCard}
+              />
+            ))}
+        </DragDropContext>
+        <BoardButton
+          title="Create a new list"
+          sizes="w-64 h-10"
+          createModalRef={createListModalRef}
+        />
+      </ListsWrapper>
       <Drawer title={selectedCard?.title} ref={viewCardDrawerRef}>
         <div className="mb-2 flex items-center gap-2">
           <h2 className="text-lg font-semibold text-gray-900">Description</h2>
@@ -370,14 +372,14 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
                   BoardQueryVariables
                 >({
                   query: GET_BOARD,
-                  variables: { id: boardId },
+                  variables: { boardId, withWorkspace: false },
                 })?.board;
 
                 if (!existingBoard) return;
 
                 cache.writeQuery<BoardQuery, BoardQueryVariables>({
                   query: GET_BOARD,
-                  variables: { id: boardId },
+                  variables: { boardId, withWorkspace: false },
                   data: {
                     board: {
                       ...existingBoard,
@@ -422,7 +424,7 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
           form={createListForm}
           onSubmit={async (input) => {
             await createList({
-              variables: { input, boardId: boardId },
+              variables: { input, boardId },
               update(cache, { data }) {
                 const createdList = data?.createList;
 
@@ -432,13 +434,16 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
                 const existingBoard = cache.readQuery<
                   BoardQuery,
                   BoardQueryVariables
-                >({ query: GET_BOARD, variables: { id: boardId } })?.board;
+                >({
+                  query: GET_BOARD,
+                  variables: { boardId, withWorkspace: false },
+                })?.board;
 
                 if (!existingBoard) return;
 
                 cache.writeQuery<BoardQuery, BoardQueryVariables>({
                   query: GET_BOARD,
-                  variables: { id: boardId },
+                  variables: { boardId, withWorkspace: false },
                   data: {
                     board: {
                       ...existingBoard,
@@ -468,6 +473,6 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
           </Button>
         </Form>
       </Modal>
-    </ListsWrapper>
+    </>
   );
 };

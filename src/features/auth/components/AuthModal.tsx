@@ -12,7 +12,7 @@ export const AuthModal: React.FC<{
   children: React.ReactNode;
 }> = ({ title, aside, link, back, children }) => {
   return (
-    <div className="mx-auto flex w-full flex-col lg:my-auto lg:flex-row">
+    <div className="mx-auto flex w-full flex-col lg:flex-row">
       <div className="mx-auto mb-12 flex w-full max-w-xl flex-1 flex-col lg:mb-20 lg:justify-start">
         {aside?.title && (
           <h1 className="text-5xl font-semibold lg:text-7xl">{aside.title}</h1>
@@ -23,7 +23,6 @@ export const AuthModal: React.FC<{
           </p>
         )}
       </div>
-
       <div className="flex w-full flex-1 pb-12 lg:justify-end lg:pb-20">
         <div
           className={clsx(
@@ -31,7 +30,7 @@ export const AuthModal: React.FC<{
             link ? "pt-3 lg:pt-5" : "pt-6 lg:pt-10",
           )}
         >
-          <div className="flex flex-row items-center justify-between">
+          <div className="flex flex-row items-start justify-between">
             {back}
             {link && (
               <div className="flex flex-1 flex-row justify-end gap-1">
@@ -45,9 +44,7 @@ export const AuthModal: React.FC<{
               </div>
             )}
           </div>
-
           <h1 className="text-3xl font-bold">{title}</h1>
-
           {children}
         </div>
       </div>

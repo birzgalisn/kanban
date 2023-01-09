@@ -7,7 +7,9 @@ import type {
   BoardQueryVariables,
 } from "./__generated__/Board.generated";
 
-import { WorkspaceLayout } from "@/components/workspaceLayout";
+import { Layout } from "@/components/layout";
+import { LayoutWrapper } from "@/components/layoutWrapper";
+import { Navbar } from "@/components/navbar";
 import { Lists } from "./components/lists";
 
 export const CARD_PREVIEW_FIELDS = gql`
@@ -30,12 +32,15 @@ export const LIST_PREVIEW_FIELDS = gql`
 `;
 
 export const GET_BOARD = gql`
-  query Board($id: String!) {
-    board(id: $id) {
+  query Board($boardId: String!, $withWorkspace: Boolean!) {
+    board(id: $boardId) {
       id
       title
       lists {
         ...ListPreviewFields
+      }
+      workspace @include(if: $withWorkspace) {
+        title
       }
     }
   }
@@ -44,16 +49,32 @@ export const GET_BOARD = gql`
 
 export const Board: React.FC<{}> = () => {
   const router = useRouter();
+  const workspaceId = router.query.workspaceId as string;
   const boardId = router.query.boardId as string;
   const boardResult = useQuery<BoardQuery, BoardQueryVariables>(GET_BOARD, {
-    variables: { id: boardId },
+    variables: { boardId, withWorkspace: true },
     skip: !router.isReady,
   });
   const board = boardResult.data?.board;
 
   return (
-    <WorkspaceLayout title={board?.title} isLoading={boardResult.loading}>
-      <Lists lists={board?.lists} />
-    </WorkspaceLayout>
+    <LayoutWrapper>
+      <Navbar
+        isLoading={boardResult.loading}
+        path={[
+          {
+            title: board?.workspace?.title,
+            url: `/workspaces/${workspaceId}`,
+          },
+          {
+            title: board?.title,
+            url: `/workspaces/${workspaceId}/boards/${boardId}`,
+          },
+        ]}
+      />
+      <Layout>
+        <Lists lists={board?.lists} />
+      </Layout>
+    </LayoutWrapper>
   );
 };

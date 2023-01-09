@@ -6,8 +6,6 @@ import { z } from "zod";
 import type { BuiltInProviderType } from "next-auth/providers";
 import type { SignInOptions, SignInResponse } from "next-auth/react";
 
-import { input as signInValidateError } from "@/fixtures/auth/error";
-
 import { Container } from "@/components/container";
 import { Form, Input, useZodForm } from "@/components/form";
 import { Button } from "@/ui/button";
@@ -17,6 +15,8 @@ import { AuthModal } from "../components/AuthModal";
 import { Divider } from "../components/Divider";
 import { ErrorMessage } from "../components/ErrorMessage";
 import { Heading } from "../components/Heading";
+
+import { input as signInValidateError } from "@/fixtures/auth/error";
 
 const SignInSchema = z.object({
   email: z
@@ -87,8 +87,10 @@ export const SignIn: React.FC<{}> = () => {
         }}
         back={
           withCredentials ? (
-            <HiOutlineArrowLeft
-              className="h-5 w-5 rounded-lg stroke-gray-500 hover:cursor-pointer hover:stroke-black"
+            <Button
+              variant="transparent"
+              size="xs"
+              icon={<HiOutlineArrowLeft className="h-5 w-5" />}
               onClick={() => setWithCredentials(false)}
             />
           ) : null

@@ -1,6 +1,6 @@
+import { Button } from "@/ui/button";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 
-import { Button } from "@/ui/button";
 import { HiXMark } from "react-icons/hi2";
 
 export type ModalHandle = {
@@ -45,7 +45,7 @@ export const Modal = forwardRef<ModalHandle, ModalProps>(
               <Button
                 icon={<HiXMark className="h-5 w-5" />}
                 variant="transparent"
-                size="sm"
+                size="xs"
                 onClick={toggleVisibility}
               />
             </div>

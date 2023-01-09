@@ -7,36 +7,35 @@ import type { LinkProps } from "next/link";
 
 export const ActiveLink: React.FC<
   {
-    title?: string;
-    icon?: React.ReactElement;
-    active?: boolean;
-    wrap?: boolean;
+    title: string;
+    disabled?: boolean;
   } & LinkProps
-> = ({ title, icon, active = true, wrap = false, ...props }) => {
+> = ({ title, disabled, ...props }) => {
   const router = useRouter();
 
   const isActiveLink = useMemo(() => {
-    if (!active) return false;
     if (props.href instanceof Object) {
       return router.asPath.endsWith(props.href.href as string);
     }
     return router.asPath.endsWith(props.href);
-  }, [active, props.href, router.asPath]);
+  }, [props.href, router.asPath]);
+
+  if (disabled)
+    return (
+      <div className="cursor-not-allowed select-none whitespace-nowrap border-b px-2 pb-2 pt-1 font-medium opacity-60 md:px-4">
+        {title}
+      </div>
+    );
 
   return (
     <Link
       className={clsx(
-        "flex h-10 w-full items-center rounded-lg border border-transparent px-4 py-2 font-medium duration-300 ease-in-out hover:border-gray-300 hover:opacity-80",
-        isActiveLink
-          ? "bg-gray-100 hover:border"
-          : "hover:border hover:bg-gray-50",
+        "whitespace-nowrap border-b px-2 pb-2 pt-1 font-medium hover:border-blue-500 hover:text-black hover:opacity-100 md:px-4",
+        isActiveLink ? "border-blue-500" : "opacity-70",
       )}
       {...props}
     >
-      {icon}
-      {title && (
-        <span className={clsx("mx-2", wrap && "hidden xs:block")}>{title}</span>
-      )}
+      {title}
     </Link>
   );
 };

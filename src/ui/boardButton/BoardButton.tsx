@@ -19,7 +19,7 @@ export const BoardButton = forwardRef<HTMLButtonElement, BoardButtonProps>(
       startIcon,
       createModalRef,
       className,
-      sizes = "h-24 w-80",
+      sizes = "min-h-24 w-80",
       ...props
     },
     ref,
@@ -29,7 +29,7 @@ export const BoardButton = forwardRef<HTMLButtonElement, BoardButtonProps>(
         ref={ref}
         className={clsx(
           "flex shrink-0 items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-transparent text-lg font-semibold duration-300 ease-in-out enabled:hover:border-solid enabled:hover:bg-gray-50 enabled:hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-70",
-          sizes ?? "h-24 w-80",
+          sizes,
           className,
         )}
         onClick={() => {

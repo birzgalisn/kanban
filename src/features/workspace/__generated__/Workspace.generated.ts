@@ -10,7 +10,7 @@ export type BoardPreviewFieldsFragment = {
 };
 
 export type WorkspaceQueryVariables = Types.Exact<{
-  id: Types.Scalars["String"];
+  workspaceId: Types.Scalars["String"];
 }>;
 
 export type WorkspaceQuery = {
@@ -50,8 +50,8 @@ export const BoardPreviewFieldsFragmentDoc = gql`
   }
 `;
 export const WorkspaceDocument = gql`
-  query Workspace($id: String!) {
-    workspace(id: $id) {
+  query Workspace($workspaceId: String!) {
+    workspace(id: $workspaceId) {
       ...WorkspacePreviewFields
       boards {
         ...BoardPreviewFields

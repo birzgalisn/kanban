@@ -5,10 +5,10 @@ import React from "react";
 import type { ImageProps } from "next/image";
 
 export const Avatar: React.FC<{
-  className?: string;
   src?: ImageProps["src"] | null;
   alt?: ImageProps["alt"] | null;
   size: ImageProps["sizes"];
+  className?: string;
 }> = ({ className, src, alt, size }) => {
   return (
     <div className={clsx(size, className)}>

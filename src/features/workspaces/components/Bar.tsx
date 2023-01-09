@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import React from "react";
 
 export const Bar: React.FC<{
@@ -6,10 +5,9 @@ export const Bar: React.FC<{
   subtitle?: string;
   action?: React.ReactElement;
   children: React.ReactNode;
-  className?: string;
-}> = ({ title, subtitle, action, children, className }) => {
+}> = ({ title, subtitle, action, children }) => {
   return (
-    <div className={clsx("flex flex-col", className)}>
+    <div className="flex w-full flex-col">
       <div className="mb-6 flex justify-between">
         <div className="flex flex-col">
           <h1 className="text-3xl font-bold">{title}</h1>

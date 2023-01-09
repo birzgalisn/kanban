@@ -22,7 +22,8 @@ export type ListPreviewFieldsFragment = {
 };
 
 export type BoardQueryVariables = Types.Exact<{
-  id: Types.Scalars["String"];
+  boardId: Types.Scalars["String"];
+  withWorkspace: Types.Scalars["Boolean"];
 }>;
 
 export type BoardQuery = {
@@ -42,6 +43,7 @@ export type BoardQuery = {
         listId: string;
       }>;
     }>;
+    workspace?: { __typename?: "Workspace"; title: string };
   };
 };
 
@@ -63,12 +65,15 @@ export const ListPreviewFieldsFragmentDoc = gql`
   ${CardPreviewFieldsFragmentDoc}
 `;
 export const BoardDocument = gql`
-  query Board($id: String!) {
-    board(id: $id) {
+  query Board($boardId: String!, $withWorkspace: Boolean!) {
+    board(id: $boardId) {
       id
       title
       lists {
         ...ListPreviewFields
+      }
+      workspace @include(if: $withWorkspace) {
+        title
       }
     }
   }

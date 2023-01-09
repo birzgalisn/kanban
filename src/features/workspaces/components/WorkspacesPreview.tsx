@@ -20,7 +20,7 @@ export const WorkspacesPreview: React.FC<{
             .fill(0)
             .map((_, idx) => <PreviewCardSekeleton key={idx} />)
         : workspaces &&
-          workspaces?.map((workspace) => (
+          workspaces.map((workspace) => (
             <PreviewCard
               key={workspace.id}
               title={workspace.title}
