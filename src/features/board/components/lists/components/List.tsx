@@ -13,6 +13,7 @@ const Draggable = dynamic(
   { ssr: false },
 );
 
+import type { UseViewCardProps } from "../hooks";
 import type { Lists } from "../Lists";
 
 type List = Lists[0];
@@ -20,7 +21,7 @@ type List = Lists[0];
 export type ListProps = {
   list: List;
   action: React.ReactElement;
-  viewCard: (id: string) => void;
+  viewCard: (variables: UseViewCardProps) => void;
 };
 
 export const List: React.FC<ListProps> = ({ list, action, viewCard }) => {
@@ -52,7 +53,7 @@ export const List: React.FC<ListProps> = ({ list, action, viewCard }) => {
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      onClick={() => viewCard(card.id)}
+                      onClick={() => viewCard({ id: card.id })}
                     >
                       <h2>{card.title}</h2>
                     </div>
