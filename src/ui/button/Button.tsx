@@ -8,12 +8,12 @@ const variants = {
   secondary:
     "bg-gray-100 border border-transparent enabled:hover:border-gray-300",
   transparent: "bg-transparent enabled:hover:bg-gray-100",
-  danger: "bg-red-600 text-white",
+  danger: "bg-transparent text-red-500 enabled:hover:bg-red-100",
   none: "",
 };
 
 export const sizes = {
-  xs: "py-1 px-2 text-sm h-9",
+  xs: "py-1 px-3 text-xs h-9",
   sm: "py-2 px-4 text-sm h-10",
   md: "py-2 px-6 text-md h-12",
   lg: "py-3 px-8 text-lg h-14",

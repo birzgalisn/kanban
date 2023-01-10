@@ -2,12 +2,12 @@ import { gql, useMutation } from "@apollo/client";
 import { flatten } from "lodash";
 import { useRouter } from "next/router";
 
-import { GET_BOARD } from "@/features/board/Board";
+import { GET_BOARD } from "@/features/board/hooks";
 
 import type {
   BoardQuery,
   BoardQueryVariables,
-} from "@/features/board/__generated__/Board.generated";
+} from "@/features/board/hooks/__generated__/useBoard.generated";
 import type {
   MoveCardMutation,
   MoveCardMutationVariables,

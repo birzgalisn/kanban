@@ -65,6 +65,14 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+input EditCardDescriptionInput {
+  description: String!
+}
+
+input EditCardTitleInput {
+  title: String!
+}
+
 interface Error {
   message: String!
 }
@@ -108,8 +116,10 @@ type Mutation {
   createList(boardId: String!, input: CreateListInput!): MutationCreateListResult!
   createUser(input: CreateUserInput!): MutationCreateUserResult!
   createWorkspace(input: CreateWorkspaceInput!): MutationCreateWorkspaceResult!
+  deleteCard(id: String!): MutationDeleteCardResult!
+  editCardDescription(cardId: String!, input: EditCardDescriptionInput!): MutationEditCardDescriptionResult!
+  editCardTitle(cardId: String!, input: EditCardTitleInput!): MutationEditCardTitleResult!
   moveCard(destination: String!, id: String!): Card!
-  updateCard(cardId: String!, input: UpdateCardInput!): MutationUpdateCardResult!
 }
 
 union MutationCreateBoardResult = MutationCreateBoardSuccess | ZodError
@@ -142,9 +152,21 @@ type MutationCreateWorkspaceSuccess {
   data: Workspace!
 }
 
-union MutationUpdateCardResult = MutationUpdateCardSuccess | ZodError
+union MutationDeleteCardResult = MutationDeleteCardSuccess | ZodError
 
-type MutationUpdateCardSuccess {
+type MutationDeleteCardSuccess {
+  data: Card!
+}
+
+union MutationEditCardDescriptionResult = MutationEditCardDescriptionSuccess | ZodError
+
+type MutationEditCardDescriptionSuccess {
+  data: Card!
+}
+
+union MutationEditCardTitleResult = MutationEditCardTitleSuccess | ZodError
+
+type MutationEditCardTitleSuccess {
   data: Card!
 }
 
@@ -181,10 +203,6 @@ type Todo {
   done: Boolean!
   id: ID!
   updatedAt: DateTime!
-}
-
-input UpdateCardInput {
-  description: String!
 }
 
 type User {

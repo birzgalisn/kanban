@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { z } from "zod";
 
-import { CARD_PREVIEW_FIELDS, GET_BOARD } from "@/features/board/Board";
+import { CARD_PREVIEW_FIELDS, GET_BOARD } from "@/features/board/hooks";
 
 import type { ModalHandle } from "@/components/modal";
 import type {
   BoardQuery,
   BoardQueryVariables,
-} from "@/features/board/__generated__/Board.generated";
+} from "@/features/board/hooks/__generated__/useBoard.generated";
 import type {
   CreateCardMutation,
   CreateCardMutationVariables,

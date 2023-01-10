@@ -2,22 +2,22 @@ import { gql, useMutation } from "@apollo/client";
 import { useState } from "react";
 import { z } from "zod";
 
-import { GET_CARD } from "./useViewCard";
+import { GET_CARD } from "@/features/board/components/lists/hooks";
 
-import type {
-  UpdateCardMutation,
-  UpdateCardMutationVariables,
-} from "./__generated__/useUpdateCard.generated";
 import type {
   CardQuery,
   CardQueryVariables,
-} from "./__generated__/useViewCard.generated";
+} from "@/features/board/components/lists/hooks/__generated__/useViewCard.generated";
+import type {
+  EditCardDescriptionMutation,
+  EditCardDescriptionMutationVariables,
+} from "./__generated__/useEditDescription.generated";
 
 import { useZodForm } from "@/components/form";
 
 import { input as cardValidateError } from "@/fixtures/card/error";
 
-const EditCardSchema = z.object({
+const EditDescriptionSchema = z.object({
   description: z
     .string()
     .min(1, { message: cardValidateError.description.length.tooSmall })
@@ -26,17 +26,20 @@ const EditCardSchema = z.object({
 
 type Card = CardQuery["card"];
 
-type UseUpdateCardProps = {} & UpdateCardMutationVariables;
+type UseEditCardDescriptionProps = {} & EditCardDescriptionMutationVariables;
 
-export function useUpdateCard() {
-  const [updateCard] = useMutation<
-    UpdateCardMutation,
-    UpdateCardMutationVariables
+export function useEditDescription() {
+  const [editCardTitle] = useMutation<
+    EditCardDescriptionMutation,
+    EditCardDescriptionMutationVariables
   >(
     gql`
-      mutation UpdateCard($input: UpdateCardInput!, $cardId: String!) {
-        updateCard(input: $input, cardId: $cardId) {
-          ... on MutationUpdateCardSuccess {
+      mutation EditCardDescription(
+        $input: EditCardDescriptionInput!
+        $cardId: String!
+      ) {
+        editCardDescription(input: $input, cardId: $cardId) {
+          ... on MutationEditCardDescriptionSuccess {
             data {
               id
               description
@@ -47,14 +50,15 @@ export function useUpdateCard() {
     `,
     {
       update(cache, { data }) {
-        const updatedCard = data?.updateCard;
+        const editedCard = data?.editCardDescription;
 
-        if (updatedCard?.__typename !== "MutationUpdateCardSuccess") return;
+        if (editedCard?.__typename !== "MutationEditCardDescriptionSuccess")
+          return;
 
         const cachedCard = cache.readQuery<CardQuery, CardQueryVariables>({
           query: GET_CARD,
           variables: {
-            id: updatedCard.data.id,
+            id: editedCard.data.id,
           },
         })?.card;
 
@@ -63,12 +67,12 @@ export function useUpdateCard() {
         cache.writeQuery<CardQuery, CardQueryVariables>({
           query: GET_CARD,
           variables: {
-            id: updatedCard.data.id,
+            id: editedCard.data.id,
           },
           data: {
             card: {
               ...cachedCard,
-              ...updatedCard.data,
+              ...editedCard.data,
             },
           },
         });
@@ -76,18 +80,19 @@ export function useUpdateCard() {
     },
   );
 
-  const [isCardInEdit, setIsCardInEdit] = useState<boolean>();
+  const [isCardDescriptionInEdit, setIsCardDescriptionInEdit] =
+    useState<boolean>();
   const toggleEdit = (card?: Card) => {
     if (card) form.reset({ description: card.description ?? "" });
-    setIsCardInEdit((prev) => !prev);
+    setIsCardDescriptionInEdit((prev) => !prev);
   };
 
-  const form = useZodForm({ schema: EditCardSchema });
-  const handleSubmit = ({ input, cardId }: UseUpdateCardProps) => {
-    updateCard({
+  const form = useZodForm({ schema: EditDescriptionSchema });
+  const handleSubmit = ({ input, cardId }: UseEditCardDescriptionProps) => {
+    editCardTitle({
       variables: { input, cardId },
       optimisticResponse: {
-        updateCard: {
+        editCardDescription: {
           data: {
             id: cardId,
             description: input.description,
@@ -101,5 +106,5 @@ export function useUpdateCard() {
     });
   };
 
-  return [form, handleSubmit, isCardInEdit, toggleEdit] as const;
+  return [form, handleSubmit, isCardDescriptionInEdit, toggleEdit] as const;
 }

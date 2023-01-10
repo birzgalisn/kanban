@@ -53,6 +53,7 @@ builder.mutationField("moveCard", (t) =>
     },
     resolve: async (query, root, { id, destination }, { token }, info) => {
       return db.card.update({
+        ...query,
         data: {
           listId: destination,
         },
@@ -91,6 +92,7 @@ builder.mutationField("createCard", (t) =>
     },
     resolve: async (query, root, { input, listId }, { token }, info) => {
       return db.card.create({
+        ...query,
         data: {
           title: input.title,
           list: {
@@ -102,7 +104,46 @@ builder.mutationField("createCard", (t) =>
   }),
 );
 
-const UpdateCardInput = builder.inputType("UpdateCardInput", {
+const EditCardTitleInput = builder.inputType("EditCardTitleInput", {
+  fields: (t) => ({
+    title: t.string({
+      required: true,
+      validate: {
+        minLength: [1, { message: cardValidateError.title.length.tooSmall }],
+        maxLength: [50, { message: cardValidateError.title.length.tooBig }],
+      },
+    }),
+  }),
+});
+
+builder.mutationField("editCardTitle", (t) =>
+  t.prismaField({
+    type: CardObject,
+    errors: {
+      types: [ZodError],
+    },
+    authScopes: {
+      user: true,
+    },
+    args: {
+      input: t.arg({ type: EditCardTitleInput, required: true }),
+      cardId: t.arg({ type: "String", required: true }),
+    },
+    resolve: async (query, root, { input, cardId }, { token }, info) => {
+      return db.card.update({
+        ...query,
+        data: {
+          title: input.title,
+        },
+        where: {
+          id: cardId,
+        },
+      });
+    },
+  }),
+);
+
+const EditCardDescriptionInput = builder.inputType("EditCardDescriptionInput", {
   fields: (t) => ({
     description: t.string({
       required: true,
@@ -120,7 +161,7 @@ const UpdateCardInput = builder.inputType("UpdateCardInput", {
   }),
 });
 
-builder.mutationField("updateCard", (t) =>
+builder.mutationField("editCardDescription", (t) =>
   t.prismaField({
     type: CardObject,
     errors: {
@@ -130,11 +171,12 @@ builder.mutationField("updateCard", (t) =>
       user: true,
     },
     args: {
-      input: t.arg({ type: UpdateCardInput, required: true }),
+      input: t.arg({ type: EditCardDescriptionInput, required: true }),
       cardId: t.arg({ type: "String", required: true }),
     },
     resolve: async (query, root, { input, cardId }, { token }, info) => {
       return db.card.update({
+        ...query,
         data: {
           description: input.description,
         },
@@ -142,6 +184,24 @@ builder.mutationField("updateCard", (t) =>
           id: cardId,
         },
       });
+    },
+  }),
+);
+
+builder.mutationField("deleteCard", (t) =>
+  t.prismaField({
+    type: CardObject,
+    errors: {
+      types: [ZodError],
+    },
+    authScopes: {
+      user: true,
+    },
+    args: {
+      id: t.arg({ type: "String", required: true }),
+    },
+    resolve: async (query, root, { id }, { token }, info) => {
+      return db.card.delete({ ...query, where: { id } });
     },
   }),
 );

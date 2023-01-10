@@ -1,7 +1,7 @@
 import * as Types from "../../../../../../__generated__/types";
 
 import { gql } from "@apollo/client";
-import { ListPreviewFieldsFragmentDoc } from "../../../../__generated__/Board.generated";
+import { ListPreviewFieldsFragmentDoc } from "../../../../hooks/__generated__/useBoard.generated";
 import * as Apollo from "@apollo/client";
 export type CreateListMutationVariables = Types.Exact<{
   input: Types.CreateListInput;

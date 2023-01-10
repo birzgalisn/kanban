@@ -1,7 +1,7 @@
 import * as Types from "../../../../../../__generated__/types";
 
 import { gql } from "@apollo/client";
-import { CardPreviewFieldsFragmentDoc } from "../../../../__generated__/Board.generated";
+import { CardPreviewFieldsFragmentDoc } from "../../../../hooks/__generated__/useBoard.generated";
 import * as Apollo from "@apollo/client";
 export type CreateCardMutationVariables = Types.Exact<{
   input: Types.CreateCardInput;

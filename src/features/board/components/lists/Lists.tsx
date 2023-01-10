@@ -11,20 +11,19 @@ import {
   useCreateCard,
   useCreateList,
   useMoveCard,
-  useUpdateCard,
   useViewCard,
 } from "./hooks";
 
 import type { DropResult } from "react-beautiful-dnd";
-import type { BoardQuery } from "../../__generated__/Board.generated";
+import type { BoardQuery } from "../../hooks/__generated__/useBoard.generated";
 
-import { Drawer } from "@/components/drawer";
 import { Form, Input } from "@/components/form";
 import { Modal } from "@/components/modal";
 import { BoardButton } from "@/ui/boardButton";
 import { Button } from "@/ui/button";
-import { HiOutlinePencilSquare, HiPlus } from "react-icons/hi2";
-import { List } from "./components/List";
+import { HiPlus } from "react-icons/hi2";
+import { CardDrawer } from "./components/cardDrawer";
+import { List } from "./components/list";
 import { ListsWrapper } from "./components/ListsWrapper";
 
 export type Lists = BoardQuery["board"]["lists"];
@@ -55,9 +54,6 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
   const [viewCard, viewCardResult, viewCardDrawerRef] = useViewCard();
   const selectedCard = viewCardResult.data?.card;
 
-  const [editCardForm, handleEditCardSubmit, isCardInEdit, toggleCardEdit] =
-    useUpdateCard();
-
   return (
     <>
       <ListsWrapper>
@@ -87,42 +83,11 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
           createModalRef={createListModalRef}
         />
       </ListsWrapper>
-      <Drawer title={selectedCard?.title} ref={viewCardDrawerRef}>
-        <div className="mb-2 flex items-center gap-2">
-          <h2 className="text-lg font-semibold text-gray-900">Description</h2>
-          <Button
-            size="sm"
-            variant="transparent"
-            icon={<HiOutlinePencilSquare className="h-4 w-4" />}
-            onClick={() => toggleCardEdit(selectedCard)}
-          />
-        </div>
-        {!isCardInEdit ? (
-          selectedCard?.description ? (
-            <p>{selectedCard.description}</p>
-          ) : (
-            <p>No description added</p>
-          )
-        ) : (
-          <Form
-            form={editCardForm}
-            onSubmit={(input) =>
-              handleEditCardSubmit({ input, cardId: selectedCard?.id ?? "" })
-            }
-          >
-            <Input
-              placeholder="Enter the new card description text"
-              {...editCardForm.register("description")}
-            />
-            <div className="flex flex-row gap-6">
-              <Button type="submit">Edit</Button>
-              <Button variant="secondary" onClick={() => toggleCardEdit()}>
-                Cancel
-              </Button>
-            </div>
-          </Form>
-        )}
-      </Drawer>
+      <CardDrawer
+        isLoading={viewCardResult.loading}
+        card={selectedCard}
+        ref={viewCardDrawerRef}
+      />
       <Modal
         title={`Create a new ${openOnList.title} card`}
         subtitle="What you stay focused on will grow"

@@ -8,7 +8,7 @@ export type DrawerHandle = {
 };
 
 type DrawerProps = {
-  title?: string;
+  title?: React.ReactNode | string;
   children: React.ReactNode;
 };
 
@@ -29,19 +29,18 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
     return (
       <>
         <div
-          className="fixed inset-0 z-10 h-screen w-screen bg-black opacity-50"
+          className="fixed inset-0 z-10 h-screen w-screen bg-white opacity-65"
           onClick={toggleVisibility}
         ></div>
-        <div className="fixed inset-0 left-auto z-20 h-full w-full max-w-4xl border-l border-gray-200 shadow-lg">
-          <div className="flex h-full w-full flex-col bg-white p-6 lg:p-10">
-            <div className="mb-4 flex justify-between border-b border-gray-200 pb-4 lg:mb-6 lg:pb-6">
-              <div className="flex flex-col">
-                <h1 className="text-3xl font-bold">{title}</h1>
-              </div>
+        <div className="fixed inset-0 left-auto z-20 h-full w-full max-w-7xl border-l border-gray-200 shadow-3xl">
+          <div className="flex h-full w-full flex-col bg-white">
+            <div className="flex items-start justify-between border-b border-gray-200 p-6">
+              {title}
               <Button
+                className="ml-4"
                 icon={<HiXMark className="h-5 w-5" />}
                 variant="transparent"
-                size="sm"
+                size="xs"
                 onClick={toggleVisibility}
               />
             </div>

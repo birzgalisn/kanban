@@ -9,9 +9,16 @@ export interface Props extends PropsWithChildren {
   name: string;
   label?: string;
   className?: string;
+  fluid?: boolean;
 }
 
-export const FormField = ({ children, name, label, className }: Props) => {
+export const FormField = ({
+  children,
+  name,
+  label,
+  className,
+  fluid = false,
+}: Props) => {
   const ctx = useFormContext();
   const error = ctx.formState.errors[name]?.message as string;
 
@@ -25,7 +32,8 @@ export const FormField = ({ children, name, label, className }: Props) => {
       </label>
       <div
         className={clsx(
-          "flex h-12 w-full flex-row items-center rounded-lg border border-gray-300 bg-white/10 px-4 text-base font-light outline-none duration-300 ease-in-out placeholder:text-gray-700 hover:bg-white/[20%]",
+          "flex w-full flex-row  rounded-lg border border-gray-300 bg-white/10 px-4 text-base font-light outline-none duration-300 ease-in-out placeholder:text-gray-700 hover:bg-white/[20%]",
+          !fluid ? "h-12 items-center" : "py-4",
           error && "border-red-300 bg-red-50",
           className,
         )}

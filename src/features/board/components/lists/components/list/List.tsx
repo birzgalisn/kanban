@@ -13,8 +13,8 @@ const Draggable = dynamic(
   { ssr: false },
 );
 
-import type { UseViewCardProps } from "../hooks";
-import type { Lists } from "../Lists";
+import type { UseViewCardProps } from "../../hooks";
+import type { Lists } from "../../Lists";
 
 type List = Lists[0];
 

@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import { z } from "zod";
 
-import { GET_BOARD, LIST_PREVIEW_FIELDS } from "@/features/board/Board";
+import { GET_BOARD, LIST_PREVIEW_FIELDS } from "@/features/board/hooks";
 
 import type { ModalHandle } from "@/components/modal";
 import type {
   BoardQuery,
   BoardQueryVariables,
-} from "@/features/board/__generated__/Board.generated";
+} from "@/features/board/hooks/__generated__/useBoard.generated";
 import type {
   CreateListMutation,
   CreateListMutationVariables,

@@ -1,4 +1,4 @@
-import * as Types from "../../../__generated__/types";
+import * as Types from "../../../../__generated__/types";
 
 import { gql } from "@apollo/client";
 import * as Apollo from "@apollo/client";
@@ -43,7 +43,7 @@ export type BoardQuery = {
         listId: string;
       }>;
     }>;
-    workspace?: { __typename?: "Workspace"; title: string };
+    workspace?: { __typename?: "Workspace"; id: string; title: string };
   };
 };
 
@@ -73,6 +73,7 @@ export const BoardDocument = gql`
         ...ListPreviewFields
       }
       workspace @include(if: $withWorkspace) {
+        id
         title
       }
     }
