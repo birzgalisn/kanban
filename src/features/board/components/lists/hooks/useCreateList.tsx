@@ -81,6 +81,7 @@ export function useCreateList() {
   const handleSubmit = async (input: CreateListMutationVariables["input"]) => {
     await createList({ variables: { input, boardId } });
     if (modalRef.current) {
+      form.reset();
       modalRef.current.toggleVisibility();
     }
   };

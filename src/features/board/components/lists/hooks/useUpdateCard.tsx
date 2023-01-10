@@ -24,6 +24,8 @@ const EditCardSchema = z.object({
     .max(255, { message: cardValidateError.description.length.tooBig }),
 });
 
+type Card = CardQuery["card"];
+
 type UseUpdateCardProps = {} & UpdateCardMutationVariables;
 
 export function useUpdateCard() {
@@ -75,13 +77,14 @@ export function useUpdateCard() {
   );
 
   const [isCardInEdit, setIsCardInEdit] = useState<boolean>();
-  const toggleEdit = () => {
+  const toggleEdit = (card?: Card) => {
+    if (card) form.reset({ description: card.description ?? "" });
     setIsCardInEdit((prev) => !prev);
   };
 
   const form = useZodForm({ schema: EditCardSchema });
-  const handleSubmit = async ({ input, cardId }: UseUpdateCardProps) => {
-    await updateCard({
+  const handleSubmit = ({ input, cardId }: UseUpdateCardProps) => {
+    updateCard({
       variables: { input, cardId },
       optimisticResponse: {
         updateCard: {
@@ -92,6 +95,7 @@ export function useUpdateCard() {
         },
       },
       onCompleted() {
+        form.reset();
         toggleEdit();
       },
     });

@@ -94,7 +94,7 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
             size="sm"
             variant="transparent"
             icon={<HiOutlinePencilSquare className="h-4 w-4" />}
-            onClick={toggleCardEdit}
+            onClick={() => toggleCardEdit(selectedCard)}
           />
         </div>
         {!isCardInEdit ? (
@@ -116,7 +116,7 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
             />
             <div className="flex flex-row gap-6">
               <Button type="submit">Edit</Button>
-              <Button variant="secondary" onClick={toggleCardEdit}>
+              <Button variant="secondary" onClick={() => toggleCardEdit()}>
                 Cancel
               </Button>
             </div>
