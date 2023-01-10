@@ -1,4 +1,4 @@
-import { WorkspacesQuery } from "../__generated__/Workspaces.generated";
+import { WorkspacesQuery } from "../hooks/__generated__/useWorkspaces.generated";
 
 import type { ModalHandle } from "@/components/modal";
 

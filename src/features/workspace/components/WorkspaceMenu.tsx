@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import React from "react";
 
 import type { ModalHandle } from "@/components/modal";
-import type { WorkspaceQuery } from "../__generated__/Workspace.generated";
+import { WorkspaceQuery } from "../hooks/__generated__/useWorkspace.generated";
 
 import { ButtonSkeleton } from "@/components/skeleton";
 import { Button } from "@/ui/button";
