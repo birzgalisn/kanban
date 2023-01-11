@@ -105,6 +105,7 @@ export const SignUp: React.FC<{}> = () => {
             placeholder="Enter your email"
             autoComplete="email"
             {...form.register("email")}
+            autoFocus
           />
           <Input
             label="Name"

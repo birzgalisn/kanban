@@ -145,6 +145,7 @@ export const SignIn: React.FC<{}> = () => {
                 placeholder="Enter your email address"
                 autoComplete="email"
                 {...form.register("email")}
+                autoFocus
               />
               <Input
                 type="password"
