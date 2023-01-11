@@ -9,7 +9,7 @@ export const Layout: React.FC<{
     <div
       className={clsx(
         "flex h-full w-full overflow-auto",
-        !noMargin && "px-6 pt-6",
+        !noMargin && "px-6 py-6",
       )}
     >
       {children}

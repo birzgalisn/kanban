@@ -6,7 +6,8 @@ import { ActiveLink } from "@/ui/activeLink";
 import { Avatar } from "@/ui/avatar";
 import { Button } from "@/ui/button";
 import { Logo } from "@/ui/logo";
-import { HiOutlineArrowLeftOnRectangle, HiOutlineBell } from "react-icons/hi2";
+import { HiOutlineBell } from "react-icons/hi2";
+import { Dropdown, DropdownGroup, DropdownItem } from "../dropdown";
 import { AvatarSkeleton, TextSkeleton } from "../skeleton";
 import { Divider } from "./components/Divider";
 
@@ -34,7 +35,9 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
               {user ? (
                 <>
                   <Avatar src={user?.image} alt={user?.name} size="w-7 h-7" />
-                  <span className="font-medium">{user?.name}</span>
+                  <span className="max-w-[7rem] truncate font-medium">
+                    {user?.name}
+                  </span>
                 </>
               ) : (
                 <>
@@ -48,7 +51,10 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
                 <React.Fragment key={p.url}>
                   <Divider />
                   {!isLoading ? (
-                    <Link className="font-medium" href={p.url!}>
+                    <Link
+                      className="max-w-[7rem] truncate font-medium"
+                      href={p.url!}
+                    >
                       {p.title}
                     </Link>
                   ) : (
@@ -58,21 +64,59 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
               ))}
           </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="z-10 flex items-center gap-4">
           <Button
-            className="hidden xs:flex"
+            icon={<HiOutlineBell className="h-5 w-5" />}
             variant="transparent"
             size="xs"
-            icon={<HiOutlineBell className="h-5 w-5" />}
             disabled
           />
-          <Avatar src={user?.image} alt={user?.name} size="w-7 h-7" />
-          <Button
-            variant="transparent"
-            size="xs"
-            icon={<HiOutlineArrowLeftOnRectangle className="h-5 w-5" />}
-            onClick={() => signOut({ callbackUrl: "/" })}
-          />
+          <Dropdown
+            button={
+              <Avatar
+                className="cursor-pointer"
+                src={user?.image}
+                alt={user?.name}
+                size="w-7 h-7"
+              />
+            }
+          >
+            <DropdownGroup>
+              <DropdownItem>
+                <p className="truncate px-3 py-1">
+                  Signed in as{" "}
+                  <span className="font-semibold">{user?.name}</span>
+                </p>
+              </DropdownItem>
+            </DropdownGroup>
+            <DropdownGroup>
+              <DropdownItem>
+                <Link href="/workspaces">
+                  <Button variant="transparent" size="xs" fluid left>
+                    Overview
+                  </Button>
+                </Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Button variant="transparent" size="xs" fluid left disabled>
+                  Settings
+                </Button>
+              </DropdownItem>
+            </DropdownGroup>
+            <DropdownGroup>
+              <DropdownItem>
+                <Button
+                  variant="transparent"
+                  size="xs"
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  fluid
+                  left
+                >
+                  Sign out
+                </Button>
+              </DropdownItem>
+            </DropdownGroup>
+          </Dropdown>
         </div>
       </div>
       <div className="relative -left-6 -mb-px flex h-9 w-[calc(100%+3rem)] overflow-hidden overflow-x-auto">

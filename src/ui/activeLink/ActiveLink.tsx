@@ -30,8 +30,10 @@ export const ActiveLink: React.FC<
   return (
     <Link
       className={clsx(
-        "whitespace-nowrap border-b px-2 pb-2 pt-1 font-medium hover:border-blue-500 hover:text-black hover:opacity-100 md:px-4",
-        isActiveLink ? "border-blue-500" : "opacity-70",
+        "whitespace-nowrap border-b px-2 pb-2 pt-1 font-medium hover:text-black hover:opacity-100 md:px-4",
+        isActiveLink
+          ? "border-b-2 border-blue-500"
+          : "opacity-70 hover:border-b-2 hover:border-blue-300",
       )}
       {...props}
     >

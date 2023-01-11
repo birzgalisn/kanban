@@ -18,6 +18,27 @@ export const ListObject = builder.prismaObject("List", {
   }),
 });
 
+builder.queryField("list", (t) =>
+  t.prismaField({
+    type: ListObject,
+    authScopes: {
+      user: true,
+    },
+    args: {
+      id: t.arg({ type: "String", required: true }),
+    },
+    resolve: async (query, root, { id }, { token }, info) => {
+      const list = await db.list.findFirst({
+        ...query,
+        where: {
+          id,
+        },
+      });
+      return list as ListType;
+    },
+  }),
+);
+
 const CreateListInput = builder.inputType("CreateListInput", {
   fields: (t) => ({
     title: t.string({
@@ -45,6 +66,7 @@ builder.mutationField("createList", (t) =>
     },
     resolve: async (query, root, { input, boardId }, { token }, info) => {
       return db.list.create({
+        ...query,
         data: {
           title: input.title,
           board: {
@@ -56,7 +78,46 @@ builder.mutationField("createList", (t) =>
   }),
 );
 
-builder.queryField("list", (t) =>
+const RenameListInput = builder.inputType("RenameListInput", {
+  fields: (t) => ({
+    title: t.string({
+      required: true,
+      validate: {
+        minLength: [1, { message: listValidateError.title.length.tooSmall }],
+        maxLength: [50, { message: listValidateError.title.length.tooBig }],
+      },
+    }),
+  }),
+});
+
+builder.mutationField("renameList", (t) =>
+  t.prismaField({
+    type: ListObject,
+    errors: {
+      types: [ZodError],
+    },
+    authScopes: {
+      user: true,
+    },
+    args: {
+      input: t.arg({ type: RenameListInput, required: true }),
+      id: t.arg({ type: "String", required: true }),
+    },
+    resolve: async (query, root, { input, id }, { token }, info) => {
+      return db.list.update({
+        ...query,
+        data: {
+          title: input.title,
+        },
+        where: {
+          id,
+        },
+      });
+    },
+  }),
+);
+
+builder.mutationField("deleteList", (t) =>
   t.prismaField({
     type: ListObject,
     authScopes: {
@@ -66,13 +127,12 @@ builder.queryField("list", (t) =>
       id: t.arg({ type: "String", required: true }),
     },
     resolve: async (query, root, { id }, { token }, info) => {
-      const list = await db.list.findFirst({
+      return db.list.delete({
         ...query,
         where: {
           id,
         },
       });
-      return list as ListType;
     },
   }),
 );

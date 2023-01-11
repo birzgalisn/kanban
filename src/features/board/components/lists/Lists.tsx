@@ -10,7 +10,9 @@ const DragDropContext = dynamic(
 import {
   useCreateCard,
   useCreateList,
+  useDeleteList,
   useMoveCard,
+  useRenameList,
   useViewCard,
 } from "./hooks";
 
@@ -21,7 +23,6 @@ import { Form, Input } from "@/components/form";
 import { Modal } from "@/components/modal";
 import { BoardButton } from "@/ui/boardButton";
 import { Button } from "@/ui/button";
-import { HiPlus } from "react-icons/hi2";
 import { CardDrawer } from "./components/cardDrawer";
 import { List } from "./components/list";
 import { ListsWrapper } from "./components/ListsWrapper";
@@ -54,6 +55,16 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
   const [viewCard, viewCardResult, viewCardDrawerRef] = useViewCard();
   const selectedCard = viewCardResult.data?.card;
 
+  const [
+    renameListForm,
+    handleRenameListSubmit,
+    renameOnList,
+    renameListModalRef,
+    openRenameListModal,
+  ] = useRenameList();
+
+  const deleteList = useDeleteList();
+
   return (
     <>
       <ListsWrapper>
@@ -63,23 +74,16 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
               <List
                 key={list.id}
                 list={list}
-                action={
-                  <Button
-                    icon={<HiPlus className="h-5 w-5" />}
-                    variant="transparent"
-                    size="xs"
-                    onClick={() =>
-                      openCreateCardModal({ id: list.id, title: list.title })
-                    }
-                  />
-                }
+                createCard={openCreateCardModal}
                 viewCard={viewCard}
+                renameList={openRenameListModal}
+                deleteList={deleteList}
               />
             ))}
         </DragDropContext>
         <BoardButton
           title="Create a new list"
-          sizes="w-64 h-10"
+          sizes="w-64 h-16"
           createModalRef={createListModalRef}
         />
       </ListsWrapper>
@@ -88,6 +92,26 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
         card={selectedCard}
         ref={viewCardDrawerRef}
       />
+      <Modal
+        title={`Rename ${renameOnList.title} list`}
+        subtitle="Take chances, make mistakes. That's how you grow"
+        ref={renameListModalRef}
+      >
+        <Form form={renameListForm} onSubmit={handleRenameListSubmit}>
+          <Input
+            label="Title"
+            placeholder="Enter the new list title"
+            {...renameListForm.register("title")}
+            autoFocus
+          />
+          <Button
+            type="submit"
+            isLoading={renameListForm.formState.isSubmitting}
+          >
+            Rename
+          </Button>
+        </Form>
+      </Modal>
       <Modal
         title={`Create a new ${openOnList.title} card`}
         subtitle="What you stay focused on will grow"
@@ -98,6 +122,7 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
             label="Title"
             placeholder="Enter the new card title"
             {...createCardForm.register("title")}
+            autoFocus
           />
           <Button
             type="submit"
@@ -117,6 +142,7 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
             label="Title"
             placeholder="Enter the new list title"
             {...createListForm.register("title")}
+            autoFocus
           />
           <Button
             type="submit"

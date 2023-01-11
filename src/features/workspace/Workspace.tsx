@@ -55,6 +55,7 @@ export const Workspace: React.FC<{}> = () => {
               label="Title"
               placeholder="Enter the new board title"
               {...createBoardForm.register("title")}
+              autoFocus
             />
             <Button
               type="submit"

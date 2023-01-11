@@ -1,7 +1,9 @@
+import { Button } from "@/ui/button";
 import { Counter } from "@/ui/counter";
 import clsx from "clsx";
 import dynamic from "next/dynamic";
 import React from "react";
+import { HiPlus } from "react-icons/hi2";
 
 // To avoid Next SSR issues, use dynamic module import with SSR disabled
 const Droppable = dynamic(
@@ -13,32 +15,47 @@ const Draggable = dynamic(
   { ssr: false },
 );
 
-import type { UseViewCardProps } from "../../hooks";
+import type {
+  OpenModalProps,
+  RenameModalProps,
+  UseDeleteListProps,
+  UseViewCardProps,
+} from "../../hooks";
 import type { Lists } from "../../Lists";
+
+import { Actions } from "./components/actions";
 
 type List = Lists[0];
 
 export type ListProps = {
   list: List;
-  action: React.ReactElement;
+  createCard: (props: OpenModalProps) => void;
   viewCard: (variables: UseViewCardProps) => void;
+  renameList: (props: RenameModalProps) => void;
+  deleteList: (variables: UseDeleteListProps) => void;
 };
 
-export const List: React.FC<ListProps> = ({ list, action, viewCard }) => {
+export const List: React.FC<ListProps> = ({
+  list,
+  createCard,
+  viewCard,
+  renameList,
+  deleteList,
+}) => {
   return (
-    <div className="flex min-h-full w-80 shrink-0 flex-col">
-      <div className="mb-6 flex h-8 items-start justify-between">
+    <div className="flex h-fit w-80 shrink-0 flex-col overflow-auto rounded-lg border bg-gray-50 px-2 py-4">
+      <div className="mb-4 flex h-8 items-center justify-between">
         <div className="flex items-center">
           <h2 className="text-2xl font-bold">{list.title}</h2>
           <Counter size="h-6 w-6" value={list.cards.length} />
         </div>
-        {action}
+        <Actions {...{ list, renameList, deleteList }} />
       </div>
       <Droppable droppableId={list.id}>
         {(provided, snapshot) => (
           <div
             className={clsx(
-              "flex h-full w-full flex-col rounded-lg",
+              "flex h-[calc(100vh-19rem)] w-full flex-col overflow-hidden overflow-y-auto rounded-lg",
               snapshot.isDraggingOver && "bg-gray-100",
             )}
             ref={provided.innerRef}
@@ -49,7 +66,7 @@ export const List: React.FC<ListProps> = ({ list, action, viewCard }) => {
                 <Draggable key={card.id} draggableId={card.id} index={idx}>
                   {(provided, snapshot) => (
                     <div
-                      className="max-w-80 mb-4 flex w-full rounded-lg border border-gray-200 bg-white p-4 shadow duration-300 ease-in-out hover:shadow-lg"
+                      className="max-w-80 mb-2 flex w-full rounded-lg border border-gray-200 bg-white p-4 shadow duration-300 ease-in-out hover:shadow-lg"
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
@@ -64,6 +81,18 @@ export const List: React.FC<ListProps> = ({ list, action, viewCard }) => {
           </div>
         )}
       </Droppable>
+      <div className="mt-2 flex items-start">
+        <Button
+          icon={<HiPlus className="h-5 w-5" />}
+          variant="transparent"
+          size="xs"
+          fluid
+          left
+          onClick={() => createCard({ id: list.id, title: list.title })}
+        >
+          Add item
+        </Button>
+      </div>
     </div>
   );
 };

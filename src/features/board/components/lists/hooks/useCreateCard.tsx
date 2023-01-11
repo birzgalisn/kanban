@@ -28,7 +28,7 @@ const CardSchema = z.object({
 
 type UseCreateCardProps = {} & CreateCardMutationVariables;
 
-type OpenModalProps = { id: string; title: string };
+export type OpenModalProps = { id: string; title: string };
 
 export function useCreateCard() {
   const router = useRouter();

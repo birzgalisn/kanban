@@ -15,6 +15,15 @@ function createApolloClient() {
     link: createHttpLink({ uri: "/api/graphql" }),
     cache: new InMemoryCache({
       typePolicies: {
+        Board: {
+          fields: {
+            lists: {
+              merge(existing, incoming) {
+                return incoming;
+              },
+            },
+          },
+        },
         List: {
           fields: {
             cards: {

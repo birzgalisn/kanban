@@ -8,12 +8,12 @@ const variants = {
   secondary:
     "bg-gray-100 border border-transparent enabled:hover:border-gray-300",
   transparent: "bg-transparent enabled:hover:bg-gray-100",
-  danger: "bg-transparent text-red-500 enabled:hover:bg-red-100",
+  danger: "bg-transparent text-red-600 enabled:hover:bg-red-50",
   none: "",
 };
 
 export const sizes = {
-  xs: "py-1 px-3 text-xs h-9",
+  xs: "py-1 px-3 text-sm h-9",
   sm: "py-2 px-4 text-sm h-10",
   md: "py-2 px-6 text-md h-12",
   lg: "py-3 px-8 text-lg h-14",
@@ -51,7 +51,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         type={type}
         className={clsx(
-          "flex items-center rounded-lg text-base font-medium outline-none duration-300 ease-in-out hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-70",
+          "flex items-center rounded-lg text-base font-normal outline-none duration-300 ease-in-out hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-70",
           variants[variant],
           sizes[size],
           !left && "justify-center",

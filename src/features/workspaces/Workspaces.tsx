@@ -58,6 +58,7 @@ export const Workspaces: React.FC<{}> = () => {
                 label="Title"
                 placeholder="Enter the new workspace title"
                 {...createWorkspaceForm.register("title")}
+                autoFocus
               />
               <Button
                 type="submit"

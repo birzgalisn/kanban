@@ -117,9 +117,11 @@ type Mutation {
   createUser(input: CreateUserInput!): MutationCreateUserResult!
   createWorkspace(input: CreateWorkspaceInput!): MutationCreateWorkspaceResult!
   deleteCard(id: String!): MutationDeleteCardResult!
+  deleteList(id: String!): List!
   editCardDescription(cardId: String!, input: EditCardDescriptionInput!): MutationEditCardDescriptionResult!
   editCardTitle(cardId: String!, input: EditCardTitleInput!): MutationEditCardTitleResult!
   moveCard(destination: String!, id: String!): Card!
+  renameList(id: String!, input: RenameListInput!): MutationRenameListResult!
 }
 
 union MutationCreateBoardResult = MutationCreateBoardSuccess | ZodError
@@ -170,6 +172,12 @@ type MutationEditCardTitleSuccess {
   data: Card!
 }
 
+union MutationRenameListResult = MutationRenameListSuccess | ZodError
+
+type MutationRenameListSuccess {
+  data: List!
+}
+
 type Query {
   board(id: String!): Board!
   card(id: String!): Card!
@@ -177,6 +185,10 @@ type Query {
   me: User!
   workspace(id: String!): Workspace!
   workspaces: [Workspace!]
+}
+
+input RenameListInput {
+  title: String!
 }
 
 """User roles"""
