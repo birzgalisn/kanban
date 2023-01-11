@@ -22,11 +22,12 @@ export const Status: React.FC<{ isLoading: boolean; card?: Card }> = ({
       {!isLoading ? (
         <Listbox
           value={defaultValue.id}
-          onChange={(selected) => {
-            if (!defaultValue.id || !selected || !card?.id) return;
+          onChange={(selectedId) => {
+            if (!defaultValue.id || !selectedId || !card?.id) return;
+            else if (defaultValue.id === selectedId) return;
             moveCard({
               source: defaultValue.id,
-              destination: selected,
+              destination: selectedId,
               id: card.id,
             });
           }}
