@@ -18,33 +18,35 @@ export const Title: React.FC<{ isLoading: boolean; card?: Card }> = ({
   if (isCardTitleInEdit) {
     return (
       <Form
-        className="flex w-full items-start gap-4"
+        className="flex w-full flex-col items-start gap-4 md:flex-row"
         form={form}
         onSubmit={(input) =>
           handleSubmit({ input, cardId: card?.id as string })
         }
       >
         <Input className="h-9" {...form.register("title")} />
-        <Button size="xs" type="submit">
-          Update
-        </Button>
-        <Button size="xs" variant="secondary" onClick={() => toggleEdit()}>
-          Cancel
-        </Button>
+        <div className="flex w-full justify-end gap-4 md:w-fit">
+          <Button size="xs" type="submit">
+            Update
+          </Button>
+          <Button size="xs" variant="secondary" onClick={() => toggleEdit()}>
+            Cancel
+          </Button>
+        </div>
       </Form>
     );
   }
 
   return (
-    <div className="flex w-full items-center justify-between">
+    <div className="flex w-full max-w-[calc(100%-3.75rem)] items-start justify-between">
       {isLoading ? (
         <>
           <TextSkeleton className="h-9 max-w-xs" fluid />
-          <ButtonSkeleton className="w-12" size="xs" />
+          <ButtonSkeleton className="ml-2 w-12" size="xs" />
         </>
       ) : (
         <>
-          <h1 className="text-3xl font-bold">{card?.title}</h1>
+          <h1 className="truncate text-3xl font-bold">{card?.title}</h1>
           <Button
             size="xs"
             variant="secondary"
