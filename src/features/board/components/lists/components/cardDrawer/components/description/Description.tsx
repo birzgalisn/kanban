@@ -5,6 +5,7 @@ import { useEditDescription } from "./hooks";
 import type { Card } from "../../CardDrawer";
 
 import { Form, Textarea } from "@/components/form";
+import { ButtonSkeleton, TextSkeleton } from "@/components/skeleton";
 import { Button } from "@/ui/button";
 
 export const Description: React.FC<{
@@ -47,14 +48,31 @@ export const Description: React.FC<{
   return (
     <div className="flex flex-col gap-4">
       <div className="flex h-9 items-center justify-between">
-        <h2 className="text-lg font-medium">Description</h2>
-        <Button size="xs" variant="secondary" onClick={() => toggleEdit(card)}>
-          Edit
-        </Button>
+        {isLoading ? (
+          <>
+            <TextSkeleton className="w- h-7 w-24" />
+            <ButtonSkeleton size="xs" className="w-12" />
+          </>
+        ) : (
+          <>
+            <h2 className="text-lg font-medium">Description</h2>
+            <Button
+              size="xs"
+              variant="secondary"
+              onClick={() => toggleEdit(card)}
+            >
+              Edit
+            </Button>
+          </>
+        )}
       </div>
-      <p className="whitespace-pre-line">
-        {card?.description ?? "No description provided"}
-      </p>
+      {isLoading ? (
+        <TextSkeleton className="h-32" fluid />
+      ) : (
+        <p className="whitespace-pre-line">
+          {card?.description ?? "No description provided"}
+        </p>
+      )}
     </div>
   );
 };

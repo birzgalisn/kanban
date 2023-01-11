@@ -32,9 +32,9 @@ export const Drawer = forwardRef<DrawerHandle, DrawerProps>(
           className="fixed inset-0 z-10 h-screen w-screen bg-white opacity-65"
           onClick={toggleVisibility}
         ></div>
-        <div className="fixed inset-0 left-auto z-20 h-full w-full max-w-7xl border-l border-gray-200 shadow-3xl">
+        <div className="fixed inset-0 left-auto z-20 h-screen w-screen max-w-7xl border-l border-gray-200 shadow-3xl">
           <div className="flex h-full w-full flex-col bg-white">
-            <div className="flex items-start justify-between border-b border-gray-200 p-6">
+            <div className="flex h-full max-h-[5.5rem] items-start justify-between border-b border-gray-200 p-6">
               {title}
               <Button
                 className="ml-4"
