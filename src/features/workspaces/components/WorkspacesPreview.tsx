@@ -6,7 +6,6 @@ import { Avatar } from "@/ui/avatar";
 import { BoardButton } from "@/ui/boardButton";
 import { PreviewCard } from "./PreviewCard";
 import { PreviewCardSekeleton } from "./PreviewCardSkeleton";
-import { Scrollable } from "./Scrollable";
 
 export const WorkspacesPreview: React.FC<{
   workspaces?: WorkspacesQuery["workspaces"];
@@ -14,9 +13,9 @@ export const WorkspacesPreview: React.FC<{
   createWorkspaceModalRef: React.RefObject<ModalHandle>;
 }> = ({ workspaces, isLoading, createWorkspaceModalRef }) => {
   return (
-    <Scrollable>
+    <div className="grid grid-cols-1 gap-6 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {isLoading
-        ? Array(2)
+        ? Array(4)
             .fill(0)
             .map((_, idx) => <PreviewCardSekeleton key={idx} />)
         : workspaces &&
@@ -39,7 +38,8 @@ export const WorkspacesPreview: React.FC<{
       <BoardButton
         title="Create a workspace"
         createModalRef={createWorkspaceModalRef}
+        sizes="h-24 w-full"
       />
-    </Scrollable>
+    </div>
   );
 };

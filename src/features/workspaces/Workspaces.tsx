@@ -11,6 +11,7 @@ import { Button } from "@/ui/button";
 import { HiPlus } from "react-icons/hi2";
 import { Bar } from "./components/Bar";
 import { WorkspacesPreview } from "./components/WorkspacesPreview";
+import { WorkspacesWrapper } from "./components/WorkspacesWrapper";
 
 export const Workspaces: React.FC<{}> = () => {
   const workspaces = useWorkspaces();
@@ -26,20 +27,21 @@ export const Workspaces: React.FC<{}> = () => {
     <LayoutWrapper>
       <Navbar />
       <Layout>
-        <Bar
-          title="Workspaces"
-          subtitle="Your most recent workspaces"
-          action={
-            <Button
-              icon={<HiPlus />}
-              size="sm"
-              wrap
-              onClick={toggleCreateWorkspaceModal}
-            >
-              Workspace
-            </Button>
-          }
-        >
+        <WorkspacesWrapper>
+          <Bar
+            title="Workspaces"
+            subtitle="Your most recent workspaces"
+            action={
+              <Button
+                icon={<HiPlus />}
+                size="sm"
+                wrap
+                onClick={toggleCreateWorkspaceModal}
+              >
+                Workspace
+              </Button>
+            }
+          />
           <WorkspacesPreview
             workspaces={workspaces.data?.workspaces}
             isLoading={workspaces.loading}
@@ -68,7 +70,7 @@ export const Workspaces: React.FC<{}> = () => {
               </Button>
             </Form>
           </Modal>
-        </Bar>
+        </WorkspacesWrapper>
       </Layout>
     </LayoutWrapper>
   );

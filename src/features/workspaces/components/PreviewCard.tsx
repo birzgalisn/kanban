@@ -12,13 +12,15 @@ export const PreviewCard: React.FC<{
 }> = ({ title, href, children }) => {
   return (
     <Link
-      className="min-h-24 flex w-80 shrink-0 flex-col justify-between rounded-lg border border-gray-200 bg-white p-4 shadow duration-300 ease-in-out hover:shadow-lg"
+      className="flex h-fit min-h-[6rem] w-full shrink-0 flex-col justify-between rounded-lg border border-gray-200 bg-white p-4 shadow duration-300 ease-in-out hover:shadow-lg"
       {...{ href }}
     >
-      <h2 className="mb-2 text-xl font-semibold">{title}</h2>
+      <h2 className="mb-2 truncate whitespace-pre-line text-xl font-semibold">
+        {title}
+      </h2>
       <div className="flex w-full flex-row items-center justify-between overflow-hidden">
         {children && <div className="mx-2 flex w-full flex-1">{children}</div>}
-        <HiOutlineArrowRight className="h-5 w-5" />
+        <HiOutlineArrowRight />
       </div>
     </Link>
   );
