@@ -26,7 +26,7 @@ export const Actions: React.FC<ActionsProps> = ({
     <Dropdown
       button={
         <Button
-          icon={<HiEllipsisHorizontal className="h-5 w-5" />}
+          icon={<HiEllipsisHorizontal />}
           variant="transparent"
           size="xs"
         />
@@ -35,7 +35,7 @@ export const Actions: React.FC<ActionsProps> = ({
       <DropdownGroup>
         <DropdownItem>
           <Button
-            icon={<HiOutlinePencil className="h-5 w-5" />}
+            icon={<HiOutlinePencil />}
             variant="transparent"
             size="xs"
             fluid
@@ -49,7 +49,7 @@ export const Actions: React.FC<ActionsProps> = ({
       <DropdownGroup>
         <DropdownItem>
           <Button
-            icon={<HiOutlineArchiveBox className="h-5 w-5" />}
+            icon={<HiOutlineArchiveBox />}
             variant="transparent"
             size="xs"
             fluid
@@ -61,7 +61,7 @@ export const Actions: React.FC<ActionsProps> = ({
         </DropdownItem>
         <DropdownItem>
           <Button
-            icon={<HiOutlineTrash className="h-5 w-5" />}
+            icon={<HiOutlineTrash />}
             variant="danger"
             size="xs"
             fluid

@@ -83,7 +83,7 @@ export const List: React.FC<ListProps> = ({
       </Droppable>
       <div className="mt-2 flex items-start">
         <Button
-          icon={<HiPlus className="h-5 w-5" />}
+          icon={<HiPlus />}
           variant="transparent"
           size="xs"
           fluid

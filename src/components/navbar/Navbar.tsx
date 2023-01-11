@@ -66,7 +66,7 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
         </div>
         <div className="z-10 flex items-center gap-4">
           <Button
-            icon={<HiOutlineBell className="h-5 w-5" />}
+            icon={<HiOutlineBell />}
             variant="transparent"
             size="xs"
             disabled
