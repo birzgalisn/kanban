@@ -94,6 +94,7 @@ export function useRenameList() {
   const openRenameModal = (props: RenameModalProps) => {
     if (modalRef.current) {
       setRenameOnList(props);
+      form.reset({ title: props.title });
       modalRef.current.toggleVisibility();
     }
   };
