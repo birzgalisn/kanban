@@ -33,7 +33,7 @@ export const Modal = forwardRef<ModalHandle, ModalProps>(
           className="fixed inset-0 z-10 h-screen w-screen bg-white opacity-65"
           onClick={toggleVisibility}
         ></div>
-        <div className="fixed inset-0 z-30 mx-auto mt-[10vh] flex min-h-min max-w-lg flex-col lg:mt-[20vh]">
+        <div className="fixed inset-0 z-30 mx-auto mt-[10vh] flex h-fit min-h-fit max-w-lg flex-col lg:mt-[20vh]">
           <div className="mx-auto flex h-full w-full max-w-lg flex-col rounded-lg border border-gray-200 bg-white p-6 shadow-3xl lg:p-10">
             <div className="mb-4 flex justify-between lg:mb-6">
               <div className="flex flex-col">
