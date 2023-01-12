@@ -5,7 +5,8 @@ import { useMembers } from "./hooks";
 import { Layout } from "@/components/layout";
 import { LayoutWrapper } from "@/components/layoutWrapper";
 import { Navbar } from "@/components/navbar";
-import { Section, WorkspaceMembersWrapper } from "../../components/section/";
+import { SectionHeading } from "@/components/section/SectionHeading";
+import { SectionWrapper } from "../../components/section/";
 import { Members } from "./components/members";
 
 export const WorkspaceMembers: React.FC<{}> = () => {
@@ -29,15 +30,13 @@ export const WorkspaceMembers: React.FC<{}> = () => {
         ]}
       />
       <Layout noMargin>
-        <WorkspaceMembersWrapper>
-          <Section>
-            <h1 className="text-3xl font-bold">Members</h1>
-            <p className="mt-2 font-semibold text-gray-900">
-              All assigned members to the workspace
-            </p>
-          </Section>
+        <SectionWrapper>
+          <SectionHeading
+            title="Members"
+            subtitle="All assigned members to the workspace"
+          />
           <Members isLoading={membersQuery.loading} members={members} />
-        </WorkspaceMembersWrapper>
+        </SectionWrapper>
       </Layout>
     </LayoutWrapper>
   );

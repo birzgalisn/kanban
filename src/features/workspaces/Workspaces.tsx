@@ -7,11 +7,11 @@ import { Layout } from "@/components/layout";
 import { LayoutWrapper } from "@/components/layoutWrapper";
 import { Modal } from "@/components/modal";
 import { Navbar } from "@/components/navbar";
+import { Section, SectionWrapper } from "@/components/section";
+import { SectionHeading } from "@/components/section/SectionHeading";
 import { Button } from "@/ui/button";
 import { HiPlus } from "react-icons/hi2";
-import { Bar } from "./components/Bar";
 import { WorkspacesPreview } from "./components/WorkspacesPreview";
-import { WorkspacesWrapper } from "./components/WorkspacesWrapper";
 
 export const Workspaces: React.FC<{}> = () => {
   const workspaces = useWorkspaces();
@@ -26,9 +26,9 @@ export const Workspaces: React.FC<{}> = () => {
   return (
     <LayoutWrapper>
       <Navbar />
-      <Layout>
-        <WorkspacesWrapper>
-          <Bar
+      <Layout noMargin>
+        <SectionWrapper>
+          <SectionHeading
             title="Workspaces"
             subtitle="Your most recent workspaces"
             action={
@@ -42,35 +42,37 @@ export const Workspaces: React.FC<{}> = () => {
               </Button>
             }
           />
-          <WorkspacesPreview
-            workspaces={workspaces.data?.workspaces}
-            isLoading={workspaces.loading}
-            createWorkspaceModalRef={createWorkspaceModalRef}
-          />
-          <Modal
-            title="Create a workspace"
-            subtitle="The beginning is always now"
-            ref={createWorkspaceModalRef}
+          <Section>
+            <WorkspacesPreview
+              workspaces={workspaces.data?.workspaces}
+              isLoading={workspaces.loading}
+              createWorkspaceModalRef={createWorkspaceModalRef}
+            />
+          </Section>
+        </SectionWrapper>
+        <Modal
+          title="Create a workspace"
+          subtitle="The beginning is always now"
+          ref={createWorkspaceModalRef}
+        >
+          <Form
+            form={createWorkspaceForm}
+            onSubmit={handleCreateWorkspaceSubmit}
           >
-            <Form
-              form={createWorkspaceForm}
-              onSubmit={handleCreateWorkspaceSubmit}
+            <Input
+              label="Title"
+              placeholder="Enter the new workspace title"
+              {...createWorkspaceForm.register("title")}
+              autoFocus
+            />
+            <Button
+              type="submit"
+              isLoading={createWorkspaceForm.formState.isSubmitting}
             >
-              <Input
-                label="Title"
-                placeholder="Enter the new workspace title"
-                {...createWorkspaceForm.register("title")}
-                autoFocus
-              />
-              <Button
-                type="submit"
-                isLoading={createWorkspaceForm.formState.isSubmitting}
-              >
-                Create
-              </Button>
-            </Form>
-          </Modal>
-        </WorkspacesWrapper>
+              Create
+            </Button>
+          </Form>
+        </Modal>
       </Layout>
     </LayoutWrapper>
   );
