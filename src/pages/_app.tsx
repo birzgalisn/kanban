@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 
 import { useApollo } from "@/hooks/useApollo";
 import { ApolloProvider } from "@apollo/client";
+import { Analytics } from "@vercel/analytics/react";
 import { SessionProvider } from "next-auth/react";
 
 import type { AppProps } from "next/app";
@@ -16,6 +17,7 @@ export default function App({
     <SessionProvider session={session}>
       <ApolloProvider client={client}>
         <Component {...pageProps} />
+        <Analytics />
       </ApolloProvider>
     </SessionProvider>
   );
