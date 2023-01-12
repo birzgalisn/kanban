@@ -116,7 +116,7 @@ builder.mutationField("createWorkspace", (t) =>
           },
         },
       });
-      return memberOf.workspace as WorkspaceType;
+      return memberOf.workspace;
     },
   }),
 );

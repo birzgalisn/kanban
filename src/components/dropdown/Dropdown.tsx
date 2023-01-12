@@ -14,7 +14,7 @@ export const Dropdown: React.FC<{
       >
         {button}
       </Menu.Button>
-      <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-lg border bg-white shadow-lg focus:outline-none">
+      <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-lg border bg-white shadow-lg focus:outline-none">
         {children}
       </Menu.Items>
     </Menu>

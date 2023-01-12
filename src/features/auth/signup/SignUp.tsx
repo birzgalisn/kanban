@@ -87,7 +87,7 @@ export const SignUp: React.FC<{}> = () => {
             const data = createUserResult?.data?.createUser;
             if (data?.__typename === "ZodError") {
               return data.fieldErrors.forEach((error) => {
-                const field = error.path.pop() as any;
+                const [field] = error.path.slice(-1) as any;
                 form.setError(field, { message: error.message });
               });
             }

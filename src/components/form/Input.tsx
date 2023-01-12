@@ -10,7 +10,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(
   ({ className, ...props }, ref) => (
     <FormField {...{ className }} {...props}>
       <input
-        className="w-full bg-transparent placeholder-gray-300 outline-none"
+        className="w-full bg-transparent text-inherit placeholder-gray-300 outline-none"
         id={props.name}
         ref={ref}
         {...props}

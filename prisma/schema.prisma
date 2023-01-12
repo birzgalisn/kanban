@@ -104,12 +104,12 @@ model Workspace {
 }
 
 model Member {
-  id          String     @id @default(cuid())
-  user        User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String?
-  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  workspaceId String?
-  isOwner     Boolean    @default(false)
+  id          String    @id @default(cuid())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  isOwner     Boolean   @default(false)
   invites     Invite[]
   comments    Comment[]
 

@@ -15,17 +15,17 @@ export const WORKSPACE_PREVIEW_FIELDS = gql`
   }
 `;
 
+export const GET_WORKSPACES = gql`
+  query Workspaces {
+    workspaces {
+      ...WorkspacePreviewFields
+    }
+  }
+  ${WORKSPACE_PREVIEW_FIELDS}
+`;
+
 export function useWorkspaces() {
-  const workspacesResult = useQuery<WorkspacesQuery>(
-    gql`
-      query Workspaces {
-        workspaces {
-          ...WorkspacePreviewFields
-        }
-      }
-      ${WORKSPACE_PREVIEW_FIELDS}
-    `,
-  );
+  const workspacesResult = useQuery<WorkspacesQuery>(GET_WORKSPACES);
 
   return workspacesResult;
 }

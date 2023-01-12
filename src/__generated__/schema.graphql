@@ -1,3 +1,7 @@
+input AddMemberInput {
+  email: String!
+}
+
 type Board {
   createdAt: DateTime!
   id: ID!
@@ -105,12 +109,13 @@ type Member {
   isOwner: Boolean!
   updatedAt: DateTime!
   user: User!
-  userId: String
+  userId: String!
   workspace: Workspace!
-  workspaceId: String
+  workspaceId: String!
 }
 
 type Mutation {
+  addMember(input: AddMemberInput!, workspaceId: String!): MutationAddMemberResult!
   createBoard(input: CreateBoardInput!, workspaceId: String!): MutationCreateBoardResult!
   createCard(input: CreateCardInput!, listId: String!): MutationCreateCardResult!
   createList(boardId: String!, input: CreateListInput!): MutationCreateListResult!
@@ -121,7 +126,15 @@ type Mutation {
   editCardDescription(cardId: String!, input: EditCardDescriptionInput!): MutationEditCardDescriptionResult!
   editCardTitle(cardId: String!, input: EditCardTitleInput!): MutationEditCardTitleResult!
   moveCard(destination: String!, id: String!): Card!
+  removeMember(memberId: String!): MutationRemoveMemberResult!
   renameList(id: String!, input: RenameListInput!): MutationRenameListResult!
+  transferOwnership(memberId: String!): MutationTransferOwnershipResult!
+}
+
+union MutationAddMemberResult = MutationAddMemberSuccess | ZodError
+
+type MutationAddMemberSuccess {
+  data: Member!
 }
 
 union MutationCreateBoardResult = MutationCreateBoardSuccess | ZodError
@@ -172,10 +185,22 @@ type MutationEditCardTitleSuccess {
   data: Card!
 }
 
+union MutationRemoveMemberResult = MutationRemoveMemberSuccess | ZodError
+
+type MutationRemoveMemberSuccess {
+  data: Member!
+}
+
 union MutationRenameListResult = MutationRenameListSuccess | ZodError
 
 type MutationRenameListSuccess {
   data: List!
+}
+
+union MutationTransferOwnershipResult = MutationTransferOwnershipSuccess | ZodError
+
+type MutationTransferOwnershipSuccess {
+  data: Member!
 }
 
 type Query {
@@ -183,6 +208,7 @@ type Query {
   card(id: String!): Card!
   list(id: String!): List!
   me: User!
+  members(workspaceId: String!): [Member!]!
   workspace(id: String!): Workspace!
   workspaces: [Workspace!]
 }
