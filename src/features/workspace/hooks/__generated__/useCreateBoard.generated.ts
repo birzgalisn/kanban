@@ -13,7 +13,14 @@ export type CreateBoardMutation = {
   createBoard:
     | {
         __typename?: "MutationCreateBoardSuccess";
-        data: { __typename?: "Board"; id: string; title: string };
+        data: {
+          __typename?: "Board";
+          id: string;
+          title: string;
+          totalLists: number;
+          totalCards: number;
+          createdAt: any;
+        };
       }
     | { __typename?: "ZodError" };
 };

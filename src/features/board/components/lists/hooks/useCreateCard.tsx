@@ -4,12 +4,17 @@ import { useRef, useState } from "react";
 import { z } from "zod";
 
 import { CARD_PREVIEW_FIELDS, GET_BOARD } from "@/features/board/hooks";
+import { GET_WORKSPACE } from "@/features/workspace/hooks";
 
 import type { ModalHandle } from "@/components/modal";
 import type {
   BoardQuery,
   BoardQueryVariables,
 } from "@/features/board/hooks/__generated__/useBoard.generated";
+import type {
+  WorkspaceQuery,
+  WorkspaceQueryVariables,
+} from "@/features/workspace/hooks/__generated__/useWorkspace.generated";
 import type {
   CreateCardMutation,
   CreateCardMutationVariables,
@@ -33,6 +38,7 @@ export type OpenModalProps = { id: string; title: string };
 export function useCreateCard() {
   const router = useRouter();
   const boardId = router.query.boardId as string;
+  const workspaceId = router.query.workspaceId as string;
 
   const [createCard] = useMutation<
     CreateCardMutation,
@@ -75,6 +81,28 @@ export function useCreateCard() {
                   ...list,
                   cards: list.cards.concat(createdCard.data),
                 };
+              }),
+            },
+          },
+        });
+
+        const existingWorkspace = cache.readQuery<
+          WorkspaceQuery,
+          WorkspaceQueryVariables
+        >({ query: GET_WORKSPACE, variables: { workspaceId } })?.workspace;
+
+        if (!existingWorkspace) return;
+
+        cache.writeQuery<WorkspaceQuery, WorkspaceQueryVariables>({
+          query: GET_WORKSPACE,
+          variables: { workspaceId },
+          data: {
+            workspace: {
+              ...existingWorkspace,
+              boards: existingWorkspace.boards.map((board) => {
+                if (board.id === existingBoard.id)
+                  return { ...board, totalCards: board.totalCards + 1 };
+                return board;
               }),
             },
           },

@@ -3,12 +3,17 @@ import { useRouter } from "next/router";
 import React from "react";
 
 import { GET_BOARD } from "@/features/board/hooks";
+import { GET_WORKSPACE } from "@/features/workspace/hooks";
 
 import type { DrawerHandle } from "@/components/drawer";
 import type {
   BoardQuery,
   BoardQueryVariables,
 } from "@/features/board/hooks/__generated__/useBoard.generated";
+import type {
+  WorkspaceQuery,
+  WorkspaceQueryVariables,
+} from "@/features/workspace/hooks/__generated__/useWorkspace.generated";
 import type {
   DeleteCardMutation,
   DeleteCardMutationVariables,
@@ -21,6 +26,7 @@ export type UseDeleteProps = {
 export function useDelete({ drawerRef }: UseDeleteProps) {
   const router = useRouter();
   const boardId = router.query.boardId as string;
+  const workspaceId = router.query.workspaceId as string;
 
   const [deleteCard] = useMutation<
     DeleteCardMutation,
@@ -83,6 +89,28 @@ export function useDelete({ drawerRef }: UseDeleteProps) {
             board: {
               ...existingBoard,
               lists: updatedLists,
+            },
+          },
+        });
+
+        const existingWorkspace = cache.readQuery<
+          WorkspaceQuery,
+          WorkspaceQueryVariables
+        >({ query: GET_WORKSPACE, variables: { workspaceId } })?.workspace;
+
+        if (!existingWorkspace) return;
+
+        cache.writeQuery<WorkspaceQuery, WorkspaceQueryVariables>({
+          query: GET_WORKSPACE,
+          variables: { workspaceId },
+          data: {
+            workspace: {
+              ...existingWorkspace,
+              boards: existingWorkspace.boards.map((board) => {
+                if (board.id === existingBoard.id)
+                  return { ...board, totalCards: board.totalCards - 1 };
+                return board;
+              }),
             },
           },
         });

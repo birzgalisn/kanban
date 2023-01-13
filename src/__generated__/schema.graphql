@@ -7,6 +7,8 @@ type Board {
   id: ID!
   lists: [List!]!
   title: String!
+  totalCards: Int!
+  totalLists: Int!
   updatedAt: DateTime!
   workspace: Workspace!
   workspaceId: String!
@@ -69,6 +71,10 @@ A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `dat
 """
 scalar DateTime
 
+input EditBoardTitleInput {
+  title: String!
+}
+
 input EditCardDescriptionInput {
   description: String!
 }
@@ -121,8 +127,10 @@ type Mutation {
   createList(boardId: String!, input: CreateListInput!): MutationCreateListResult!
   createUser(input: CreateUserInput!): MutationCreateUserResult!
   createWorkspace(input: CreateWorkspaceInput!): MutationCreateWorkspaceResult!
+  deleteBoard(boardId: String!): Board!
   deleteCard(id: String!): MutationDeleteCardResult!
   deleteList(id: String!): List!
+  editBoardTitle(boardId: String!, input: EditBoardTitleInput!): MutationEditBoardTitleResult!
   editCardDescription(cardId: String!, input: EditCardDescriptionInput!): MutationEditCardDescriptionResult!
   editCardTitle(cardId: String!, input: EditCardTitleInput!): MutationEditCardTitleResult!
   moveCard(destination: String!, id: String!): Card!
@@ -171,6 +179,12 @@ union MutationDeleteCardResult = MutationDeleteCardSuccess | ZodError
 
 type MutationDeleteCardSuccess {
   data: Card!
+}
+
+union MutationEditBoardTitleResult = MutationEditBoardTitleSuccess | ZodError
+
+type MutationEditBoardTitleSuccess {
+  data: Board!
 }
 
 union MutationEditCardDescriptionResult = MutationEditCardDescriptionSuccess | ZodError

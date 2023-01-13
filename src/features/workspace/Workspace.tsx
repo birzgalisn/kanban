@@ -7,15 +7,11 @@ import { Layout } from "@/components/layout";
 import { LayoutWrapper } from "@/components/layoutWrapper";
 import { Modal } from "@/components/modal";
 import { Navbar } from "@/components/navbar";
+import { SectionWrapper } from "@/components/section";
+import { SectionHeading } from "@/components/section/SectionHeading";
 import { Button } from "@/ui/button";
-import {
-  HiOutlineGlobeEuropeAfrica,
-  HiOutlineStar,
-  HiOutlineUserPlus,
-  HiPlus,
-} from "react-icons/hi2";
-import { GreetingModal } from "./components/GreetingModal";
-import { WorkspaceMenu } from "./components/WorkspaceMenu";
+import { HiPlus } from "react-icons/hi2";
+import { Boards } from "./components/Boards";
 
 export const Workspace: React.FC<{}> = () => {
   const workspaceQuery = useWorkspace();
@@ -40,11 +36,27 @@ export const Workspace: React.FC<{}> = () => {
         ]}
       />
       <Layout noMargin>
-        <WorkspaceMenu
-          isLoading={workspaceQuery.loading}
-          boards={workspace?.boards}
-          createBoardModalRef={createBoardModalRef}
-        />
+        <SectionWrapper>
+          <SectionHeading
+            title="All boards"
+            subtitle="Personalize your workspace boards"
+            action={
+              <Button
+                icon={<HiPlus />}
+                size="sm"
+                wrap
+                onClick={toggleCreateBoardModal}
+              >
+                Board
+              </Button>
+            }
+          />
+          <Boards
+            isLoading={workspaceQuery.loading}
+            boards={workspace?.boards}
+            openCreateBoard={toggleCreateBoardModal}
+          />
+        </SectionWrapper>
         <Modal
           title="Create a new board"
           subtitle="The secret to getting ahead is getting started"
@@ -65,47 +77,6 @@ export const Workspace: React.FC<{}> = () => {
             </Button>
           </Form>
         </Modal>
-        <GreetingModal
-          title="Great, you have a workspace already!"
-          subtitle="Let's start with basics. What would you like to do first?"
-        >
-          <Button
-            variant="transparent"
-            icon={<HiPlus />}
-            left
-            fluid
-            onClick={toggleCreateBoardModal}
-          >
-            Create a new board
-          </Button>
-          <Button
-            variant="transparent"
-            icon={<HiOutlineUserPlus />}
-            left
-            fluid
-            disabled
-          >
-            Invite people to the workspace
-          </Button>
-          <Button
-            variant="transparent"
-            icon={<HiOutlineStar />}
-            left
-            fluid
-            disabled
-          >
-            Star the workspace
-          </Button>
-          <Button
-            variant="transparent"
-            icon={<HiOutlineGlobeEuropeAfrica />}
-            left
-            fluid
-            disabled
-          >
-            Make the workspace public
-          </Button>
-        </GreetingModal>
       </Layout>
     </LayoutWrapper>
   );

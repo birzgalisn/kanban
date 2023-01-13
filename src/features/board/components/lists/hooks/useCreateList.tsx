@@ -4,12 +4,17 @@ import { useRef } from "react";
 import { z } from "zod";
 
 import { GET_BOARD, LIST_PREVIEW_FIELDS } from "@/features/board/hooks";
+import { GET_WORKSPACE } from "@/features/workspace/hooks";
 
 import type { ModalHandle } from "@/components/modal";
 import type {
   BoardQuery,
   BoardQueryVariables,
 } from "@/features/board/hooks/__generated__/useBoard.generated";
+import type {
+  WorkspaceQuery,
+  WorkspaceQueryVariables,
+} from "@/features/workspace/hooks/__generated__/useWorkspace.generated";
 import type {
   CreateListMutation,
   CreateListMutationVariables,
@@ -31,6 +36,7 @@ type UseCreateListProps = {} & CreateListMutationVariables;
 export function useCreateList() {
   const router = useRouter();
   const boardId = router.query.boardId as string;
+  const workspaceId = router.query.workspaceId as string;
 
   const [createList] = useMutation<
     CreateListMutation,
@@ -68,6 +74,28 @@ export function useCreateList() {
             board: {
               ...existingBoard,
               lists: existingBoard.lists.concat(createdList.data),
+            },
+          },
+        });
+
+        const existingWorkspace = cache.readQuery<
+          WorkspaceQuery,
+          WorkspaceQueryVariables
+        >({ query: GET_WORKSPACE, variables: { workspaceId } })?.workspace;
+
+        if (!existingWorkspace) return;
+
+        cache.writeQuery<WorkspaceQuery, WorkspaceQueryVariables>({
+          query: GET_WORKSPACE,
+          variables: { workspaceId },
+          data: {
+            workspace: {
+              ...existingWorkspace,
+              boards: existingWorkspace.boards.map((board) => {
+                if (board.id === existingBoard.id)
+                  return { ...board, totalLists: board.totalLists + 1 };
+                return board;
+              }),
             },
           },
         });

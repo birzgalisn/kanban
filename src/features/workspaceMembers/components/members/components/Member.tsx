@@ -32,21 +32,19 @@ export const Member: React.FC<MemberProps> = ({ workspaceOwner, member }) => {
 
   return (
     <div className="relative flex h-full w-full flex-col items-center border-b p-4 last:border-b-0 sm:flex-row sm:pr-12">
-      <div className="flex h-9 w-full items-center truncate pr-10 sm:flex-1 sm:pr-2">
+      <div className="flex h-9 w-full items-center gap-2 truncate pr-10 sm:flex-1 sm:pr-2">
         <Avatar
           className="shrink-0"
           src={member.user.image}
           alt={member.user.name}
           size="w-7 h-7"
         />
-        <p className="truncate pl-2 font-semibold sm:flex-1">
-          {member.user.name}
-        </p>
+        <p className="truncate font-semibold sm:flex-1">{member.user.name}</p>
       </div>
-      <p className="flex w-full truncate sm:flex-1 sm:pl-2">
+      <p className="flex w-full truncate sm:flex-1 sm:px-2">
         {member.user.email}
       </p>
-      <p className="flex w-full justify-start truncate sm:flex-1 sm:justify-end sm:pr-4">
+      <p className="flex w-full justify-start truncate px-0 sm:flex-1 sm:justify-end sm:pl-2 sm:pr-4">
         {format(new Date(member.createdAt), "PPP")}
       </p>
       {userId === workspaceOwner?.user.id && member.user.id !== userId ? (

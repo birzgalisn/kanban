@@ -1,8 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 
-import { WORKSPACE_PREVIEW_FIELDS } from "@/features/workspaces/hooks";
-
 import type {
   WorkspaceQuery,
   WorkspaceQueryVariables,
@@ -12,19 +10,22 @@ export const BOARD_PREVIEW_FIELDS = gql`
   fragment BoardPreviewFields on Board {
     id
     title
+    totalLists
+    totalCards
+    createdAt
   }
 `;
 
 export const GET_WORKSPACE = gql`
   query Workspace($workspaceId: String!) {
     workspace(id: $workspaceId) {
-      ...WorkspacePreviewFields
+      id
+      title
       boards {
         ...BoardPreviewFields
       }
     }
   }
-  ${WORKSPACE_PREVIEW_FIELDS}
   ${BOARD_PREVIEW_FIELDS}
 `;
 

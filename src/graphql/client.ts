@@ -26,6 +26,11 @@ function createApolloClient() {
         },
         Workspace: {
           fields: {
+            boards: {
+              merge(existing, incoming) {
+                return incoming;
+              },
+            },
             members: {
               merge(existing, incoming) {
                 return incoming;
