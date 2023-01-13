@@ -13,7 +13,7 @@ export const AuthModal: React.FC<{
 }> = ({ title, aside, link, back, children }) => {
   return (
     <div className="mx-auto flex w-full flex-col lg:flex-row">
-      <div className="mx-auto mb-12 flex w-full max-w-xl flex-1 flex-col lg:mb-20 lg:justify-start">
+      <div className="mx-auto flex w-full max-w-xl flex-1 flex-col lg:justify-start">
         {aside?.title && (
           <h1 className="text-5xl font-semibold lg:text-7xl">{aside.title}</h1>
         )}
@@ -23,14 +23,14 @@ export const AuthModal: React.FC<{
           </p>
         )}
       </div>
-      <div className="flex w-full flex-1 pb-12 lg:justify-end lg:pb-20">
+      <div className="flex w-full flex-1 lg:justify-end">
         <div
           className={clsx(
             "mx-auto flex w-full max-w-lg flex-1 flex-col gap-4 rounded-lg border border-gray-200 bg-white px-6 pb-6 shadow-lg lg:mx-0 lg:gap-6 lg:px-10 lg:pb-10",
             link ? "pt-3 lg:pt-5" : "pt-6 lg:pt-10",
           )}
         >
-          <div className="flex flex-row items-start justify-between">
+          <div className="flex h-9 flex-row items-start justify-between">
             {back}
             {link && (
               <div className="flex flex-1 flex-row justify-end gap-1">
