@@ -12,7 +12,7 @@ export const Zone: React.FC<{
           <h3 className="font-semibold">{title}</h3>
           <p>{subtitle}</p>
         </div>
-        <div className="flex w-full justify-end">{action}</div>
+        <div className="flex w-full justify-end sm:w-fit">{action}</div>
       </div>
     </div>
   );
