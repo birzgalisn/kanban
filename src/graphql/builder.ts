@@ -4,6 +4,7 @@ import ErrorsPlugin from "@pothos/plugin-errors";
 import PrismaPlugin from "@pothos/plugin-prisma";
 import ScopeAuthPlugin from "@pothos/plugin-scope-auth";
 import ValidationPlugin from "@pothos/plugin-validation";
+import { GraphQLError } from "graphql";
 
 import type PrismaTypes from "@pothos/plugin-prisma/generated";
 import type { JWT } from "next-auth/jwt";
@@ -33,6 +34,14 @@ export const builder = new SchemaBuilder<{
     filterConnectionTotalCount: true,
   },
   plugins: [ErrorsPlugin, ValidationPlugin, ScopeAuthPlugin, PrismaPlugin],
+  scopeAuthOptions: {
+    treatErrorsAsUnauthorized: true,
+    unauthorizedError: (parent, context, info, result) => {
+      throw new GraphQLError("You are not authorized to perform this action", {
+        extensions: { code: "FORBIDDEN" },
+      });
+    },
+  },
   authScopes: async ({ req, token }) => {
     const workspaceId = req.headers.referer?.split("/").splice(4, 1).pop();
     const member = await db.member.findFirst({

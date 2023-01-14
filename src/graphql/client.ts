@@ -1,4 +1,5 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 import deepmerge from "deepmerge";
 import { isEqual } from "lodash";
 
@@ -8,11 +9,25 @@ export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null;
 
+const httpLink = new HttpLink({ uri: "/api/graphql" });
+
+const errorLink = onError(({ graphQLErrors, networkError, response }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+      if (
+        extensions.code.includes("FORBIDDEN") &&
+        typeof window !== "undefined"
+      ) {
+        window.location.replace(`${process.env.NEXT_PUBLIC_URL}/workspaces`);
+      }
+    });
+});
+
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     connectToDevTools: process.env.NODE_ENV !== "production",
-    link: createHttpLink({ uri: "/api/graphql" }),
+    link: from([errorLink, httpLink]),
     cache: new InMemoryCache({
       typePolicies: {
         Query: {

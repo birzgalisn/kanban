@@ -14,7 +14,7 @@ type ApolloErrorCode =
   | "BAD_REQUEST"
   | "INTERNAL_SERVER_ERROR";
 
-type Code = ApolloErrorCode | "UNAUTHENTICATED";
+type Code = ApolloErrorCode | "FORBIDDEN";
 
 declare module "graphql/error" {
   interface GraphQLErrorExtensions {
