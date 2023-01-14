@@ -9,6 +9,7 @@ import { Modal } from "@/components/modal";
 import { Section } from "@/components/section";
 import { BoardButton } from "@/ui/boardButton";
 import { Button } from "@/ui/button";
+import clsx from "clsx";
 import { Board } from "./Board";
 import { BoardPreview } from "./BoardPreview";
 
@@ -25,14 +26,20 @@ export const Boards: React.FC<BoardsProps> = ({
   boards,
   openCreateBoard,
 }) => {
+  const hasBoards = !isLoading && boards;
   const [form, handleSubmit, editOnBoard, modalRef, openEditModal] =
     useEditBoardTitle();
 
   return (
     <Section>
       <h2 className="mb-4 text-xl font-semibold">Select board to view</h2>
-      <div className="mb-4 flex h-full w-full flex-col items-center rounded-lg border">
-        {!isLoading && boards
+      <div
+        className={clsx(
+          "mb-4 flex h-full w-full flex-col items-center rounded-lg border",
+          hasBoards && boards.length === 0 && "hidden",
+        )}
+      >
+        {hasBoards
           ? boards.map((board) => (
               <Board
                 key={board.id}
