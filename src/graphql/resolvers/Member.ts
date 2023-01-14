@@ -25,7 +25,7 @@ builder.queryField("members", (t) =>
   t.prismaField({
     type: [MemberObject],
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       workspaceId: t.arg({ type: "String", required: true }),
@@ -60,7 +60,7 @@ builder.mutationField("addMember", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       input: t.arg({ type: AddMemberInput, required: true }),
@@ -114,7 +114,7 @@ builder.mutationField("transferOwnership", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       memberId: t.arg({ type: "String", required: true }),
@@ -159,7 +159,7 @@ builder.mutationField("removeMember", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       memberId: t.arg({ type: "String", required: true }),

@@ -21,7 +21,7 @@ builder.queryField("workspace", (t) =>
   t.prismaField({
     type: WorkspaceObject,
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       id: t.arg({ type: "String", required: true }),

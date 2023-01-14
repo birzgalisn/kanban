@@ -22,7 +22,7 @@ builder.queryField("list", (t) =>
   t.prismaField({
     type: ListObject,
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       id: t.arg({ type: "String", required: true }),
@@ -58,7 +58,7 @@ builder.mutationField("createList", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       input: t.arg({ type: CreateListInput, required: true }),
@@ -97,7 +97,7 @@ builder.mutationField("renameList", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       input: t.arg({ type: RenameListInput, required: true }),
@@ -121,7 +121,7 @@ builder.mutationField("deleteList", (t) =>
   t.prismaField({
     type: ListObject,
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       id: t.arg({ type: "String", required: true }),

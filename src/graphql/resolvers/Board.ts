@@ -46,7 +46,7 @@ builder.queryField("board", (t) =>
   t.prismaField({
     type: BoardObject,
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       id: t.arg({ type: "String", required: true }),
@@ -82,7 +82,7 @@ builder.mutationField("createBoard", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       input: t.arg({ type: CreateBoardInput, required: true }),
@@ -121,7 +121,7 @@ builder.mutationField("editBoardTitle", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       input: t.arg({ type: EditBoardTitleInput, required: true }),
@@ -145,7 +145,7 @@ builder.mutationField("deleteBoard", (t) =>
   t.prismaField({
     type: BoardObject,
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       boardId: t.arg({ type: "String", required: true }),

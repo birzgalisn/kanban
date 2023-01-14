@@ -22,6 +22,7 @@ export const builder = new SchemaBuilder<{
   };
   AuthScopes: {
     user: boolean;
+    member: boolean;
   };
   AuthContexts: {
     token: JWT;
@@ -32,7 +33,16 @@ export const builder = new SchemaBuilder<{
     filterConnectionTotalCount: true,
   },
   plugins: [ErrorsPlugin, ValidationPlugin, ScopeAuthPlugin, PrismaPlugin],
-  authScopes: async ({ token }) => ({
-    user: !!token,
-  }),
+  authScopes: async ({ req, token }) => {
+    const workspaceId = req.headers.referer?.split("/").splice(4, 1).pop();
+    const member = await db.member.findFirst({
+      select: { id: true },
+      where: { userId: token.sub, workspaceId },
+    });
+
+    return {
+      user: !!token,
+      member: !!member,
+    };
+  },
 });

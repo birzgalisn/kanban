@@ -24,7 +24,7 @@ builder.queryField("card", (t) =>
   t.prismaField({
     type: CardObject,
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       id: t.arg({ type: "String", required: true }),
@@ -45,7 +45,7 @@ builder.mutationField("moveCard", (t) =>
   t.prismaField({
     type: CardObject,
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       id: t.arg({ type: "String", required: true }),
@@ -84,7 +84,7 @@ builder.mutationField("createCard", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       input: t.arg({ type: CreateCardInput, required: true }),
@@ -123,7 +123,7 @@ builder.mutationField("editCardTitle", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       input: t.arg({ type: EditCardTitleInput, required: true }),
@@ -168,7 +168,7 @@ builder.mutationField("editCardDescription", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       input: t.arg({ type: EditCardDescriptionInput, required: true }),
@@ -195,7 +195,7 @@ builder.mutationField("deleteCard", (t) =>
       types: [ZodError],
     },
     authScopes: {
-      user: true,
+      member: true,
     },
     args: {
       id: t.arg({ type: "String", required: true }),
