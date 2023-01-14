@@ -61,19 +61,19 @@ export const WorkspaceSettings: React.FC<{}> = () => {
                 <>
                   <div className="flex w-full flex-col gap-1">
                     <TextSkeleton className="h-4 w-20" />
-                    <TextSkeleton className="h-9" fluid />
+                    <TextSkeleton className="h-10" fluid />
                   </div>
                   <ButtonSkeleton size="xs" className="mt-5 w-14" />
                 </>
               ) : (
                 <>
                   <Input
-                    className="h-9"
+                    className="h-10"
                     label="Project name"
                     placeholder="Enter the new workspace title"
                     {...editWorkspaceForm.register("title")}
                   />
-                  <Button className="mt-5" type="submit" size="xs">
+                  <Button className="mt-5" type="submit" size="sm">
                     Save
                   </Button>
                 </>
