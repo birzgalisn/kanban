@@ -30,14 +30,11 @@ export const BoardObject = builder.prismaObject("Board", {
           select: { id: true },
           where: { boardId: parent.id },
         });
-        const issues = await lists.reduce(async (a, b, idx, arr) => {
-          const cards = await db.card.aggregate({
-            _count: { id: true },
-            where: { listId: b.id },
-          });
-          return cards._count.id;
-        }, Promise.resolve(0));
-        return issues;
+        const cards = await db.card.aggregate({
+          _count: { id: true },
+          where: { listId: { in: lists.map((list) => list.id) } },
+        });
+        return cards._count.id;
       },
     }),
     createdAt: t.expose("createdAt", { type: "DateTime" }),
