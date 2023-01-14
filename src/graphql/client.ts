@@ -32,6 +32,11 @@ function createApolloClient() {
       typePolicies: {
         Query: {
           fields: {
+            workspaces: {
+              merge(existing, incoming) {
+                return incoming;
+              },
+            },
             members: {
               merge(existing, incoming) {
                 return incoming;

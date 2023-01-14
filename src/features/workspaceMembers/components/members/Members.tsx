@@ -7,7 +7,6 @@ import type { MembersQuery } from "../../hooks/__generated__/useMembers.generate
 import { Form, Input } from "@/components/form";
 import { Section } from "@/components/section";
 import { Button } from "@/ui/button";
-import { HiOutlineUserPlus } from "react-icons/hi2";
 import { Member } from "./components/Member";
 import { MemberPreview } from "./components/MemberPreview";
 
@@ -39,12 +38,7 @@ export const Members: React.FC<MembersProps> = ({ isLoading, members }) => {
             placeholder="Add by email address"
             {...addMemberForm.register("email")}
           />
-          <Button
-            icon={<HiOutlineUserPlus />}
-            type="submit"
-            variant="primary"
-            size="sm"
-          >
+          <Button type="submit" variant="primary" size="sm">
             Add
           </Button>
         </div>

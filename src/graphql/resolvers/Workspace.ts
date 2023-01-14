@@ -4,7 +4,7 @@ import { ZodError } from "zod";
 
 import type { Workspace as WorkspaceType } from "@/__generated__/types";
 
-import { input as createWorkspaceValidateError } from "@/fixtures/workspace/error";
+import { input as workspaceValidateError } from "@/fixtures/workspace/error";
 
 export const WorkspaceObject = builder.prismaObject("Workspace", {
   fields: (t) => ({
@@ -74,11 +74,11 @@ const CreateWorkspaceInput = builder.inputType("CreateWorkspaceInput", {
       validate: {
         minLength: [
           1,
-          { message: createWorkspaceValidateError.title.length.tooSmall },
+          { message: workspaceValidateError.title.length.tooSmall },
         ],
         maxLength: [
           50,
-          { message: createWorkspaceValidateError.title.length.tooBig },
+          { message: workspaceValidateError.title.length.tooBig },
         ],
       },
     }),
@@ -117,6 +117,71 @@ builder.mutationField("createWorkspace", (t) =>
         },
       });
       return memberOf.workspace;
+    },
+  }),
+);
+
+const EditWorkspaceTitleInput = builder.inputType("EditWorkspaceTitleInput", {
+  fields: (t) => ({
+    title: t.string({
+      required: true,
+      validate: {
+        minLength: [
+          1,
+          { message: workspaceValidateError.title.length.tooSmall },
+        ],
+        maxLength: [
+          50,
+          { message: workspaceValidateError.title.length.tooBig },
+        ],
+      },
+    }),
+  }),
+});
+
+builder.mutationField("editWorkspaceTitle", (t) =>
+  t.prismaField({
+    type: WorkspaceObject,
+    errors: {
+      types: [ZodError],
+    },
+    authScopes: {
+      member: true,
+    },
+    args: {
+      input: t.arg({ type: EditWorkspaceTitleInput, required: true }),
+      workspaceId: t.arg({ type: "String", required: true }),
+    },
+    resolve: async (query, root, { input, workspaceId }, { token }, info) => {
+      return db.workspace.update({
+        ...query,
+        data: {
+          title: input.title,
+        },
+        where: {
+          id: workspaceId,
+        },
+      });
+    },
+  }),
+);
+
+builder.mutationField("deleteWorkspace", (t) =>
+  t.prismaField({
+    type: WorkspaceObject,
+    authScopes: {
+      member: true,
+    },
+    args: {
+      workspaceId: t.arg({ type: "String", required: true }),
+    },
+    resolve: async (query, root, { workspaceId }, { token }, info) => {
+      return db.workspace.delete({
+        ...query,
+        where: {
+          id: workspaceId,
+        },
+      });
     },
   }),
 );

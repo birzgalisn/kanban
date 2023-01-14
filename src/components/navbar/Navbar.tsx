@@ -130,11 +130,7 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
             <>
               <ActiveLink title="Project" href={`${project.url}`} />
               <ActiveLink title="Members" href={`${project.url}/members`} />
-              <ActiveLink
-                title="Settings"
-                href={`${project.url}/settings`}
-                disabled
-              />
+              <ActiveLink title="Settings" href={`${project.url}/settings`} />
             </>
           )}
         </div>
