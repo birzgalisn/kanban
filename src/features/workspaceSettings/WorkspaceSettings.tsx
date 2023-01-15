@@ -10,10 +10,10 @@ import { LayoutWrapper } from "@/components/layoutWrapper";
 import { Navbar } from "@/components/navbar";
 import { Section, SectionWrapper } from "@/components/section";
 import { SectionHeading } from "@/components/section/SectionHeading";
-import { ButtonSkeleton, TextSkeleton } from "@/components/skeleton";
+import { InputSkeleton } from "@/components/skeleton";
 import { Button } from "@/ui/button";
-import { DangerZone } from "./components/DangerZone";
-import { Zone } from "./components/Zone";
+import { DangerZone } from "../../components/dangerZone/DangerZone";
+import { Zone } from "../../components/dangerZone/Zone";
 
 export const WorkspaceSettings: React.FC<{}> = () => {
   const router = useRouter();
@@ -58,26 +58,29 @@ export const WorkspaceSettings: React.FC<{}> = () => {
               onSubmit={handleEditWorkspaecSubmit}
             >
               {workspaceQuery.loading ? (
-                <>
-                  <div className="flex w-full flex-col gap-1">
-                    <TextSkeleton className="h-4 w-20" />
-                    <TextSkeleton className="h-10" fluid />
-                  </div>
-                  <ButtonSkeleton size="xs" className="mt-5 w-14" />
-                </>
+                <div className="flex w-full flex-col">
+                  <span className="pl-[0.1rem] text-sm font-normal">
+                    Project name
+                  </span>
+                  <InputSkeleton className="h-10" fluid />
+                </div>
               ) : (
-                <>
-                  <Input
-                    className="h-10"
-                    label="Project name"
-                    placeholder="Enter the new workspace title"
-                    {...editWorkspaceForm.register("title")}
-                  />
-                  <Button className="mt-5" type="submit" size="sm">
-                    Save
-                  </Button>
-                </>
+                <Input
+                  className="h-10"
+                  label="Project name"
+                  placeholder="Enter the new workspace title"
+                  {...editWorkspaceForm.register("title")}
+                />
               )}
+              <Button
+                className="mt-5"
+                type="submit"
+                size="sm"
+                disabled={workspaceQuery.loading}
+                isLoading={editWorkspaceForm.formState.isSubmitting}
+              >
+                Save
+              </Button>
             </Form>
             <DangerZone>
               <Zone
@@ -86,6 +89,7 @@ export const WorkspaceSettings: React.FC<{}> = () => {
                 action={
                   <Button
                     variant="danger"
+                    disabled={workspaceQuery.loading}
                     onClick={() => deleteWorkspace({ workspaceId })}
                   >
                     Delete
