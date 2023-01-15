@@ -6,7 +6,6 @@ import { ActiveLink } from "@/ui/activeLink";
 import { Avatar } from "@/ui/avatar";
 import { Button } from "@/ui/button";
 import { Logo } from "@/ui/logo";
-import { HiOutlineBell } from "react-icons/hi2";
 import { Dropdown, DropdownGroup, DropdownItem } from "../dropdown";
 import { AvatarSkeleton, TextSkeleton } from "../skeleton";
 import { Divider } from "./components/Divider";
@@ -65,12 +64,6 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
           </div>
         </div>
         <div className="z-10 flex items-center gap-4">
-          <Button
-            icon={<HiOutlineBell />}
-            variant="transparent"
-            size="xs"
-            disabled
-          />
           <Dropdown
             button={
               <Avatar
@@ -98,9 +91,11 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
                 </Link>
               </DropdownItem>
               <DropdownItem>
-                <Button variant="transparent" size="xs" fluid left disabled>
-                  Settings
-                </Button>
+                <Link href="/settings">
+                  <Button variant="transparent" size="xs" fluid left>
+                    Settings
+                  </Button>
+                </Link>
               </DropdownItem>
             </DropdownGroup>
             <DropdownGroup>
@@ -124,7 +119,7 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
           {!project ? (
             <>
               <ActiveLink title="Overview" href="/workspaces" />
-              <ActiveLink title="Settings" href="/settings" disabled />
+              <ActiveLink title="Settings" href="/settings" />
             </>
           ) : (
             <>

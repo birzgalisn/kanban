@@ -4,7 +4,7 @@ import { hash } from "bcrypt";
 import { ZodError } from "zod";
 import { InputError } from "../errors";
 
-import { input as createUserValidateError } from "@/fixtures/auth/error";
+import { input as userValidateError } from "@/fixtures/auth/error";
 
 const UserObjectRole = builder.enumType("Roles", {
   description: "User roles",
@@ -51,40 +51,22 @@ const CreateUserInput = builder.inputType("CreateUserInput", {
     email: t.string({
       required: true,
       validate: {
-        minLength: [
-          8,
-          { message: createUserValidateError.email.length.tooSmall },
-        ],
-        maxLength: [
-          32,
-          { message: createUserValidateError.email.length.tooBig },
-        ],
+        minLength: [8, { message: userValidateError.email.length.tooSmall }],
+        maxLength: [32, { message: userValidateError.email.length.tooBig }],
       },
     }),
     name: t.string({
       required: true,
       validate: {
-        minLength: [
-          1,
-          { message: createUserValidateError.name.length.tooSmall },
-        ],
-        maxLength: [
-          32,
-          { message: createUserValidateError.name.length.tooBig },
-        ],
+        minLength: [1, { message: userValidateError.name.length.tooSmall }],
+        maxLength: [32, { message: userValidateError.name.length.tooBig }],
       },
     }),
     password: t.string({
       required: true,
       validate: {
-        minLength: [
-          6,
-          { message: createUserValidateError.password.length.tooSmall },
-        ],
-        maxLength: [
-          64,
-          { message: createUserValidateError.password.length.tooBig },
-        ],
+        minLength: [6, { message: userValidateError.password.length.tooSmall }],
+        maxLength: [64, { message: userValidateError.password.length.tooBig }],
       },
     }),
   }),
@@ -125,6 +107,55 @@ builder.mutationField("createUser", (t) =>
             Math.random() * 12,
           )}.svg`,
         },
+      });
+    },
+  }),
+);
+
+const EditMeNameInput = builder.inputType("EditMeNameInput", {
+  fields: (t) => ({
+    name: t.string({
+      required: true,
+      validate: {
+        minLength: [1, { message: userValidateError.name.length.tooSmall }],
+        maxLength: [32, { message: userValidateError.name.length.tooBig }],
+      },
+    }),
+  }),
+});
+
+builder.mutationField("editMeName", (t) =>
+  t.prismaField({
+    type: UserObject,
+    authScopes: {
+      user: true,
+    },
+    errors: {
+      types: [ZodError],
+    },
+    args: {
+      input: t.arg({ type: EditMeNameInput, required: true }),
+    },
+    resolve: async (query, root, { input }, { token }, info) => {
+      return db.user.update({
+        ...query,
+        data: { name: input.name },
+        where: { id: token.sub },
+      });
+    },
+  }),
+);
+
+builder.mutationField("deleteMe", (t) =>
+  t.prismaField({
+    type: UserObject,
+    authScopes: {
+      user: true,
+    },
+    resolve: async (query, root, args, { token }, info) => {
+      return db.user.delete({
+        ...query,
+        where: { id: token.sub },
       });
     },
   }),

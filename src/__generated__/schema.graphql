@@ -83,6 +83,10 @@ input EditCardTitleInput {
   title: String!
 }
 
+input EditMeNameInput {
+  name: String!
+}
+
 input EditWorkspaceTitleInput {
   title: String!
 }
@@ -134,10 +138,12 @@ type Mutation {
   deleteBoard(boardId: String!): Board!
   deleteCard(id: String!): MutationDeleteCardResult!
   deleteList(id: String!): List!
+  deleteMe: User!
   deleteWorkspace(workspaceId: String!): Workspace!
   editBoardTitle(boardId: String!, input: EditBoardTitleInput!): MutationEditBoardTitleResult!
   editCardDescription(cardId: String!, input: EditCardDescriptionInput!): MutationEditCardDescriptionResult!
   editCardTitle(cardId: String!, input: EditCardTitleInput!): MutationEditCardTitleResult!
+  editMeName(input: EditMeNameInput!): MutationEditMeNameResult!
   editWorkspaceTitle(input: EditWorkspaceTitleInput!, workspaceId: String!): MutationEditWorkspaceTitleResult!
   moveCard(destination: String!, id: String!): Card!
   removeMember(memberId: String!): MutationRemoveMemberResult!
@@ -203,6 +209,12 @@ union MutationEditCardTitleResult = MutationEditCardTitleSuccess | ZodError
 
 type MutationEditCardTitleSuccess {
   data: Card!
+}
+
+union MutationEditMeNameResult = MutationEditMeNameSuccess | ZodError
+
+type MutationEditMeNameSuccess {
+  data: User!
 }
 
 union MutationEditWorkspaceTitleResult = MutationEditWorkspaceTitleSuccess | ZodError

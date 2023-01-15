@@ -108,6 +108,10 @@ export type EditCardTitleInput = {
   title: Scalars["String"];
 };
 
+export type EditMeNameInput = {
+  name: Scalars["String"];
+};
+
 export type EditWorkspaceTitleInput = {
   title: Scalars["String"];
 };
@@ -163,10 +167,12 @@ export type Mutation = {
   deleteBoard: Board;
   deleteCard: MutationDeleteCardResult;
   deleteList: List;
+  deleteMe: User;
   deleteWorkspace: Workspace;
   editBoardTitle: MutationEditBoardTitleResult;
   editCardDescription: MutationEditCardDescriptionResult;
   editCardTitle: MutationEditCardTitleResult;
+  editMeName: MutationEditMeNameResult;
   editWorkspaceTitle: MutationEditWorkspaceTitleResult;
   moveCard: Card;
   removeMember: MutationRemoveMemberResult;
@@ -231,6 +237,10 @@ export type MutationEditCardDescriptionArgs = {
 export type MutationEditCardTitleArgs = {
   cardId: Scalars["String"];
   input: EditCardTitleInput;
+};
+
+export type MutationEditMeNameArgs = {
+  input: EditMeNameInput;
 };
 
 export type MutationEditWorkspaceTitleArgs = {
@@ -332,6 +342,13 @@ export type MutationEditCardTitleResult =
 export type MutationEditCardTitleSuccess = {
   __typename?: "MutationEditCardTitleSuccess";
   data: Card;
+};
+
+export type MutationEditMeNameResult = MutationEditMeNameSuccess | ZodError;
+
+export type MutationEditMeNameSuccess = {
+  __typename?: "MutationEditMeNameSuccess";
+  data: User;
 };
 
 export type MutationEditWorkspaceTitleResult =
@@ -587,6 +604,7 @@ export type ResolversTypes = {
   EditBoardTitleInput: EditBoardTitleInput;
   EditCardDescriptionInput: EditCardDescriptionInput;
   EditCardTitleInput: EditCardTitleInput;
+  EditMeNameInput: EditMeNameInput;
   EditWorkspaceTitleInput: EditWorkspaceTitleInput;
   Error: ResolversTypes["ZodError"];
   ID: ResolverTypeWrapper<Scalars["ID"]>;
@@ -635,6 +653,10 @@ export type ResolversTypes = {
     | ResolversTypes["MutationEditCardTitleSuccess"]
     | ResolversTypes["ZodError"];
   MutationEditCardTitleSuccess: ResolverTypeWrapper<MutationEditCardTitleSuccess>;
+  MutationEditMeNameResult:
+    | ResolversTypes["MutationEditMeNameSuccess"]
+    | ResolversTypes["ZodError"];
+  MutationEditMeNameSuccess: ResolverTypeWrapper<MutationEditMeNameSuccess>;
   MutationEditWorkspaceTitleResult:
     | ResolversTypes["MutationEditWorkspaceTitleSuccess"]
     | ResolversTypes["ZodError"];
@@ -680,6 +702,7 @@ export type ResolversParentTypes = {
   EditBoardTitleInput: EditBoardTitleInput;
   EditCardDescriptionInput: EditCardDescriptionInput;
   EditCardTitleInput: EditCardTitleInput;
+  EditMeNameInput: EditMeNameInput;
   EditWorkspaceTitleInput: EditWorkspaceTitleInput;
   Error: ResolversParentTypes["ZodError"];
   ID: Scalars["ID"];
@@ -728,6 +751,10 @@ export type ResolversParentTypes = {
     | ResolversParentTypes["MutationEditCardTitleSuccess"]
     | ResolversParentTypes["ZodError"];
   MutationEditCardTitleSuccess: MutationEditCardTitleSuccess;
+  MutationEditMeNameResult:
+    | ResolversParentTypes["MutationEditMeNameSuccess"]
+    | ResolversParentTypes["ZodError"];
+  MutationEditMeNameSuccess: MutationEditMeNameSuccess;
   MutationEditWorkspaceTitleResult:
     | ResolversParentTypes["MutationEditWorkspaceTitleSuccess"]
     | ResolversParentTypes["ZodError"];
@@ -941,6 +968,7 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationDeleteListArgs, "id">
   >;
+  deleteMe?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   deleteWorkspace?: Resolver<
     ResolversTypes["Workspace"],
     ParentType,
@@ -964,6 +992,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationEditCardTitleArgs, "cardId" | "input">
+  >;
+  editMeName?: Resolver<
+    ResolversTypes["MutationEditMeNameResult"],
+    ParentType,
+    ContextType,
+    RequireFields<MutationEditMeNameArgs, "input">
   >;
   editWorkspaceTitle?: Resolver<
     ResolversTypes["MutationEditWorkspaceTitleResult"],
@@ -1184,6 +1218,25 @@ export type MutationEditCardTitleSuccessResolvers<
   ParentType extends ResolversParentTypes["MutationEditCardTitleSuccess"] = ResolversParentTypes["MutationEditCardTitleSuccess"],
 > = {
   data?: Resolver<ResolversTypes["Card"], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type MutationEditMeNameResultResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationEditMeNameResult"] = ResolversParentTypes["MutationEditMeNameResult"],
+> = {
+  __resolveType: TypeResolveFn<
+    "MutationEditMeNameSuccess" | "ZodError",
+    ParentType,
+    ContextType
+  >;
+};
+
+export type MutationEditMeNameSuccessResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes["MutationEditMeNameSuccess"] = ResolversParentTypes["MutationEditMeNameSuccess"],
+> = {
+  data?: Resolver<ResolversTypes["User"], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -1424,6 +1477,8 @@ export type Resolvers<ContextType = any> = {
   MutationEditCardDescriptionSuccess?: MutationEditCardDescriptionSuccessResolvers<ContextType>;
   MutationEditCardTitleResult?: MutationEditCardTitleResultResolvers<ContextType>;
   MutationEditCardTitleSuccess?: MutationEditCardTitleSuccessResolvers<ContextType>;
+  MutationEditMeNameResult?: MutationEditMeNameResultResolvers<ContextType>;
+  MutationEditMeNameSuccess?: MutationEditMeNameSuccessResolvers<ContextType>;
   MutationEditWorkspaceTitleResult?: MutationEditWorkspaceTitleResultResolvers<ContextType>;
   MutationEditWorkspaceTitleSuccess?: MutationEditWorkspaceTitleSuccessResolvers<ContextType>;
   MutationRemoveMemberResult?: MutationRemoveMemberResultResolvers<ContextType>;
