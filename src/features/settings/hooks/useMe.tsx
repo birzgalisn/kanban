@@ -54,7 +54,7 @@ export function useMe() {
         editMeName: { data: { id: me, name: input.name } },
       },
     });
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/auth/session?update`);
+    await fetch("/api/auth/session?update");
     document.dispatchEvent(new Event("visibilitychange"));
   };
 
