@@ -35,6 +35,7 @@ export const SignIn: React.FC<{}> = () => {
   const error = router.query.error as string;
   const email = router.query.email as string;
   const [message, setMessage] = useState<string>();
+  const [isLoading, setIsLoading] = useState<boolean>();
   const [withCredentials, setWithCredentials] = useState<boolean>();
   const form = useZodForm({ schema: SignInSchema });
 
@@ -126,7 +127,10 @@ export const SignIn: React.FC<{}> = () => {
             </Button>
             <Button
               variant="secondary"
+              isLoading={isLoading}
+              disabled={isLoading}
               onClick={() => {
+                setIsLoading(true);
                 signInWith("credentials", {
                   email: "guest@kanban.lv",
                   password: "N77BFCm1o2obv5L36rER",
