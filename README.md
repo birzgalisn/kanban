@@ -1,27 +1,68 @@
-# Next.js + Tailwind CSS Example
+# Manage projects easily - Kanban
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.2)](https://tailwindcss.com/blog/tailwindcss-v3-2) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+Kanban board management software with focus to simplicity.
 
-## Deploy your own
+Workspace members can easily add other users to it, read, create and update issues created by themselves or others.
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+View live version now at: [https://www.kanban.lv](https://www.kanban.lv)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
+## Used solutions to achieve MVP
 
-## How to use
+The project is build with [TypeScript](https://www.typescriptlang.org) and [React](https://reactjs.org) by leveraging powerfull features of [Next.js](https://nextjs.org) framework.
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+All server and client side communication is accomplished with [GraphQL](https://graphql.org) via [Apollo Client](https://www.apollographql.com) and [Apollo Server](https://www.apollographql.com). Client side fetched data is memory cached and after each request is updated with latest information.
+
+GraphQL schema is built by using [Pothos GraphQL](https://pothos-graphql.dev) with additional plugins:
+
+- [Auth plugin](https://pothos-graphql.dev/docs/plugins/scope-auth) - to ensure that only authorized users can interact with assigned workspace;
+
+- [Prisma plugin](https://pothos-graphql.dev/docs/plugins/prisma) - to tighter integrate Pothos with Prisma and making easier to define Prisma based object types and resolve queries fater;
+
+- [Validation plugin](https://pothos-graphql.dev/docs/plugins/validation) - to always validate query fields arguments based on [Zod](https://zod.dev) schema;
+
+- [Error plugin](https://pothos-graphql.dev/docs/plugins/errors) - for easily including error types in GraphQL schema and hooking up error types to resolvers.
+
+All user generated data is saved to [PlanetScale](https://planetscale.com) serverless [MySQL](https://www.mysql.com) database.
+
+[Next Auth](https://next-auth.js.org) was used to handle user authnetication and sign in with [Discord](https://discord.com) or [GitHub](https://github.com).
+
+For styling the user interface, custom React components were written by using [Tailwind CSS](https://tailwindcss.com/) [(v3.2)](https://tailwindcss.com/blog/tailwindcss-v3-2).
+
+The project is deployed on [Vercel](https://vercel.com) with automatic continuous integration (CI) and continuous delivery (CD).
+
+## Getting started
+
+First, clone the project from GitHub and install all necesary dependencies:
 
 ```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
+git clone https://github.com/birzgalisn/kanban.git
+cd kanban/
+npm install
 ```
+
+After project is cloned and packages are installed, environment variables needs to be set. Clone `.env.example` and fill in blank fields:
 
 ```bash
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
+cp -r .env.example .env
 ```
+
+Then setup development [Docker](https://www.docker.com) container database:
 
 ```bash
-pnpm create next-app --example with-tailwindcss with-tailwindcss-app
+docker compose up -d
 ```
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+When database is ready, push Prisma schema to it and generate it:
+
+```bash
+npx prisma db push
+npx prisma generate
+```
+
+Final step is to start the development server:
+
+```bash
+npm run dev
+```
+
+When server is up and running, you can visit it at: [http://localhost:3000](http://localhost:3000/)
