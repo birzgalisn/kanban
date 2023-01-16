@@ -126,7 +126,7 @@ export const SignIn: React.FC<{}> = () => {
               Continue with email and password
             </Button>
             <Button
-              variant="secondary"
+              variant="primary"
               isLoading={isLoading}
               disabled={isLoading}
               onClick={() => {
