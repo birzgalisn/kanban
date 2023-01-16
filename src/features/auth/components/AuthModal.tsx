@@ -13,7 +13,7 @@ export const AuthModal: React.FC<{
 }> = ({ title, aside, link, back, children }) => {
   return (
     <div className="mx-auto flex w-full flex-col lg:flex-row">
-      <div className="mx-auto flex w-full max-w-xl flex-1 flex-col lg:justify-start">
+      <div className="mx-auto flex w-full max-w-xl flex-1 flex-col pb-12 sm:pb-16 md:pb-20 lg:justify-start lg:pb-0">
         {aside?.title && (
           <h1 className="text-5xl font-semibold lg:text-7xl">{aside.title}</h1>
         )}
