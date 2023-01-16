@@ -124,7 +124,18 @@ export const SignIn: React.FC<{}> = () => {
             >
               Continue with email and password
             </Button>
-            <Button variant="secondary">Continue as guest</Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                signInWith("credentials", {
+                  email: "guest@kanban.lv",
+                  password: "N77BFCm1o2obv5L36rER",
+                  callbackUrl: "/workspaces",
+                });
+              }}
+            >
+              Continue as guest
+            </Button>
           </>
         ) : (
           <>

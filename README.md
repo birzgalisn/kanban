@@ -52,11 +52,12 @@ Then setup development [Docker](https://www.docker.com) container database:
 docker compose up -d
 ```
 
-When database is ready, push Prisma schema to it and generate it:
+When the database is ready, push Prisma schema to it, generate the schema and seed the database:
 
 ```bash
 npx prisma db push
 npx prisma generate
+npx prisma db seed
 ```
 
 Final step is to start the development server:

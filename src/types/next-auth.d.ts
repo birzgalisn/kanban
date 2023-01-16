@@ -7,7 +7,7 @@ import type { DefaultSession } from "next-auth";
 declare module "next-auth" {
   interface User extends PrismaUser {}
 
-  interface Session extends PrismaUser {
+  interface Session {
     user: {
       id: JWT["sub"];
     } & DefaultSession["user"];

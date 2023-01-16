@@ -68,7 +68,9 @@ export const Settings: React.FC<{}> = () => {
                 action={
                   <Button
                     variant="danger"
-                    disabled={meQuery.loading}
+                    disabled={
+                      meQuery.loading || me?.email === "guest@kanban.lv"
+                    }
                     onClick={() => deleteMe()}
                   >
                     Delete
