@@ -63,7 +63,7 @@ export const Landing: React.FC<{}> = () => {
         <GroupScaffold tasks={1} />
         <GroupScaffold tasks={2}>
           <div className="relative h-20 w-full rounded-lg bg-gray-200">
-            <div className="absolute -mt-20 -ml-8 flex h-32 w-80 flex-col gap-2 rounded-lg border border-gray-200 bg-white p-4 shadow-2xl">
+            <div className="absolute -ml-8 -mt-20 flex h-32 w-80 flex-col gap-2 rounded-lg border border-gray-200 bg-white p-4 shadow-2xl">
               <h2 className="text-lg font-semibold subpixel-antialiased">
                 How to increase the landing page conversion
               </h2>

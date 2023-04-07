@@ -52,7 +52,7 @@ export const Board: React.FC<BoardProps> = ({ board, openEditModal }) => {
       <p className="flex w-full justify-start truncate pl-0 sm:flex-1 sm:justify-end sm:pl-2 sm:pr-4">
         {format(new Date(board.createdAt), "PPP")}
       </p>
-      <div className="absolute top-4 right-4 block sm:flex">
+      <div className="absolute right-4 top-4 block sm:flex">
         <Dropdown
           button={
             <Button

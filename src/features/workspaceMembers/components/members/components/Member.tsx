@@ -48,7 +48,7 @@ export const Member: React.FC<MemberProps> = ({ workspaceOwner, member }) => {
         {format(new Date(member.createdAt), "PPP")}
       </p>
       {userId === workspaceOwner?.user.id && member.user.id !== userId ? (
-        <div className="absolute top-4 right-4 block sm:flex">
+        <div className="absolute right-4 top-4 block sm:flex">
           <Dropdown
             button={
               <Button
