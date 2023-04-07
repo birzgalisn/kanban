@@ -18,42 +18,18 @@ services:
 
   next:
     container_name: kanban-next
-    image: kanban/next-dev
+    image: kanban/next-prod
     build:
       context: .
       dockerfile: Dockerfile
-      target: builder
-    entrypoint: ["npm", "run", "dev"]
-    environment:
-      - NODE_ENV=development
     env_file:
       - .env
     ports:
       - "3000:3000"
-    volumes:
-      - ".:/app"
     depends_on:
       - mysql
     networks:
       - app
-
-  studio:
-    container_name: kanban-studio
-    image: kanban/next-dev
-    entrypoint: ["npx", "prisma", "studio"]
-    ports:
-      - "5555:5555"
-    depends_on:
-      - next
-    networks:
-      - app
-
-  codegen:
-    container_name: kanban-codegen
-    image: kanban/next-dev
-    entrypoint: ["npm", "run", "codegen", "--", "--watch"]
-    depends_on:
-      - next
 
 volumes:
   mysql:
