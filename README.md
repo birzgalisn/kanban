@@ -37,33 +37,27 @@ First, clone the project from GitHub and install all necesary dependencies:
 ```bash
 git clone https://github.com/birzgalisn/kanban.git
 cd kanban/
-npm install
+npm ci
 ```
 
 After project is cloned and packages are installed, environment variables needs to be set. Clone `.env.example` and fill in blank fields:
 
 ```bash
-cp -r .env.example .env
+cp .env.example .env
 ```
 
-Then setup development [Docker](https://www.docker.com) container database:
+Then setup [Docker](https://www.docker.com) development environment:
 
 ```bash
-docker compose up -d
+make dev
 ```
 
-When the database is ready, push Prisma schema to it, generate the schema and seed the database:
+When all is configured, push the Prisma schema and insert data into the database:
 
 ```bash
-npx prisma db push
-npx prisma generate
-npx prisma db seed
+make db-init
 ```
 
-Final step is to start the development server:
+NB: To push the schema to DB, the Docker development environment needs to be running.
 
-```bash
-npm run dev
-```
-
-When server is up and running, you can visit it at: [http://localhost:3000](http://localhost:3000/)
+Finally, when Docker is running and DB is configured, go to [http://localhost:3000](http://localhost:3000/) to begin.
