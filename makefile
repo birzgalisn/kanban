@@ -1,5 +1,5 @@
 # Shortcuts for frequently used commands
-.PHONY: dev prod db-init db-migrate db-push db-seed prune
+.PHONY: dev prod db-init db-migrate db-push db-seed prune prune-dev prune-prod
 
 dev:
 	docker compose up
