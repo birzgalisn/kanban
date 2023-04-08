@@ -1,20 +1,20 @@
-import { builder } from "@/graphql/builder";
-import { db } from "@/lib/db";
-import { ZodError } from "zod";
+import { builder } from '@/graphql/builder';
+import { db } from '@/lib/db';
+import { ZodError } from 'zod';
 
-import type { Board as BoardType } from "@/__generated__/types";
+import type { Board as BoardType } from '@/__generated__/types';
 
-import { input as boardValidateError } from "@/fixtures/board/error";
+import { input as boardValidateError } from '@/fixtures/board/error';
 
-export const BoardObject = builder.prismaObject("Board", {
+export const BoardObject = builder.prismaObject('Board', {
   fields: (t) => ({
-    id: t.exposeID("id"),
-    workspace: t.relation("workspace"),
-    workspaceId: t.exposeString("workspaceId"),
-    title: t.exposeString("title"),
-    lists: t.relation("lists"),
+    id: t.exposeID('id'),
+    workspace: t.relation('workspace'),
+    workspaceId: t.exposeString('workspaceId'),
+    title: t.exposeString('title'),
+    lists: t.relation('lists'),
     totalLists: t.field({
-      type: "Int",
+      type: 'Int',
       resolve: async (parent) => {
         const lists = await db.list.aggregate({
           _count: { id: true },
@@ -24,7 +24,7 @@ export const BoardObject = builder.prismaObject("Board", {
       },
     }),
     totalCards: t.field({
-      type: "Int",
+      type: 'Int',
       resolve: async (parent) => {
         const lists = await db.list.findMany({
           select: { id: true },
@@ -37,19 +37,19 @@ export const BoardObject = builder.prismaObject("Board", {
         return cards._count.id;
       },
     }),
-    createdAt: t.expose("createdAt", { type: "DateTime" }),
-    updatedAt: t.expose("updatedAt", { type: "DateTime" }),
+    createdAt: t.expose('createdAt', { type: 'DateTime' }),
+    updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
   }),
 });
 
-builder.queryField("board", (t) =>
+builder.queryField('board', (t) =>
   t.prismaField({
     type: BoardObject,
     authScopes: {
       member: true,
     },
     args: {
-      id: t.arg({ type: "String", required: true }),
+      id: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { id }, { token }, info) => {
       const board = await db.board.findFirstOrThrow({
@@ -63,7 +63,7 @@ builder.queryField("board", (t) =>
   }),
 );
 
-const CreateBoardInput = builder.inputType("CreateBoardInput", {
+const CreateBoardInput = builder.inputType('CreateBoardInput', {
   fields: (t) => ({
     title: t.string({
       required: true,
@@ -75,7 +75,7 @@ const CreateBoardInput = builder.inputType("CreateBoardInput", {
   }),
 });
 
-builder.mutationField("createBoard", (t) =>
+builder.mutationField('createBoard', (t) =>
   t.prismaField({
     type: BoardObject,
     errors: {
@@ -86,7 +86,7 @@ builder.mutationField("createBoard", (t) =>
     },
     args: {
       input: t.arg({ type: CreateBoardInput, required: true }),
-      workspaceId: t.arg({ type: "String", required: true }),
+      workspaceId: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { input, workspaceId }, { token }, info) => {
       return db.board.create({
@@ -102,7 +102,7 @@ builder.mutationField("createBoard", (t) =>
   }),
 );
 
-const EditBoardTitleInput = builder.inputType("EditBoardTitleInput", {
+const EditBoardTitleInput = builder.inputType('EditBoardTitleInput', {
   fields: (t) => ({
     title: t.string({
       required: true,
@@ -114,7 +114,7 @@ const EditBoardTitleInput = builder.inputType("EditBoardTitleInput", {
   }),
 });
 
-builder.mutationField("editBoardTitle", (t) =>
+builder.mutationField('editBoardTitle', (t) =>
   t.prismaField({
     type: BoardObject,
     errors: {
@@ -125,7 +125,7 @@ builder.mutationField("editBoardTitle", (t) =>
     },
     args: {
       input: t.arg({ type: EditBoardTitleInput, required: true }),
-      boardId: t.arg({ type: "String", required: true }),
+      boardId: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { input, boardId }, { token }, info) => {
       return db.board.update({
@@ -141,14 +141,14 @@ builder.mutationField("editBoardTitle", (t) =>
   }),
 );
 
-builder.mutationField("deleteBoard", (t) =>
+builder.mutationField('deleteBoard', (t) =>
   t.prismaField({
     type: BoardObject,
     authScopes: {
       member: true,
     },
     args: {
-      boardId: t.arg({ type: "String", required: true }),
+      boardId: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { boardId }, { token }, info) => {
       return db.board.delete({

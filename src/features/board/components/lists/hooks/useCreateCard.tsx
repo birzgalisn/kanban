@@ -1,28 +1,28 @@
-import { gql, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
-import { useRef, useState } from "react";
-import { z } from "zod";
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
+import { z } from 'zod';
 
-import { CARD_PREVIEW_FIELDS, GET_BOARD } from "@/features/board/hooks";
-import { GET_WORKSPACE } from "@/features/workspace/hooks";
+import { CARD_PREVIEW_FIELDS, GET_BOARD } from '@/features/board/hooks';
+import { GET_WORKSPACE } from '@/features/workspace/hooks';
 
-import type { ModalHandle } from "@/components/modal";
+import type { ModalHandle } from '@/components/modal';
 import type {
   BoardQuery,
   BoardQueryVariables,
-} from "@/features/board/hooks/__generated__/useBoard.generated";
+} from '@/features/board/hooks/__generated__/useBoard.generated';
 import type {
   WorkspaceQuery,
   WorkspaceQueryVariables,
-} from "@/features/workspace/hooks/__generated__/useWorkspace.generated";
+} from '@/features/workspace/hooks/__generated__/useWorkspace.generated';
 import type {
   CreateCardMutation,
   CreateCardMutationVariables,
-} from "./__generated__/useCreateCard.generated";
+} from './__generated__/useCreateCard.generated';
 
-import { useZodForm } from "@/components/form";
+import { useZodForm } from '@/components/form';
 
-import { input as cardValidateError } from "@/fixtures/card/error";
+import { input as cardValidateError } from '@/fixtures/card/error';
 
 const CardSchema = z.object({
   title: z
@@ -31,7 +31,7 @@ const CardSchema = z.object({
     .max(50, { message: cardValidateError.title.length.tooBig }),
 });
 
-type UseCreateCardProps = {} & CreateCardMutationVariables;
+type UseCreateCardProps = CreateCardMutationVariables;
 
 export type OpenModalProps = { id: string; title: string };
 
@@ -40,10 +40,7 @@ export function useCreateCard() {
   const boardId = router.query.boardId as string;
   const workspaceId = router.query.workspaceId as string;
 
-  const [createCard] = useMutation<
-    CreateCardMutation,
-    CreateCardMutationVariables
-  >(
+  const [createCard] = useMutation<CreateCardMutation, CreateCardMutationVariables>(
     gql`
       mutation CreateCard($input: CreateCardInput!, $listId: String!) {
         createCard(input: $input, listId: $listId) {
@@ -60,7 +57,7 @@ export function useCreateCard() {
       update(cache, { data }) {
         const createdCard = data?.createCard;
 
-        if (createdCard?.__typename !== "MutationCreateCardSuccess") return;
+        if (createdCard?.__typename !== 'MutationCreateCardSuccess') return;
 
         const existingBoard = cache.readQuery<BoardQuery, BoardQueryVariables>({
           query: GET_BOARD,
@@ -86,10 +83,10 @@ export function useCreateCard() {
           },
         });
 
-        const existingWorkspace = cache.readQuery<
-          WorkspaceQuery,
-          WorkspaceQueryVariables
-        >({ query: GET_WORKSPACE, variables: { workspaceId } })?.workspace;
+        const existingWorkspace = cache.readQuery<WorkspaceQuery, WorkspaceQueryVariables>({
+          query: GET_WORKSPACE,
+          variables: { workspaceId },
+        })?.workspace;
 
         if (!existingWorkspace) return;
 
@@ -112,8 +109,8 @@ export function useCreateCard() {
   );
 
   const [openOnList, setOpenOnList] = useState<OpenModalProps>({
-    id: "",
-    title: "",
+    id: '',
+    title: '',
   });
   const modalRef = useRef<ModalHandle>(null);
   const openModal = (props: OpenModalProps) => {
@@ -124,7 +121,7 @@ export function useCreateCard() {
   };
 
   const form = useZodForm({ schema: CardSchema });
-  const handleSubmit = async (input: UseCreateCardProps["input"]) => {
+  const handleSubmit = async (input: UseCreateCardProps['input']) => {
     await createCard({ variables: { input, listId: openOnList.id } });
     if (modalRef.current) {
       form.reset();

@@ -1,14 +1,14 @@
-import clsx from "clsx";
+import clsx from 'clsx';
 
 const sizes = {
-  xs: "h-2 w-2",
-  sm: "h-3 w-3",
-  md: "h-4 w-4",
-  lg: "h-5 w-5",
+  xs: 'h-2 w-2',
+  sm: 'h-3 w-3',
+  md: 'h-4 w-4',
+  lg: 'h-5 w-5',
 };
 
 const variants = {
-  inherit: "text-inherit",
+  inherit: 'text-inherit',
 };
 
 export type SpinnerProps = {
@@ -17,20 +17,11 @@ export type SpinnerProps = {
   className?: string;
 };
 
-export const Spinner = ({
-  size = "md",
-  variant = "inherit",
-  className = "",
-}: SpinnerProps) => {
+export const Spinner = ({ size = 'md', variant = 'inherit', className = '' }: SpinnerProps) => {
   return (
     <>
       <svg
-        className={clsx(
-          "animate-spin",
-          sizes[size],
-          variants[variant],
-          className,
-        )}
+        className={clsx('animate-spin', sizes[size], variants[variant], className)}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

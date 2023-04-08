@@ -1,21 +1,21 @@
-import { gql, useMutation } from "@apollo/client";
-import { useState } from "react";
-import { z } from "zod";
+import { gql, useMutation } from '@apollo/client';
+import { useState } from 'react';
+import { z } from 'zod';
 
-import { GET_CARD } from "@/features/board/components/lists/hooks";
+import { GET_CARD } from '@/features/board/components/lists/hooks';
 
 import type {
   CardQuery,
   CardQueryVariables,
-} from "@/features/board/components/lists/hooks/__generated__/useViewCard.generated";
+} from '@/features/board/components/lists/hooks/__generated__/useViewCard.generated';
 import type {
   EditCardDescriptionMutation,
   EditCardDescriptionMutationVariables,
-} from "./__generated__/useEditDescription.generated";
+} from './__generated__/useEditDescription.generated';
 
-import { useZodForm } from "@/components/form";
+import { useZodForm } from '@/components/form';
 
-import { input as cardValidateError } from "@/fixtures/card/error";
+import { input as cardValidateError } from '@/fixtures/card/error';
 
 const EditDescriptionSchema = z.object({
   description: z
@@ -24,9 +24,9 @@ const EditDescriptionSchema = z.object({
     .max(255, { message: cardValidateError.description.length.tooBig }),
 });
 
-type Card = CardQuery["card"];
+type Card = CardQuery['card'];
 
-type UseEditCardDescriptionProps = {} & EditCardDescriptionMutationVariables;
+type UseEditCardDescriptionProps = EditCardDescriptionMutationVariables;
 
 export function useEditDescription() {
   const [editCardTitle] = useMutation<
@@ -34,10 +34,7 @@ export function useEditDescription() {
     EditCardDescriptionMutationVariables
   >(
     gql`
-      mutation EditCardDescription(
-        $input: EditCardDescriptionInput!
-        $cardId: String!
-      ) {
+      mutation EditCardDescription($input: EditCardDescriptionInput!, $cardId: String!) {
         editCardDescription(input: $input, cardId: $cardId) {
           ... on MutationEditCardDescriptionSuccess {
             data {
@@ -52,8 +49,7 @@ export function useEditDescription() {
       update(cache, { data }) {
         const editedCard = data?.editCardDescription;
 
-        if (editedCard?.__typename !== "MutationEditCardDescriptionSuccess")
-          return;
+        if (editedCard?.__typename !== 'MutationEditCardDescriptionSuccess') return;
 
         const cachedCard = cache.readQuery<CardQuery, CardQueryVariables>({
           query: GET_CARD,
@@ -80,10 +76,9 @@ export function useEditDescription() {
     },
   );
 
-  const [isCardDescriptionInEdit, setIsCardDescriptionInEdit] =
-    useState<boolean>();
+  const [isCardDescriptionInEdit, setIsCardDescriptionInEdit] = useState<boolean>();
   const toggleEdit = (card?: Card) => {
-    if (card) form.reset({ description: card.description ?? "" });
+    if (card) form.reset({ description: card.description ?? '' });
     setIsCardDescriptionInEdit((prev) => !prev);
   };
 

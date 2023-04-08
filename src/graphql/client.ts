@@ -1,23 +1,20 @@
-import { ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
-import deepmerge from "deepmerge";
-import { isEqual } from "lodash";
+import { ApolloClient, from, HttpLink, InMemoryCache } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+import deepmerge from 'deepmerge';
+import { isEqual } from 'lodash';
 
-import type { NormalizedCacheObject } from "@apollo/client";
+import type { NormalizedCacheObject } from '@apollo/client';
 
-export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
+export const APOLLO_STATE_PROP_NAME = '__APOLLO_STATE__';
 
 let apolloClient: ApolloClient<NormalizedCacheObject> | null;
 
-const httpLink = new HttpLink({ uri: "/api/graphql" });
+const httpLink = new HttpLink({ uri: '/api/graphql' });
 
 const errorLink = onError(({ graphQLErrors, networkError, response }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path, extensions }) => {
-      if (
-        extensions.code.includes("FORBIDDEN") &&
-        typeof window !== "undefined"
-      ) {
+      if (extensions.code.includes('FORBIDDEN') && typeof window !== 'undefined') {
         window.location.replace(`${process.env.NEXT_PUBLIC_URL}/workspaces`);
       }
     });
@@ -25,8 +22,8 @@ const errorLink = onError(({ graphQLErrors, networkError, response }) => {
 
 function createApolloClient() {
   return new ApolloClient({
-    ssrMode: typeof window === "undefined",
-    connectToDevTools: process.env.NODE_ENV !== "production",
+    ssrMode: typeof window === 'undefined',
+    connectToDevTools: process.env.NODE_ENV !== 'production',
     link: from([errorLink, httpLink]),
     cache: new InMemoryCache({
       typePolicies: {
@@ -88,14 +85,12 @@ export function initializeApollo(initialState?: any) {
     const data = deepmerge(initialState, existingCache, {
       arrayMerge: (destinationArray, sourceArray) => [
         ...sourceArray,
-        ...destinationArray.filter((d) =>
-          sourceArray.every((s) => !isEqual(d, s)),
-        ),
+        ...destinationArray.filter((d) => sourceArray.every((s) => !isEqual(d, s))),
       ],
     });
     _apolloClient.cache.restore(data);
   }
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return _apolloClient;
   }
   if (!apolloClient) {

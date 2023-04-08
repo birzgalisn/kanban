@@ -1,33 +1,30 @@
-import { gql, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
 
-import { GET_BOARD } from "@/features/board/hooks";
-import { GET_WORKSPACE } from "@/features/workspace/hooks";
+import { GET_BOARD } from '@/features/board/hooks';
+import { GET_WORKSPACE } from '@/features/workspace/hooks';
 
 import type {
   BoardQuery,
   BoardQueryVariables,
-} from "@/features/board/hooks/__generated__/useBoard.generated";
+} from '@/features/board/hooks/__generated__/useBoard.generated';
 import type {
   WorkspaceQuery,
   WorkspaceQueryVariables,
-} from "@/features/workspace/hooks/__generated__/useWorkspace.generated";
+} from '@/features/workspace/hooks/__generated__/useWorkspace.generated';
 import type {
   DeleteListMutation,
   DeleteListMutationVariables,
-} from "./__generated__/useDeleteList.generated";
+} from './__generated__/useDeleteList.generated';
 
-export type UseDeleteListProps = {} & DeleteListMutationVariables;
+export type UseDeleteListProps = DeleteListMutationVariables;
 
 export function useDeleteList() {
   const router = useRouter();
   const boardId = router.query.boardId as string;
   const workspaceId = router.query.workspaceId as string;
 
-  const [deleteList] = useMutation<
-    DeleteListMutation,
-    DeleteListMutationVariables
-  >(
+  const [deleteList] = useMutation<DeleteListMutation, DeleteListMutationVariables>(
     gql`
       mutation DeleteList($id: String!) {
         deleteList(id: $id) {
@@ -66,10 +63,10 @@ export function useDeleteList() {
           },
         });
 
-        const existingWorkspace = cache.readQuery<
-          WorkspaceQuery,
-          WorkspaceQueryVariables
-        >({ query: GET_WORKSPACE, variables: { workspaceId } })?.workspace;
+        const existingWorkspace = cache.readQuery<WorkspaceQuery, WorkspaceQueryVariables>({
+          query: GET_WORKSPACE,
+          variables: { workspaceId },
+        })?.workspace;
 
         if (!existingWorkspace) return;
 

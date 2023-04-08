@@ -1,15 +1,15 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { z } from "zod";
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { z } from 'zod';
 
 import type {
   EditMeMutation,
   EditMeMutationVariables,
   MeQuery,
-} from "./__generated__/useMe.generated";
+} from './__generated__/useMe.generated';
 
-import { useZodForm } from "@/components/form";
+import { useZodForm } from '@/components/form';
 
-import { input as meValidateError } from "@/fixtures/user/error";
+import { input as meValidateError } from '@/fixtures/user/error';
 
 const MeSchema = z.object({
   name: z
@@ -55,7 +55,7 @@ export function useMe() {
       },
     });
     await fetch(`${process.env.NEXT_PUBLIC_URL}/api/auth/session?update`);
-    document.dispatchEvent(new Event("visibilitychange"));
+    document.dispatchEvent(new Event('visibilitychange'));
   };
 
   return [meQuery, form, handleSubmit] as const;

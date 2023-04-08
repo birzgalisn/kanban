@@ -1,28 +1,24 @@
-import React from "react";
+import React from 'react';
 
-import { useCreateBoard, useWorkspace } from "./hooks";
+import { useCreateBoard, useWorkspace } from './hooks';
 
-import { Form, Input } from "@/components/form";
-import { Layout } from "@/components/layout";
-import { LayoutWrapper } from "@/components/layoutWrapper";
-import { Modal } from "@/components/modal";
-import { Navbar } from "@/components/navbar";
-import { SectionWrapper } from "@/components/section";
-import { SectionHeading } from "@/components/section/SectionHeading";
-import { Button } from "@/ui/button";
-import { HiPlus } from "react-icons/hi2";
-import { Boards } from "./components/Boards";
+import { Form, Input } from '@/components/form';
+import { Layout } from '@/components/layout';
+import { LayoutWrapper } from '@/components/layoutWrapper';
+import { Modal } from '@/components/modal';
+import { Navbar } from '@/components/navbar';
+import { SectionWrapper } from '@/components/section';
+import { SectionHeading } from '@/components/section/SectionHeading';
+import { Button } from '@/ui/button';
+import { HiPlus } from 'react-icons/hi2';
+import { Boards } from './components/Boards';
 
-export const Workspace: React.FC<{}> = () => {
+export const Workspace: React.FC = () => {
   const workspaceQuery = useWorkspace();
   const workspace = workspaceQuery.data?.workspace;
 
-  const [
-    createBoardForm,
-    handleCreateBoardSubmit,
-    createBoardModalRef,
-    toggleCreateBoardModal,
-  ] = useCreateBoard();
+  const [createBoardForm, handleCreateBoardSubmit, createBoardModalRef, toggleCreateBoardModal] =
+    useCreateBoard();
 
   return (
     <LayoutWrapper>
@@ -41,12 +37,7 @@ export const Workspace: React.FC<{}> = () => {
             title="All boards"
             subtitle="Personalize your workspace boards"
             action={
-              <Button
-                icon={<HiPlus />}
-                size="sm"
-                wrap
-                onClick={toggleCreateBoardModal}
-              >
+              <Button icon={<HiPlus />} size="sm" wrap onClick={toggleCreateBoardModal}>
                 Board
               </Button>
             }
@@ -66,13 +57,10 @@ export const Workspace: React.FC<{}> = () => {
             <Input
               label="Title"
               placeholder="Enter the new board title"
-              {...createBoardForm.register("title")}
+              {...createBoardForm.register('title')}
               autoFocus
             />
-            <Button
-              type="submit"
-              isLoading={createBoardForm.formState.isSubmitting}
-            >
+            <Button type="submit" isLoading={createBoardForm.formState.isSubmitting}>
               Create
             </Button>
           </Form>

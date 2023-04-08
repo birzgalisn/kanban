@@ -1,5 +1,5 @@
-import React from "react";
-import { SolidBackground } from "../solidBackground";
+import React from 'react';
+import { SolidBackground } from '../solidBackground';
 
 export const LayoutWrapper: React.FC<{
   children: React.ReactNode;

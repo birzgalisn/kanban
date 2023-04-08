@@ -1,5 +1,5 @@
-import clsx from "clsx";
-import React from "react";
+import clsx from 'clsx';
+import React from 'react';
 
 export const TextSkeleton: React.FC<{
   className?: string;
@@ -9,9 +9,9 @@ export const TextSkeleton: React.FC<{
   return (
     <div
       className={clsx(
-        "rounded bg-gray-200",
-        animate && "animate-pulse",
-        fluid && "w-full",
+        'rounded bg-gray-200',
+        animate && 'animate-pulse',
+        fluid && 'w-full',
         className,
       )}
     ></div>

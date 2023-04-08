@@ -1,26 +1,23 @@
-import { gql, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
-import { useRef, useState } from "react";
-import { z } from "zod";
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
+import { z } from 'zod';
 
-import { useZodForm } from "@/components/form";
-import type { ModalHandle } from "@/components/modal";
+import { useZodForm } from '@/components/form';
+import type { ModalHandle } from '@/components/modal';
 import type {
   EditBoardTitleMutation,
   EditBoardTitleMutationVariables,
-} from "./__generated__/useEditBoardTitle.generated";
+} from './__generated__/useEditBoardTitle.generated';
 
-import { GET_BOARD } from "@/features/board/hooks";
+import { GET_BOARD } from '@/features/board/hooks';
 import {
   BoardQuery,
   BoardQueryVariables,
-} from "@/features/board/hooks/__generated__/useBoard.generated";
-import { input as boardValidateError } from "@/fixtures/board/error";
-import { GET_WORKSPACE } from "./useWorkspace";
-import {
-  WorkspaceQuery,
-  WorkspaceQueryVariables,
-} from "./__generated__/useWorkspace.generated";
+} from '@/features/board/hooks/__generated__/useBoard.generated';
+import { input as boardValidateError } from '@/fixtures/board/error';
+import { WorkspaceQuery, WorkspaceQueryVariables } from './__generated__/useWorkspace.generated';
+import { GET_WORKSPACE } from './useWorkspace';
 
 const BoardTitleSchema = z.object({
   title: z
@@ -34,16 +31,13 @@ export type EditModalProps = {
   title: string;
 };
 
-type UseEditBoardTitle = {} & EditBoardTitleMutationVariables;
+type UseEditBoardTitle = EditBoardTitleMutationVariables;
 
 export function useEditBoardTitle() {
   const router = useRouter();
   const workspaceId = router.query.workspaceId as string;
 
-  const [editBoardTitle] = useMutation<
-    EditBoardTitleMutation,
-    EditBoardTitleMutationVariables
-  >(
+  const [editBoardTitle] = useMutation<EditBoardTitleMutation, EditBoardTitleMutationVariables>(
     gql`
       mutation EditBoardTitle($input: EditBoardTitleInput!, $boardId: String!) {
         editBoardTitle(input: $input, boardId: $boardId) {
@@ -60,12 +54,9 @@ export function useEditBoardTitle() {
       update(cache, { data }) {
         const editedBoard = data?.editBoardTitle;
 
-        if (editedBoard?.__typename !== "MutationEditBoardTitleSuccess") return;
+        if (editedBoard?.__typename !== 'MutationEditBoardTitleSuccess') return;
 
-        const existingWorkspace = cache.readQuery<
-          WorkspaceQuery,
-          WorkspaceQueryVariables
-        >({
+        const existingWorkspace = cache.readQuery<WorkspaceQuery, WorkspaceQueryVariables>({
           query: GET_WORKSPACE,
           variables: {
             workspaceId,
@@ -81,8 +72,7 @@ export function useEditBoardTitle() {
             workspace: {
               ...existingWorkspace,
               boards: existingWorkspace.boards.map((board) => {
-                if (board.id === editedBoard.data.id)
-                  return { ...board, ...editedBoard.data };
+                if (board.id === editedBoard.data.id) return { ...board, ...editedBoard.data };
                 return board;
               }),
             },
@@ -117,8 +107,8 @@ export function useEditBoardTitle() {
   );
 
   const [editOnBoard, setEditOnBoard] = useState<EditModalProps>({
-    id: "",
-    title: "",
+    id: '',
+    title: '',
   });
   const modalRef = useRef<ModalHandle>(null);
   const openRenameModal = (props: EditModalProps) => {
@@ -130,7 +120,7 @@ export function useEditBoardTitle() {
   };
 
   const form = useZodForm({ schema: BoardTitleSchema });
-  const handleSubmit = async (input: UseEditBoardTitle["input"]) => {
+  const handleSubmit = async (input: UseEditBoardTitle['input']) => {
     await editBoardTitle({
       variables: { input, boardId: editOnBoard.id },
       optimisticResponse: {

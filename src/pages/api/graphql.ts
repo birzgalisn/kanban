@@ -1,9 +1,9 @@
-import { schema } from "@/graphql/schema";
-import { ApolloServer } from "@apollo/server";
-import { startServerAndCreateNextHandler } from "@as-integrations/next";
-import { getToken } from "next-auth/jwt";
+import { schema } from '@/graphql/schema';
+import { ApolloServer } from '@apollo/server';
+import { startServerAndCreateNextHandler } from '@as-integrations/next';
+import { getToken } from 'next-auth/jwt';
 
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 type NextApiContext = {
   req: NextApiRequest;
@@ -12,7 +12,7 @@ type NextApiContext = {
 
 const apolloServer = new ApolloServer<NextApiContext>({
   schema,
-  introspection: process.env.NODE_ENV !== "production",
+  introspection: process.env.NODE_ENV !== 'production',
 });
 
 export default startServerAndCreateNextHandler(apolloServer, {

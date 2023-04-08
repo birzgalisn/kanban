@@ -1,20 +1,20 @@
-import * as Types from "../../../../../../__generated__/types";
+import * as Types from '../../../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type RenameListMutationVariables = Types.Exact<{
   input: Types.RenameListInput;
-  id: Types.Scalars["String"];
+  id: Types.Scalars['String'];
 }>;
 
 export type RenameListMutation = {
-  __typename?: "Mutation";
+  __typename?: 'Mutation';
   renameList:
     | {
-        __typename?: "MutationRenameListSuccess";
-        data: { __typename?: "List"; id: string; title: string };
+        __typename?: 'MutationRenameListSuccess';
+        data: { __typename?: 'List'; id: string; title: string };
       }
-    | { __typename?: "ZodError" };
+    | { __typename?: 'ZodError' };
 };
 
 export const RenameListDocument = gql`
@@ -33,8 +33,7 @@ export type RenameListMutationFn = Apollo.MutationFunction<
   RenameListMutation,
   RenameListMutationVariables
 >;
-export type RenameListMutationResult =
-  Apollo.MutationResult<RenameListMutation>;
+export type RenameListMutationResult = Apollo.MutationResult<RenameListMutation>;
 export type RenameListMutationOptions = Apollo.BaseMutationOptions<
   RenameListMutation,
   RenameListMutationVariables

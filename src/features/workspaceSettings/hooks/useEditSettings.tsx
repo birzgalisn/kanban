@@ -1,28 +1,28 @@
-import { useZodForm } from "@/components/form";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { useRouter } from "next/router";
-import { z } from "zod";
+import { useZodForm } from '@/components/form';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { z } from 'zod';
 
-import { GET_WORKSPACE } from "@/features/workspace/hooks";
-import { GET_WORKSPACES } from "@/features/workspaces/hooks";
+import { GET_WORKSPACE } from '@/features/workspace/hooks';
+import { GET_WORKSPACES } from '@/features/workspaces/hooks';
 
 import type {
   EditWorkspaceTitleMutation,
   EditWorkspaceTitleMutationVariables,
   WorkspaceSettingsQuery,
   WorkspaceSettingsQueryVariables,
-} from "./__generated__/useEditSettings.generated";
+} from './__generated__/useEditSettings.generated';
 
 import type {
   WorkspaceQuery,
   WorkspaceQueryVariables,
-} from "@/features/workspace/hooks/__generated__/useWorkspace.generated";
+} from '@/features/workspace/hooks/__generated__/useWorkspace.generated';
 import type {
   WorkspacesQuery,
   WorkspacesQueryVariables,
-} from "@/features/workspaces/hooks/__generated__/useWorkspaces.generated";
+} from '@/features/workspaces/hooks/__generated__/useWorkspaces.generated';
 
-import { input as workspaceValidateError } from "@/fixtures/workspace/error";
+import { input as workspaceValidateError } from '@/fixtures/workspace/error';
 
 const WorkspaceSchema = z.object({
   title: z
@@ -31,16 +31,13 @@ const WorkspaceSchema = z.object({
     .max(50, { message: workspaceValidateError.title.length.tooBig }),
 });
 
-type UseEditSettingsProps = {} & EditWorkspaceTitleMutationVariables;
+type UseEditSettingsProps = EditWorkspaceTitleMutationVariables;
 
 export function useEditSettings() {
   const router = useRouter();
   const workspaceId = router.query.workspaceId as string;
 
-  const workspaceQuery = useQuery<
-    WorkspaceSettingsQuery,
-    WorkspaceSettingsQueryVariables
-  >(
+  const workspaceQuery = useQuery<WorkspaceSettingsQuery, WorkspaceSettingsQueryVariables>(
     gql`
       query WorkspaceSettings($workspaceId: String!) {
         workspace(id: $workspaceId) {
@@ -60,10 +57,7 @@ export function useEditSettings() {
     EditWorkspaceTitleMutationVariables
   >(
     gql`
-      mutation EditWorkspaceTitle(
-        $input: EditWorkspaceTitleInput!
-        $workspaceId: String!
-      ) {
+      mutation EditWorkspaceTitle($input: EditWorkspaceTitleInput!, $workspaceId: String!) {
         editWorkspaceTitle(input: $input, workspaceId: $workspaceId) {
           ... on MutationEditWorkspaceTitleSuccess {
             data {
@@ -78,13 +72,12 @@ export function useEditSettings() {
       update(cache, { data }) {
         const editedWorkspace = data?.editWorkspaceTitle;
 
-        if (editedWorkspace?.__typename !== "MutationEditWorkspaceTitleSuccess")
-          return;
+        if (editedWorkspace?.__typename !== 'MutationEditWorkspaceTitleSuccess') return;
 
-        const existingWorkspace = cache.readQuery<
-          WorkspaceQuery,
-          WorkspaceQueryVariables
-        >({ query: GET_WORKSPACE, variables: { workspaceId } })?.workspace;
+        const existingWorkspace = cache.readQuery<WorkspaceQuery, WorkspaceQueryVariables>({
+          query: GET_WORKSPACE,
+          variables: { workspaceId },
+        })?.workspace;
 
         if (!existingWorkspace) return;
 
@@ -99,10 +92,9 @@ export function useEditSettings() {
           },
         });
 
-        const existingWorkspaces = cache.readQuery<
-          WorkspacesQuery,
-          WorkspacesQueryVariables
-        >({ query: GET_WORKSPACES })?.workspaces;
+        const existingWorkspaces = cache.readQuery<WorkspacesQuery, WorkspacesQueryVariables>({
+          query: GET_WORKSPACES,
+        })?.workspaces;
 
         if (!existingWorkspaces) return;
 
@@ -124,7 +116,7 @@ export function useEditSettings() {
   );
 
   const form = useZodForm({ schema: WorkspaceSchema });
-  const handleSubmit = async (input: UseEditSettingsProps["input"]) => {
+  const handleSubmit = async (input: UseEditSettingsProps['input']) => {
     await editWorkspace({
       variables: { input, workspaceId },
       optimisticResponse: {

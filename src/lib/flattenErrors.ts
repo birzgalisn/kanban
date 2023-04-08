@@ -1,4 +1,4 @@
-import { ZodFormattedError } from "zod";
+import { ZodFormattedError } from 'zod';
 
 /** Util for flattening zod errors into something easier to represent in your Schema. */
 export function flattenErrors(
@@ -12,12 +12,12 @@ export function flattenErrors(
   }));
 
   Object.keys(error).forEach((key) => {
-    if (key !== "_errors") {
+    if (key !== '_errors') {
       errors.push(
-        ...flattenErrors(
-          (error as Record<string, unknown>)[key] as ZodFormattedError<unknown>,
-          [...path, key],
-        ),
+        ...flattenErrors((error as Record<string, unknown>)[key] as ZodFormattedError<unknown>, [
+          ...path,
+          key,
+        ]),
       );
     }
   });

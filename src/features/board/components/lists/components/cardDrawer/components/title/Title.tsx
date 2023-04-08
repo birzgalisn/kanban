@@ -1,30 +1,24 @@
-import React from "react";
+import React from 'react';
 
-import { useEditCardTitle } from "./hooks";
+import { useEditCardTitle } from './hooks';
 
-import type { Card } from "../../CardDrawer";
+import type { Card } from '../../CardDrawer';
 
-import { Form, Input } from "@/components/form";
-import { ButtonSkeleton, TextSkeleton } from "@/components/skeleton";
-import { Button } from "@/ui/button";
+import { Form, Input } from '@/components/form';
+import { ButtonSkeleton, TextSkeleton } from '@/components/skeleton';
+import { Button } from '@/ui/button';
 
-export const Title: React.FC<{ isLoading: boolean; card?: Card }> = ({
-  isLoading,
-  card,
-}) => {
-  const [form, handleSubmit, isCardTitleInEdit, toggleEdit] =
-    useEditCardTitle();
+export const Title: React.FC<{ isLoading: boolean; card?: Card }> = ({ isLoading, card }) => {
+  const [form, handleSubmit, isCardTitleInEdit, toggleEdit] = useEditCardTitle();
 
   if (isCardTitleInEdit) {
     return (
       <Form
         className="flex w-full flex-col items-start gap-4 md:flex-row"
         form={form}
-        onSubmit={(input) =>
-          handleSubmit({ input, cardId: card?.id as string })
-        }
+        onSubmit={(input) => handleSubmit({ input, cardId: card?.id as string })}
       >
-        <Input className="h-9" {...form.register("title")} />
+        <Input className="h-9" {...form.register('title')} />
         <div className="flex w-full justify-end gap-4 md:w-fit">
           <Button size="xs" type="submit">
             Update
@@ -47,11 +41,7 @@ export const Title: React.FC<{ isLoading: boolean; card?: Card }> = ({
       ) : (
         <>
           <h1 className="truncate text-3xl font-bold">{card?.title}</h1>
-          <Button
-            size="xs"
-            variant="secondary"
-            onClick={() => toggleEdit(card)}
-          >
+          <Button size="xs" variant="secondary" onClick={() => toggleEdit(card)}>
             Edit
           </Button>
         </>

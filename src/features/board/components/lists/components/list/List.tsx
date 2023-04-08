@@ -1,29 +1,27 @@
-import { Button } from "@/ui/button";
-import { Counter } from "@/ui/counter";
-import clsx from "clsx";
-import dynamic from "next/dynamic";
-import React from "react";
-import { HiPlus } from "react-icons/hi2";
+import { Button } from '@/ui/button';
+import { Counter } from '@/ui/counter';
+import clsx from 'clsx';
+import dynamic from 'next/dynamic';
+import React from 'react';
+import { HiPlus } from 'react-icons/hi2';
 
 // To avoid Next SSR issues, use dynamic module import with SSR disabled
-const Droppable = dynamic(
-  () => import("react-beautiful-dnd").then((mod) => mod.Droppable),
-  { ssr: false },
-);
-const Draggable = dynamic(
-  () => import("react-beautiful-dnd").then((mod) => mod.Draggable),
-  { ssr: false },
-);
+const Droppable = dynamic(() => import('react-beautiful-dnd').then((mod) => mod.Droppable), {
+  ssr: false,
+});
+const Draggable = dynamic(() => import('react-beautiful-dnd').then((mod) => mod.Draggable), {
+  ssr: false,
+});
 
 import type {
   OpenModalProps,
   RenameModalProps,
   UseDeleteListProps,
   UseViewCardProps,
-} from "../../hooks";
-import type { Lists } from "../../Lists";
+} from '../../hooks';
+import type { Lists } from '../../Lists';
 
-import { Actions } from "./components/actions";
+import { Actions } from './components/actions';
 
 type List = Lists[0];
 
@@ -55,8 +53,8 @@ export const List: React.FC<ListProps> = ({
         {(provided, snapshot) => (
           <div
             className={clsx(
-              "flex h-[calc(100vh-19rem)] w-full flex-col overflow-hidden overflow-y-auto rounded-lg",
-              snapshot.isDraggingOver && "bg-gray-100",
+              'flex h-[calc(100vh-19rem)] w-full flex-col overflow-hidden overflow-y-auto rounded-lg',
+              snapshot.isDraggingOver && 'bg-gray-100',
             )}
             ref={provided.innerRef}
             {...provided.droppableProps}

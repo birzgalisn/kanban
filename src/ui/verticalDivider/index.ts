@@ -1,1 +1,1 @@
-export * from "./VerticalDivider";
+export * from './VerticalDivider';

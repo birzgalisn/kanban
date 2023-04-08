@@ -1,23 +1,23 @@
-import { gql, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
-import { useRef } from "react";
-import { z } from "zod";
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { useRef } from 'react';
+import { z } from 'zod';
 
-import { BOARD_PREVIEW_FIELDS, GET_WORKSPACE } from "./useWorkspace";
+import { BOARD_PREVIEW_FIELDS, GET_WORKSPACE } from './useWorkspace';
 
-import type { ModalHandle } from "@/components/modal";
+import type { ModalHandle } from '@/components/modal';
 import type {
   CreateBoardMutation,
   CreateBoardMutationVariables,
-} from "./__generated__/useCreateBoard.generated";
+} from './__generated__/useCreateBoard.generated';
 import type {
   WorkspaceQuery,
   WorkspaceQueryVariables,
-} from "./__generated__/useWorkspace.generated";
+} from './__generated__/useWorkspace.generated';
 
-import { useZodForm } from "@/components/form";
+import { useZodForm } from '@/components/form';
 
-import { input as boardValidateError } from "@/fixtures/board/error";
+import { input as boardValidateError } from '@/fixtures/board/error';
 
 const BoardSchema = z.object({
   title: z
@@ -26,16 +26,13 @@ const BoardSchema = z.object({
     .max(50, { message: boardValidateError.title.length.tooBig }),
 });
 
-type UseCreateBoardProps = {} & CreateBoardMutationVariables;
+type UseCreateBoardProps = CreateBoardMutationVariables;
 
 export function useCreateBoard() {
   const router = useRouter();
   const workspaceId = router.query.workspaceId as string;
 
-  const [createBoard] = useMutation<
-    CreateBoardMutation,
-    CreateBoardMutationVariables
-  >(
+  const [createBoard] = useMutation<CreateBoardMutation, CreateBoardMutationVariables>(
     gql`
       mutation CreateBoard($input: CreateBoardInput!, $workspaceId: String!) {
         createBoard(input: $input, workspaceId: $workspaceId) {
@@ -52,13 +49,10 @@ export function useCreateBoard() {
       update(cache, { data }) {
         const createdBoard = data?.createBoard;
 
-        if (createdBoard?.__typename !== "MutationCreateBoardSuccess") return;
+        if (createdBoard?.__typename !== 'MutationCreateBoardSuccess') return;
 
         /** Merge cached `workspace` query field `boards` with `createBoard` mutation result */
-        const existingWorkspace = cache.readQuery<
-          WorkspaceQuery,
-          WorkspaceQueryVariables
-        >({
+        const existingWorkspace = cache.readQuery<WorkspaceQuery, WorkspaceQueryVariables>({
           query: GET_WORKSPACE,
           variables: { workspaceId },
         })?.workspace;
@@ -87,7 +81,7 @@ export function useCreateBoard() {
   };
 
   const form = useZodForm({ schema: BoardSchema });
-  const handleSubmit = async (input: UseCreateBoardProps["input"]) => {
+  const handleSubmit = async (input: UseCreateBoardProps['input']) => {
     await createBoard({ variables: { input, workspaceId } });
     form.reset();
     toggleModal();

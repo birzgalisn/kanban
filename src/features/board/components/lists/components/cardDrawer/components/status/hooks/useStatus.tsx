@@ -1,6 +1,6 @@
-import { useBoard } from "@/features/board/hooks";
+import { useBoard } from '@/features/board/hooks';
 
-import type { Card } from "../../../CardDrawer";
+import type { Card } from '../../../CardDrawer';
 
 type UseStatusProps = { card?: Card };
 
@@ -16,10 +16,12 @@ export function useStatus({ card }: UseStatusProps) {
     if (hasCard) return l;
   });
 
-  const options: Array<Option> = lists!.map((l) => ({
-    id: l.id,
-    title: l.title,
-  }));
+  const options: Array<Option> = lists
+    ? lists.map((l) => ({
+        id: l.id,
+        title: l.title,
+      }))
+    : [];
   const defaultValue: Option = { id: activeList?.id, title: activeList?.title };
 
   return [options, defaultValue] as const;

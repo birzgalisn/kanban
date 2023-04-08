@@ -1,10 +1,10 @@
-import { gql, useMutation } from "@apollo/client";
-import { signOut } from "next-auth/react";
+import { gql, useMutation } from '@apollo/client';
+import { signOut } from 'next-auth/react';
 
 import type {
   DeleteMeMutation,
   DeleteMeMutationVariables,
-} from "./__generated__/useDeleteMe.generated";
+} from './__generated__/useDeleteMe.generated';
 
 export function useDeleteMe() {
   const [deleteMe] = useMutation<DeleteMeMutation, DeleteMeMutationVariables>(
@@ -17,7 +17,7 @@ export function useDeleteMe() {
     `,
     {
       onCompleted() {
-        signOut({ callbackUrl: "/" });
+        signOut({ callbackUrl: '/' });
       },
     },
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const Divider: React.FC<{ text?: string }> = ({ text }) => {
   return (

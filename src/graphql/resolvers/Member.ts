@@ -1,34 +1,34 @@
-import { builder } from "@/graphql/builder";
-import { db } from "@/lib/db";
-import { ZodError } from "zod";
+import { builder } from '@/graphql/builder';
+import { db } from '@/lib/db';
+import { ZodError } from 'zod';
 
-import { InputError } from "../errors";
+import { InputError } from '../errors';
 
-import { input as memberValidateError } from "@/fixtures/member/error";
+import { input as memberValidateError } from '@/fixtures/member/error';
 
-export const MemberObject = builder.prismaObject("Member", {
+export const MemberObject = builder.prismaObject('Member', {
   fields: (t) => ({
-    id: t.exposeID("id"),
-    user: t.relation("user"),
-    userId: t.exposeString("userId"),
-    workspace: t.relation("workspace"),
-    workspaceId: t.exposeString("workspaceId"),
-    isOwner: t.exposeBoolean("isOwner"),
-    invites: t.relation("invites"),
-    comments: t.relation("comments"),
-    createdAt: t.expose("createdAt", { type: "DateTime" }),
-    updatedAt: t.expose("updatedAt", { type: "DateTime" }),
+    id: t.exposeID('id'),
+    user: t.relation('user'),
+    userId: t.exposeString('userId'),
+    workspace: t.relation('workspace'),
+    workspaceId: t.exposeString('workspaceId'),
+    isOwner: t.exposeBoolean('isOwner'),
+    invites: t.relation('invites'),
+    comments: t.relation('comments'),
+    createdAt: t.expose('createdAt', { type: 'DateTime' }),
+    updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
   }),
 });
 
-builder.queryField("members", (t) =>
+builder.queryField('members', (t) =>
   t.prismaField({
     type: [MemberObject],
     authScopes: {
       member: true,
     },
     args: {
-      workspaceId: t.arg({ type: "String", required: true }),
+      workspaceId: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { workspaceId }, { token }, info) => {
       return db.member.findMany({
@@ -41,7 +41,7 @@ builder.queryField("members", (t) =>
   }),
 );
 
-const AddMemberInput = builder.inputType("AddMemberInput", {
+const AddMemberInput = builder.inputType('AddMemberInput', {
   fields: (t) => ({
     email: t.string({
       required: true,
@@ -53,7 +53,7 @@ const AddMemberInput = builder.inputType("AddMemberInput", {
   }),
 });
 
-builder.mutationField("addMember", (t) =>
+builder.mutationField('addMember', (t) =>
   t.prismaField({
     type: MemberObject,
     errors: {
@@ -64,7 +64,7 @@ builder.mutationField("addMember", (t) =>
     },
     args: {
       input: t.arg({ type: AddMemberInput, required: true }),
-      workspaceId: t.arg({ type: "String", required: true }),
+      workspaceId: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { input, workspaceId }, { token }, info) => {
       const userToAdd = await db.user.findFirst({
@@ -73,10 +73,7 @@ builder.mutationField("addMember", (t) =>
       });
 
       if (!userToAdd)
-        throw new InputError("User with that email address does not exist", [
-          "input",
-          "email",
-        ]);
+        throw new InputError('User with that email address does not exist', ['input', 'email']);
 
       const isMemberAlready = await db.member.findFirst({
         select: { id: true },
@@ -87,10 +84,7 @@ builder.mutationField("addMember", (t) =>
       });
 
       if (isMemberAlready)
-        throw new InputError("User is already member of the workspace", [
-          "input",
-          "email",
-        ]);
+        throw new InputError('User is already member of the workspace', ['input', 'email']);
 
       return db.member.create({
         ...query,
@@ -107,7 +101,7 @@ builder.mutationField("addMember", (t) =>
   }),
 );
 
-builder.mutationField("transferOwnership", (t) =>
+builder.mutationField('transferOwnership', (t) =>
   t.prismaField({
     type: MemberObject,
     errors: {
@@ -117,7 +111,7 @@ builder.mutationField("transferOwnership", (t) =>
       member: true,
     },
     args: {
-      memberId: t.arg({ type: "String", required: true }),
+      memberId: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { memberId }, { token }, info) => {
       const initiator = await db.member.findFirst({
@@ -126,9 +120,7 @@ builder.mutationField("transferOwnership", (t) =>
       });
 
       if (!initiator)
-        throw new InputError("Workspace transfer initiator is not an owner", [
-          "memberId",
-        ]);
+        throw new InputError('Workspace transfer initiator is not an owner', ['memberId']);
 
       await db.member.update({
         where: {
@@ -152,7 +144,7 @@ builder.mutationField("transferOwnership", (t) =>
   }),
 );
 
-builder.mutationField("removeMember", (t) =>
+builder.mutationField('removeMember', (t) =>
   t.prismaField({
     type: MemberObject,
     errors: {
@@ -162,7 +154,7 @@ builder.mutationField("removeMember", (t) =>
       member: true,
     },
     args: {
-      memberId: t.arg({ type: "String", required: true }),
+      memberId: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { memberId }, { token }, info) => {
       const initiator = await db.member.findFirst({
@@ -171,10 +163,7 @@ builder.mutationField("removeMember", (t) =>
       });
 
       if (!initiator || !initiator.isOwner)
-        throw new InputError(
-          "Workspace user remove initiator is not an owner",
-          ["memberId"],
-        );
+        throw new InputError('Workspace user remove initiator is not an owner', ['memberId']);
 
       return db.member.delete({ ...query, where: { id: memberId } });
     },

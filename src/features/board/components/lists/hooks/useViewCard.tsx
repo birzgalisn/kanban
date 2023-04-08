@@ -1,11 +1,8 @@
-import { gql, useLazyQuery } from "@apollo/client";
-import { useRef } from "react";
+import { gql, useLazyQuery } from '@apollo/client';
+import { useRef } from 'react';
 
-import type { DrawerHandle } from "@/components/drawer";
-import type {
-  CardQuery,
-  CardQueryVariables,
-} from "./__generated__/useViewCard.generated";
+import type { DrawerHandle } from '@/components/drawer';
+import type { CardQuery, CardQueryVariables } from './__generated__/useViewCard.generated';
 
 export const GET_CARD = gql`
   query Card($id: String!) {
@@ -17,13 +14,10 @@ export const GET_CARD = gql`
   }
 `;
 
-export type UseViewCardProps = {} & CardQueryVariables;
+export type UseViewCardProps = CardQueryVariables;
 
 export function useViewCard() {
-  const [viewCardQuery, viewCardResult] = useLazyQuery<
-    CardQuery,
-    CardQueryVariables
-  >(GET_CARD);
+  const [viewCardQuery, viewCardResult] = useLazyQuery<CardQuery, CardQueryVariables>(GET_CARD);
 
   const viewCardDrawerRef = useRef<DrawerHandle>(null);
 

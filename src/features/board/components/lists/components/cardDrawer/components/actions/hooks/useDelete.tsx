@@ -1,23 +1,23 @@
-import { gql, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
-import React from "react";
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
+import React from 'react';
 
-import { GET_BOARD } from "@/features/board/hooks";
-import { GET_WORKSPACE } from "@/features/workspace/hooks";
+import { GET_BOARD } from '@/features/board/hooks';
+import { GET_WORKSPACE } from '@/features/workspace/hooks';
 
-import type { DrawerHandle } from "@/components/drawer";
+import type { DrawerHandle } from '@/components/drawer';
 import type {
   BoardQuery,
   BoardQueryVariables,
-} from "@/features/board/hooks/__generated__/useBoard.generated";
+} from '@/features/board/hooks/__generated__/useBoard.generated';
 import type {
   WorkspaceQuery,
   WorkspaceQueryVariables,
-} from "@/features/workspace/hooks/__generated__/useWorkspace.generated";
+} from '@/features/workspace/hooks/__generated__/useWorkspace.generated';
 import type {
   DeleteCardMutation,
   DeleteCardMutationVariables,
-} from "./__generated__/useDelete.generated";
+} from './__generated__/useDelete.generated';
 
 export type UseDeleteProps = {
   drawerRef: React.RefObject<DrawerHandle>;
@@ -28,10 +28,7 @@ export function useDelete({ drawerRef }: UseDeleteProps) {
   const boardId = router.query.boardId as string;
   const workspaceId = router.query.workspaceId as string;
 
-  const [deleteCard] = useMutation<
-    DeleteCardMutation,
-    DeleteCardMutationVariables
-  >(
+  const [deleteCard] = useMutation<DeleteCardMutation, DeleteCardMutationVariables>(
     gql`
       mutation DeleteCard($id: String!) {
         deleteCard(id: $id) {
@@ -56,7 +53,7 @@ export function useDelete({ drawerRef }: UseDeleteProps) {
       update(cache, { data }) {
         const deletedCard = data?.deleteCard;
 
-        if (deletedCard?.__typename !== "MutationDeleteCardSuccess") return;
+        if (deletedCard?.__typename !== 'MutationDeleteCardSuccess') return;
 
         const existingBoard = cache.readQuery<BoardQuery, BoardQueryVariables>({
           query: GET_BOARD,
@@ -93,10 +90,10 @@ export function useDelete({ drawerRef }: UseDeleteProps) {
           },
         });
 
-        const existingWorkspace = cache.readQuery<
-          WorkspaceQuery,
-          WorkspaceQueryVariables
-        >({ query: GET_WORKSPACE, variables: { workspaceId } })?.workspace;
+        const existingWorkspace = cache.readQuery<WorkspaceQuery, WorkspaceQueryVariables>({
+          query: GET_WORKSPACE,
+          variables: { workspaceId },
+        })?.workspace;
 
         if (!existingWorkspace) return;
 

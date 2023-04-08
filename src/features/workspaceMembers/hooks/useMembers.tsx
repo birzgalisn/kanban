@@ -1,10 +1,7 @@
-import { gql, useQuery } from "@apollo/client";
-import { useRouter } from "next/router";
+import { gql, useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 
-import type {
-  MembersQuery,
-  MembersQueryVariables,
-} from "./__generated__/useMembers.generated";
+import type { MembersQuery, MembersQueryVariables } from './__generated__/useMembers.generated';
 
 export const MEMBER_PREVIEW_FIELDS = gql`
   fragment MemberPreviewFields on Member {

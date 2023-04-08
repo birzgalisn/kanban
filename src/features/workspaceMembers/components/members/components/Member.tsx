@@ -1,21 +1,17 @@
-import { format } from "date-fns";
-import React from "react";
+import { format } from 'date-fns';
+import React from 'react';
 
-import type { MembersQuery } from "@/features/workspaceMembers/hooks/__generated__/useMembers.generated";
+import type { MembersQuery } from '@/features/workspaceMembers/hooks/__generated__/useMembers.generated';
 
-import { useRemoveMember, useTransferOwnership } from "../hooks";
+import { useRemoveMember, useTransferOwnership } from '../hooks';
 
-import { Dropdown, DropdownGroup, DropdownItem } from "@/components/dropdown";
-import { Avatar } from "@/ui/avatar";
-import { Button } from "@/ui/button";
-import { useSession } from "next-auth/react";
-import {
-  HiEllipsisVertical,
-  HiOutlineKey,
-  HiOutlineUserMinus,
-} from "react-icons/hi2";
+import { Dropdown, DropdownGroup, DropdownItem } from '@/components/dropdown';
+import { Avatar } from '@/ui/avatar';
+import { Button } from '@/ui/button';
+import { useSession } from 'next-auth/react';
+import { HiEllipsisVertical, HiOutlineKey, HiOutlineUserMinus } from 'react-icons/hi2';
 
-type Member = MembersQuery["members"][0];
+type Member = MembersQuery['members'][0];
 
 type MemberProps = {
   workspaceOwner?: Member;
@@ -41,22 +37,14 @@ export const Member: React.FC<MemberProps> = ({ workspaceOwner, member }) => {
         />
         <p className="truncate font-semibold sm:flex-1">{member.user.name}</p>
       </div>
-      <p className="flex w-full truncate sm:flex-1 sm:px-2">
-        {member.user.email}
-      </p>
+      <p className="flex w-full truncate sm:flex-1 sm:px-2">{member.user.email}</p>
       <p className="flex w-full justify-start truncate px-0 sm:flex-1 sm:justify-end sm:pl-2 sm:pr-4">
-        {format(new Date(member.createdAt), "PPP")}
+        {format(new Date(member.createdAt), 'PPP')}
       </p>
       {userId === workspaceOwner?.user.id && member.user.id !== userId ? (
         <div className="absolute right-4 top-4 block sm:flex">
           <Dropdown
-            button={
-              <Button
-                icon={<HiEllipsisVertical />}
-                variant="transparent"
-                size="xs"
-              />
-            }
+            button={<Button icon={<HiEllipsisVertical />} variant="transparent" size="xs" />}
           >
             <DropdownGroup>
               <DropdownItem>

@@ -1,13 +1,13 @@
-import React from "react";
+import React from 'react';
 
-import { useBoard } from "./hooks";
+import { useBoard } from './hooks';
 
-import { Layout } from "@/components/layout";
-import { LayoutWrapper } from "@/components/layoutWrapper";
-import { Navbar } from "@/components/navbar";
-import { Lists } from "./components/lists";
+import { Layout } from '@/components/layout';
+import { LayoutWrapper } from '@/components/layoutWrapper';
+import { Navbar } from '@/components/navbar';
+import { Lists } from './components/lists';
 
-export const Board: React.FC<{}> = () => {
+export const Board: React.FC = () => {
   const boardQuery = useBoard();
   const board = boardQuery.data?.board;
 

@@ -1,28 +1,28 @@
-import { gql, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
-import { useRef } from "react";
-import { z } from "zod";
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { useRef } from 'react';
+import { z } from 'zod';
 
-import { GET_BOARD, LIST_PREVIEW_FIELDS } from "@/features/board/hooks";
-import { GET_WORKSPACE } from "@/features/workspace/hooks";
+import { GET_BOARD, LIST_PREVIEW_FIELDS } from '@/features/board/hooks';
+import { GET_WORKSPACE } from '@/features/workspace/hooks';
 
-import type { ModalHandle } from "@/components/modal";
+import type { ModalHandle } from '@/components/modal';
 import type {
   BoardQuery,
   BoardQueryVariables,
-} from "@/features/board/hooks/__generated__/useBoard.generated";
+} from '@/features/board/hooks/__generated__/useBoard.generated';
 import type {
   WorkspaceQuery,
   WorkspaceQueryVariables,
-} from "@/features/workspace/hooks/__generated__/useWorkspace.generated";
+} from '@/features/workspace/hooks/__generated__/useWorkspace.generated';
 import type {
   CreateListMutation,
   CreateListMutationVariables,
-} from "./__generated__/useCreateList.generated";
+} from './__generated__/useCreateList.generated';
 
-import { useZodForm } from "@/components/form";
+import { useZodForm } from '@/components/form';
 
-import { input as listValidateError } from "@/fixtures/list/error";
+import { input as listValidateError } from '@/fixtures/list/error';
 
 const ListSchema = z.object({
   title: z
@@ -31,17 +31,14 @@ const ListSchema = z.object({
     .max(50, { message: listValidateError.title.length.tooBig }),
 });
 
-type UseCreateListProps = {} & CreateListMutationVariables;
+type UseCreateListProps = CreateListMutationVariables;
 
 export function useCreateList() {
   const router = useRouter();
   const boardId = router.query.boardId as string;
   const workspaceId = router.query.workspaceId as string;
 
-  const [createList] = useMutation<
-    CreateListMutation,
-    CreateListMutationVariables
-  >(
+  const [createList] = useMutation<CreateListMutation, CreateListMutationVariables>(
     gql`
       mutation CreateList($input: CreateListInput!, $boardId: String!) {
         createList(input: $input, boardId: $boardId) {
@@ -58,7 +55,7 @@ export function useCreateList() {
       update(cache, { data }) {
         const createdList = data?.createList;
 
-        if (createdList?.__typename !== "MutationCreateListSuccess") return;
+        if (createdList?.__typename !== 'MutationCreateListSuccess') return;
 
         const existingBoard = cache.readQuery<BoardQuery, BoardQueryVariables>({
           query: GET_BOARD,
@@ -78,10 +75,10 @@ export function useCreateList() {
           },
         });
 
-        const existingWorkspace = cache.readQuery<
-          WorkspaceQuery,
-          WorkspaceQueryVariables
-        >({ query: GET_WORKSPACE, variables: { workspaceId } })?.workspace;
+        const existingWorkspace = cache.readQuery<WorkspaceQuery, WorkspaceQueryVariables>({
+          query: GET_WORKSPACE,
+          variables: { workspaceId },
+        })?.workspace;
 
         if (!existingWorkspace) return;
 
@@ -106,7 +103,7 @@ export function useCreateList() {
   const modalRef = useRef<ModalHandle>(null);
 
   const form = useZodForm({ schema: ListSchema });
-  const handleSubmit = async (input: CreateListMutationVariables["input"]) => {
+  const handleSubmit = async (input: UseCreateListProps['input']) => {
     await createList({ variables: { input, boardId } });
     if (modalRef.current) {
       form.reset();

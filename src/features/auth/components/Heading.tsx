@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import { Logo } from "@/ui/logo";
+import { Logo } from '@/ui/logo';
 
-export const Heading: React.FC<{}> = () => {
+export const Heading: React.FC = () => {
   return (
     <div className="mb-12 flex h-12 flex-row items-center gap-2 lg:mb-20">
       <Logo width={21} height={21} />

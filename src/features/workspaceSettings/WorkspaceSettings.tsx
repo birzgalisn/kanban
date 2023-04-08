@@ -1,26 +1,25 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
-import { useEditSettings } from "./hooks";
-import { useDeleteWorkspace } from "./hooks/useDeleteWorkspace";
+import { useEditSettings } from './hooks';
+import { useDeleteWorkspace } from './hooks/useDeleteWorkspace';
 
-import { Form, Input } from "@/components/form";
-import { Layout } from "@/components/layout";
-import { LayoutWrapper } from "@/components/layoutWrapper";
-import { Navbar } from "@/components/navbar";
-import { Section, SectionWrapper } from "@/components/section";
-import { SectionHeading } from "@/components/section/SectionHeading";
-import { InputSkeleton } from "@/components/skeleton";
-import { Button } from "@/ui/button";
-import { DangerZone } from "../../components/dangerZone/DangerZone";
-import { Zone } from "../../components/dangerZone/Zone";
+import { Form, Input } from '@/components/form';
+import { Layout } from '@/components/layout';
+import { LayoutWrapper } from '@/components/layoutWrapper';
+import { Navbar } from '@/components/navbar';
+import { Section, SectionWrapper } from '@/components/section';
+import { SectionHeading } from '@/components/section/SectionHeading';
+import { InputSkeleton } from '@/components/skeleton';
+import { Button } from '@/ui/button';
+import { DangerZone } from '../../components/dangerZone/DangerZone';
+import { Zone } from '../../components/dangerZone/Zone';
 
-export const WorkspaceSettings: React.FC<{}> = () => {
+export const WorkspaceSettings: React.FC = () => {
   const router = useRouter();
   const workspaceId = router.query.workspaceId as string;
 
-  const [workspaceQuery, editWorkspaceForm, handleEditWorkspaecSubmit] =
-    useEditSettings();
+  const [workspaceQuery, editWorkspaceForm, handleEditWorkspaecSubmit] = useEditSettings();
   const workspace = workspaceQuery.data?.workspace;
 
   const deleteWorkspace = useDeleteWorkspace();
@@ -40,7 +39,7 @@ export const WorkspaceSettings: React.FC<{}> = () => {
             url: `/workspaces/${workspace?.id}`,
           },
           {
-            title: "Members",
+            title: 'Settings',
             url: `/workspaces/${workspace?.id}/settings`,
           },
         ]}
@@ -59,9 +58,7 @@ export const WorkspaceSettings: React.FC<{}> = () => {
             >
               {workspaceQuery.loading ? (
                 <div className="flex w-full flex-col">
-                  <span className="pl-[0.1rem] text-sm font-normal">
-                    Project name
-                  </span>
+                  <span className="pl-[0.1rem] text-sm font-normal">Project name</span>
                   <InputSkeleton className="h-10" fluid />
                 </div>
               ) : (
@@ -69,7 +66,7 @@ export const WorkspaceSettings: React.FC<{}> = () => {
                   className="h-10"
                   label="Project name"
                   placeholder="Enter the new workspace title"
-                  {...editWorkspaceForm.register("title")}
+                  {...editWorkspaceForm.register('title')}
                 />
               )}
               <Button

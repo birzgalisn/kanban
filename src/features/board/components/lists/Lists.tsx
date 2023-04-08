@@ -1,9 +1,9 @@
-import dynamic from "next/dynamic";
-import React from "react";
+import dynamic from 'next/dynamic';
+import React from 'react';
 
 // To avoid Next SSR issues, use dynamic module import with SSR disabled
 const DragDropContext = dynamic(
-  () => import("react-beautiful-dnd").then((mod) => mod.DragDropContext),
+  () => import('react-beautiful-dnd').then((mod) => mod.DragDropContext),
   { ssr: false },
 );
 
@@ -14,24 +14,23 @@ import {
   useMoveCard,
   useRenameList,
   useViewCard,
-} from "./hooks";
+} from './hooks';
 
-import type { DropResult } from "react-beautiful-dnd";
-import type { BoardQuery } from "../../hooks/__generated__/useBoard.generated";
+import type { DropResult } from 'react-beautiful-dnd';
+import type { BoardQuery } from '../../hooks/__generated__/useBoard.generated';
 
-import { Form, Input } from "@/components/form";
-import { Modal } from "@/components/modal";
-import { BoardButton } from "@/ui/boardButton";
-import { Button } from "@/ui/button";
-import { CardDrawer } from "./components/cardDrawer";
-import { List } from "./components/list";
-import { ListsWrapper } from "./components/ListsWrapper";
+import { Form, Input } from '@/components/form';
+import { Modal } from '@/components/modal';
+import { BoardButton } from '@/ui/boardButton';
+import { Button } from '@/ui/button';
+import { CardDrawer } from './components/cardDrawer';
+import { List } from './components/list';
+import { ListsWrapper } from './components/ListsWrapper';
 
-export type Lists = BoardQuery["board"]["lists"];
+export type Lists = BoardQuery['board']['lists'];
 
 export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
-  const [createListForm, handleCreateListSubmit, createListModalRef] =
-    useCreateList();
+  const [createListForm, handleCreateListSubmit, createListModalRef] = useCreateList();
 
   const [
     createCardForm,
@@ -87,11 +86,7 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
           createModalRef={createListModalRef}
         />
       </ListsWrapper>
-      <CardDrawer
-        isLoading={viewCardResult.loading}
-        card={selectedCard}
-        ref={viewCardDrawerRef}
-      />
+      <CardDrawer isLoading={viewCardResult.loading} card={selectedCard} ref={viewCardDrawerRef} />
       <Modal
         title={`Rename ${renameOnList.title} list`}
         subtitle="Take chances, make mistakes. That's how you grow"
@@ -101,13 +96,10 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
           <Input
             label="Title"
             placeholder="Enter the new list title"
-            {...renameListForm.register("title")}
+            {...renameListForm.register('title')}
             autoFocus
           />
-          <Button
-            type="submit"
-            isLoading={renameListForm.formState.isSubmitting}
-          >
+          <Button type="submit" isLoading={renameListForm.formState.isSubmitting}>
             Rename
           </Button>
         </Form>
@@ -121,13 +113,10 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
           <Input
             label="Title"
             placeholder="Enter the new card title"
-            {...createCardForm.register("title")}
+            {...createCardForm.register('title')}
             autoFocus
           />
-          <Button
-            type="submit"
-            isLoading={createCardForm.formState.isSubmitting}
-          >
+          <Button type="submit" isLoading={createCardForm.formState.isSubmitting}>
             Create
           </Button>
         </Form>
@@ -141,13 +130,10 @@ export const Lists: React.FC<{ lists?: Lists }> = ({ lists }) => {
           <Input
             label="Title"
             placeholder="Enter the new list title"
-            {...createListForm.register("title")}
+            {...createListForm.register('title')}
             autoFocus
           />
-          <Button
-            type="submit"
-            isLoading={createListForm.formState.isSubmitting}
-          >
+          <Button type="submit" isLoading={createListForm.formState.isSubmitting}>
             Create
           </Button>
         </Form>

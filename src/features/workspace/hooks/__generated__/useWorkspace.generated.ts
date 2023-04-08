@@ -1,9 +1,9 @@
-import * as Types from "../../../../__generated__/types";
+import * as Types from '../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type BoardPreviewFieldsFragment = {
-  __typename?: "Board";
+  __typename?: 'Board';
   id: string;
   title: string;
   totalLists: number;
@@ -12,17 +12,17 @@ export type BoardPreviewFieldsFragment = {
 };
 
 export type WorkspaceQueryVariables = Types.Exact<{
-  workspaceId: Types.Scalars["String"];
+  workspaceId: Types.Scalars['String'];
 }>;
 
 export type WorkspaceQuery = {
-  __typename?: "Query";
+  __typename?: 'Query';
   workspace: {
-    __typename?: "Workspace";
+    __typename?: 'Workspace';
     id: string;
     title: string;
     boards: Array<{
-      __typename?: "Board";
+      __typename?: 'Board';
       id: string;
       title: string;
       totalLists: number;
@@ -53,7 +53,4 @@ export const WorkspaceDocument = gql`
   }
   ${BoardPreviewFieldsFragmentDoc}
 `;
-export type WorkspaceQueryResult = Apollo.QueryResult<
-  WorkspaceQuery,
-  WorkspaceQueryVariables
->;
+export type WorkspaceQueryResult = Apollo.QueryResult<WorkspaceQuery, WorkspaceQueryVariables>;

@@ -1,17 +1,17 @@
-import { gql, useMutation } from "@apollo/client";
-import { flatten } from "lodash";
-import { useRouter } from "next/router";
+import { gql, useMutation } from '@apollo/client';
+import { flatten } from 'lodash';
+import { useRouter } from 'next/router';
 
-import { GET_BOARD } from "@/features/board/hooks";
+import { GET_BOARD } from '@/features/board/hooks';
 
 import type {
   BoardQuery,
   BoardQueryVariables,
-} from "@/features/board/hooks/__generated__/useBoard.generated";
+} from '@/features/board/hooks/__generated__/useBoard.generated';
 import type {
   MoveCardMutation,
   MoveCardMutationVariables,
-} from "./__generated__/useMoveCard.generated";
+} from './__generated__/useMoveCard.generated';
 
 type UseMoveCardProps = {
   source: string;

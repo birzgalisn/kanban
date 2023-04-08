@@ -1,15 +1,13 @@
-import clsx from "clsx";
-import React from "react";
+import clsx from 'clsx';
+import React from 'react';
 
-import { AvatarSkeleton, TextSkeleton } from "@/components/skeleton";
+import { AvatarSkeleton, TextSkeleton } from '@/components/skeleton';
 
-export const TaskScaffold: React.FC<{ className?: string }> = ({
-  className,
-}) => {
+export const TaskScaffold: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <div
       className={clsx(
-        "relative flex max-h-20 w-64 flex-1 flex-col gap-2 rounded-lg border border-gray-200 bg-white p-4 shadow-lg",
+        'relative flex max-h-20 w-64 flex-1 flex-col gap-2 rounded-lg border border-gray-200 bg-white p-4 shadow-lg',
         className,
       )}
     >

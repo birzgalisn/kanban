@@ -1,8 +1,8 @@
-import Head from "next/head";
+import Head from 'next/head';
 
-import type { NextPage } from "next";
+import type { NextPage } from 'next';
 
-import { Board } from "@/features/board";
+import { Board } from '@/features/board';
 
 const BoardPage: NextPage = () => {
   return (

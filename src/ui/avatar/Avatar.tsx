@@ -1,13 +1,13 @@
-import clsx from "clsx";
-import Image from "next/image";
-import React from "react";
+import clsx from 'clsx';
+import Image from 'next/image';
+import React from 'react';
 
-import type { ImageProps } from "next/image";
+import type { ImageProps } from 'next/image';
 
 export const Avatar: React.FC<{
-  src?: ImageProps["src"] | null;
-  alt?: ImageProps["alt"] | null;
-  size: ImageProps["sizes"];
+  src?: ImageProps['src'] | null;
+  alt?: ImageProps['alt'] | null;
+  size: ImageProps['sizes'];
   className?: string;
 }> = ({ className, src, alt, size }) => {
   return (
@@ -15,8 +15,8 @@ export const Avatar: React.FC<{
       <div className="relative h-full w-full">
         <Image
           className="rounded-full object-contain"
-          src={src ?? "/avatars/0.svg"}
-          alt={alt ? `${alt} avatar` : "Avatar"}
+          src={src ?? '/avatars/0.svg'}
+          alt={alt ? `${alt} avatar` : 'Avatar'}
           sizes={size}
           fill
         />

@@ -1,31 +1,31 @@
-import { builder } from "@/graphql/builder";
-import { db } from "@/lib/db";
-import { ZodError } from "zod";
+import { builder } from '@/graphql/builder';
+import { db } from '@/lib/db';
+import { ZodError } from 'zod';
 
-import type { List as ListType } from "@/__generated__/types";
+import type { List as ListType } from '@/__generated__/types';
 
-import { input as listValidateError } from "@/fixtures/list/error";
+import { input as listValidateError } from '@/fixtures/list/error';
 
-export const ListObject = builder.prismaObject("List", {
+export const ListObject = builder.prismaObject('List', {
   fields: (t) => ({
-    id: t.exposeID("id"),
-    board: t.relation("board"),
-    boardId: t.exposeString("boardId"),
-    title: t.exposeString("title"),
-    cards: t.relation("cards"),
-    createdAt: t.expose("createdAt", { type: "DateTime" }),
-    updatedAt: t.expose("updatedAt", { type: "DateTime" }),
+    id: t.exposeID('id'),
+    board: t.relation('board'),
+    boardId: t.exposeString('boardId'),
+    title: t.exposeString('title'),
+    cards: t.relation('cards'),
+    createdAt: t.expose('createdAt', { type: 'DateTime' }),
+    updatedAt: t.expose('updatedAt', { type: 'DateTime' }),
   }),
 });
 
-builder.queryField("list", (t) =>
+builder.queryField('list', (t) =>
   t.prismaField({
     type: ListObject,
     authScopes: {
       member: true,
     },
     args: {
-      id: t.arg({ type: "String", required: true }),
+      id: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { id }, { token }, info) => {
       const list = await db.list.findFirst({
@@ -39,7 +39,7 @@ builder.queryField("list", (t) =>
   }),
 );
 
-const CreateListInput = builder.inputType("CreateListInput", {
+const CreateListInput = builder.inputType('CreateListInput', {
   fields: (t) => ({
     title: t.string({
       required: true,
@@ -51,7 +51,7 @@ const CreateListInput = builder.inputType("CreateListInput", {
   }),
 });
 
-builder.mutationField("createList", (t) =>
+builder.mutationField('createList', (t) =>
   t.prismaField({
     type: ListObject,
     errors: {
@@ -62,7 +62,7 @@ builder.mutationField("createList", (t) =>
     },
     args: {
       input: t.arg({ type: CreateListInput, required: true }),
-      boardId: t.arg({ type: "String", required: true }),
+      boardId: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { input, boardId }, { token }, info) => {
       return db.list.create({
@@ -78,7 +78,7 @@ builder.mutationField("createList", (t) =>
   }),
 );
 
-const RenameListInput = builder.inputType("RenameListInput", {
+const RenameListInput = builder.inputType('RenameListInput', {
   fields: (t) => ({
     title: t.string({
       required: true,
@@ -90,7 +90,7 @@ const RenameListInput = builder.inputType("RenameListInput", {
   }),
 });
 
-builder.mutationField("renameList", (t) =>
+builder.mutationField('renameList', (t) =>
   t.prismaField({
     type: ListObject,
     errors: {
@@ -101,7 +101,7 @@ builder.mutationField("renameList", (t) =>
     },
     args: {
       input: t.arg({ type: RenameListInput, required: true }),
-      id: t.arg({ type: "String", required: true }),
+      id: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { input, id }, { token }, info) => {
       return db.list.update({
@@ -117,14 +117,14 @@ builder.mutationField("renameList", (t) =>
   }),
 );
 
-builder.mutationField("deleteList", (t) =>
+builder.mutationField('deleteList', (t) =>
   t.prismaField({
     type: ListObject,
     authScopes: {
       member: true,
     },
     args: {
-      id: t.arg({ type: "String", required: true }),
+      id: t.arg({ type: 'String', required: true }),
     },
     resolve: async (query, root, { id }, { token }, info) => {
       return db.list.delete({

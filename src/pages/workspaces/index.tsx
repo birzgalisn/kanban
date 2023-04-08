@@ -1,8 +1,8 @@
-import Head from "next/head";
+import Head from 'next/head';
 
-import type { NextPage } from "next";
+import type { NextPage } from 'next';
 
-import { Workspaces } from "@/features/workspaces";
+import { Workspaces } from '@/features/workspaces';
 
 const WorkspacesPage: NextPage = () => {
   return (

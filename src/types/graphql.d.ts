@@ -1,22 +1,22 @@
-import "graphql/error";
+import 'graphql/error';
 
 /**
  * See built-in error codes
  * https://www.apollographql.com/docs/apollo-server/data/errors/#built-in-error-codes
  */
 type ApolloErrorCode =
-  | "GRAPHQL_PARSE_FAILED"
-  | "GRAPHQL_VALIDATION_FAILED"
-  | "BAD_USER_INPUT"
-  | "PERSISTED_QUERY_NOT_FOUND"
-  | "PERSISTED_QUERY_NOT_SUPPORTED"
-  | "OPERATION_RESOLUTION_FAILURE"
-  | "BAD_REQUEST"
-  | "INTERNAL_SERVER_ERROR";
+  | 'GRAPHQL_PARSE_FAILED'
+  | 'GRAPHQL_VALIDATION_FAILED'
+  | 'BAD_USER_INPUT'
+  | 'PERSISTED_QUERY_NOT_FOUND'
+  | 'PERSISTED_QUERY_NOT_SUPPORTED'
+  | 'OPERATION_RESOLUTION_FAILURE'
+  | 'BAD_REQUEST'
+  | 'INTERNAL_SERVER_ERROR';
 
-type Code = ApolloErrorCode | "FORBIDDEN";
+type Code = ApolloErrorCode | 'FORBIDDEN';
 
-declare module "graphql/error" {
+declare module 'graphql/error' {
   interface GraphQLErrorExtensions {
     code: Code;
   }

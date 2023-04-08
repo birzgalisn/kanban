@@ -1,15 +1,15 @@
-import * as Types from "../../../../../../__generated__/types";
+import * as Types from '../../../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type MoveCardMutationVariables = Types.Exact<{
-  id: Types.Scalars["String"];
-  destination: Types.Scalars["String"];
+  id: Types.Scalars['String'];
+  destination: Types.Scalars['String'];
 }>;
 
 export type MoveCardMutation = {
-  __typename?: "Mutation";
-  moveCard: { __typename?: "Card"; id: string; listId: string };
+  __typename?: 'Mutation';
+  moveCard: { __typename?: 'Card'; id: string; listId: string };
 };
 
 export const MoveCardDocument = gql`

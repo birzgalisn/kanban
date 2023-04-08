@@ -1,20 +1,20 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import React from "react";
-import { z } from "zod";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { z } from 'zod';
 
-import { Container } from "@/components/container";
-import { Form, Input, useZodForm } from "@/components/form";
-import { Avatar } from "@/ui/avatar/Avatar";
-import { Button } from "@/ui/button";
-import { Logo } from "@/ui/logo";
-import { GroupScaffold } from "./components/GroupScaffold";
+import { Container } from '@/components/container';
+import { Form, Input, useZodForm } from '@/components/form';
+import { Avatar } from '@/ui/avatar/Avatar';
+import { Button } from '@/ui/button';
+import { Logo } from '@/ui/logo';
+import { GroupScaffold } from './components/GroupScaffold';
 
 const SignInSchema = z.object({
   email: z.string().nullish(),
 });
 
-export const Landing: React.FC<{}> = () => {
+export const Landing: React.FC = () => {
   const router = useRouter();
   const form = useZodForm({ schema: SignInSchema });
 
@@ -44,13 +44,13 @@ export const Landing: React.FC<{}> = () => {
           className="flex max-w-sm flex-row"
           form={form}
           onSubmit={({ email }) => {
-            router.push({ pathname: "/auth/signin", query: { email } });
+            router.push({ pathname: '/auth/signin', query: { email } });
           }}
         >
           <Input
             className="rounded-r-none"
             placeholder="Enter your email address"
-            {...form.register("email")}
+            {...form.register('email')}
           />
           <Button className="shrink-0 rounded-l-none" type="submit">
             Sign in
@@ -70,10 +70,7 @@ export const Landing: React.FC<{}> = () => {
               <span className="max-w-min rounded bg-purple-100 px-2 py-1 text-sm font-medium text-purple-700">
                 Research
               </span>
-              <Avatar
-                className="absolute bottom-0 right-0 mb-4 mr-4"
-                size="w-8 h-8"
-              />
+              <Avatar className="absolute bottom-0 right-0 mb-4 mr-4" size="w-8 h-8" />
             </div>
           </div>
         </GroupScaffold>

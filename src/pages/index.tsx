@@ -1,8 +1,8 @@
-import Head from "next/head";
+import Head from 'next/head';
 
-import { Landing } from "@/features/landing";
+import { Landing } from '@/features/landing';
 
-import type { NextPage } from "next";
+import type { NextPage } from 'next';
 
 const LandingPage: NextPage = () => {
   return (

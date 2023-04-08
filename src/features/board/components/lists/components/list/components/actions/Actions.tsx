@@ -1,37 +1,25 @@
-import React from "react";
+import React from 'react';
 
-import type { ListProps } from "../../List";
+import type { ListProps } from '../../List';
 
-import { Dropdown, DropdownGroup, DropdownItem } from "@/components/dropdown";
-import { Button } from "@/ui/button";
+import { Dropdown, DropdownGroup, DropdownItem } from '@/components/dropdown';
+import { Button } from '@/ui/button';
 import {
   HiEllipsisHorizontal,
   HiOutlineArchiveBox,
   HiOutlinePencil,
   HiOutlineTrash,
-} from "react-icons/hi2";
+} from 'react-icons/hi2';
 
 type ActionsProps = {
-  list: ListProps["list"];
-  renameList: ListProps["renameList"];
-  deleteList: ListProps["deleteList"];
+  list: ListProps['list'];
+  renameList: ListProps['renameList'];
+  deleteList: ListProps['deleteList'];
 };
 
-export const Actions: React.FC<ActionsProps> = ({
-  list,
-  renameList,
-  deleteList,
-}) => {
+export const Actions: React.FC<ActionsProps> = ({ list, renameList, deleteList }) => {
   return (
-    <Dropdown
-      button={
-        <Button
-          icon={<HiEllipsisHorizontal />}
-          variant="transparent"
-          size="xs"
-        />
-      }
-    >
+    <Dropdown button={<Button icon={<HiEllipsisHorizontal />} variant="transparent" size="xs" />}>
       <DropdownGroup>
         <DropdownItem>
           <Button

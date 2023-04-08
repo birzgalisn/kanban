@@ -1,8 +1,6 @@
-import React from "react";
+import React from 'react';
 
-export const DangerZone: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const DangerZone: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="flex flex-col gap-6">
       <h2 className="text-xl font-semibold">Danger zone</h2>

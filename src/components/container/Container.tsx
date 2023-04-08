@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { SolidBackground } from "../solidBackground";
+import { SolidBackground } from '../solidBackground';
 
 export const Container: React.FC<{
   children: React.ReactNode;

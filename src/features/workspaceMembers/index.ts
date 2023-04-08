@@ -1,1 +1,1 @@
-export * from "./WorkspaceMembers";
+export * from './WorkspaceMembers';

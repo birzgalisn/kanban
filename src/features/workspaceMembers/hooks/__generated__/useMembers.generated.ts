@@ -1,14 +1,14 @@
-import * as Types from "../../../../__generated__/types";
+import * as Types from '../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type MemberPreviewFieldsFragment = {
-  __typename?: "Member";
+  __typename?: 'Member';
   id: string;
   isOwner: boolean;
   createdAt: any;
   user: {
-    __typename?: "User";
+    __typename?: 'User';
     id: string;
     email?: string | null;
     name?: string | null;
@@ -17,25 +17,25 @@ export type MemberPreviewFieldsFragment = {
 };
 
 export type MembersQueryVariables = Types.Exact<{
-  workspaceId: Types.Scalars["String"];
+  workspaceId: Types.Scalars['String'];
 }>;
 
 export type MembersQuery = {
-  __typename?: "Query";
+  __typename?: 'Query';
   members: Array<{
-    __typename?: "Member";
+    __typename?: 'Member';
     id: string;
     isOwner: boolean;
     createdAt: any;
     user: {
-      __typename?: "User";
+      __typename?: 'User';
       id: string;
       email?: string | null;
       name?: string | null;
       image?: string | null;
     };
   }>;
-  workspace: { __typename?: "Workspace"; id: string; title: string };
+  workspace: { __typename?: 'Workspace'; id: string; title: string };
 };
 
 export const MemberPreviewFieldsFragmentDoc = gql`
@@ -63,7 +63,4 @@ export const MembersDocument = gql`
   }
   ${MemberPreviewFieldsFragmentDoc}
 `;
-export type MembersQueryResult = Apollo.QueryResult<
-  MembersQuery,
-  MembersQueryVariables
->;
+export type MembersQueryResult = Apollo.QueryResult<MembersQuery, MembersQueryVariables>;

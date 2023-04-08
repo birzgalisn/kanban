@@ -1,23 +1,23 @@
-import { gql, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
-import { useRef, useState } from "react";
-import { z } from "zod";
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { useRef, useState } from 'react';
+import { z } from 'zod';
 
-import { GET_BOARD } from "@/features/board/hooks";
+import { GET_BOARD } from '@/features/board/hooks';
 
-import type { ModalHandle } from "@/components/modal";
+import type { ModalHandle } from '@/components/modal';
 import type {
   BoardQuery,
   BoardQueryVariables,
-} from "@/features/board/hooks/__generated__/useBoard.generated";
+} from '@/features/board/hooks/__generated__/useBoard.generated';
 import type {
   RenameListMutation,
   RenameListMutationVariables,
-} from "./__generated__/useRenameList.generated";
+} from './__generated__/useRenameList.generated';
 
-import { useZodForm } from "@/components/form";
+import { useZodForm } from '@/components/form';
 
-import { input as listValidateError } from "@/fixtures/list/error";
+import { input as listValidateError } from '@/fixtures/list/error';
 
 const ListSchema = z.object({
   title: z
@@ -31,16 +31,13 @@ export type RenameModalProps = {
   title: string;
 };
 
-type UseRenameListProps = {} & RenameListMutationVariables;
+type UseRenameListProps = RenameListMutationVariables;
 
 export function useRenameList() {
   const router = useRouter();
   const boardId = router.query.boardId as string;
 
-  const [renameList] = useMutation<
-    RenameListMutation,
-    RenameListMutationVariables
-  >(
+  const [renameList] = useMutation<RenameListMutation, RenameListMutationVariables>(
     gql`
       mutation RenameList($input: RenameListInput!, $id: String!) {
         renameList(input: $input, id: $id) {
@@ -57,7 +54,7 @@ export function useRenameList() {
       update(cache, { data }) {
         const renamedList = data?.renameList;
 
-        if (renamedList?.__typename !== "MutationRenameListSuccess") return;
+        if (renamedList?.__typename !== 'MutationRenameListSuccess') return;
 
         const existingBoard = cache.readQuery<BoardQuery, BoardQueryVariables>({
           query: GET_BOARD,
@@ -87,8 +84,8 @@ export function useRenameList() {
   );
 
   const [renameOnList, setRenameOnList] = useState<RenameModalProps>({
-    id: "",
-    title: "",
+    id: '',
+    title: '',
   });
   const modalRef = useRef<ModalHandle>(null);
   const openRenameModal = (props: RenameModalProps) => {
@@ -100,7 +97,7 @@ export function useRenameList() {
   };
 
   const form = useZodForm({ schema: ListSchema });
-  const handleSubmit = async (input: UseRenameListProps["input"]) => {
+  const handleSubmit = async (input: UseRenameListProps['input']) => {
     await renameList({ variables: { input, id: renameOnList.id } });
     if (modalRef.current) {
       form.reset();

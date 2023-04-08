@@ -1,16 +1,16 @@
-import { gql, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
 
-import { GET_MEMBERS } from "@/features/workspaceMembers/hooks";
+import { GET_MEMBERS } from '@/features/workspaceMembers/hooks';
 
 import type {
   MembersQuery,
   MembersQueryVariables,
-} from "@/features/workspaceMembers/hooks/__generated__/useMembers.generated";
+} from '@/features/workspaceMembers/hooks/__generated__/useMembers.generated';
 import type {
   TransferOwnershipMutation,
   TransferOwnershipMutationVariables,
-} from "./__generated__/useTransferOwnership.generated";
+} from './__generated__/useTransferOwnership.generated';
 
 type UseTransferOwnershipProps = {
   ownerId: string;
@@ -43,13 +43,9 @@ export function useTransferOwnership() {
       update(cache, { data }) {
         const transferedToUser = data?.transferOwnership;
 
-        if (transferedToUser?.__typename !== "MutationTransferOwnershipSuccess")
-          return;
+        if (transferedToUser?.__typename !== 'MutationTransferOwnershipSuccess') return;
 
-        const existingMembers = cache.readQuery<
-          MembersQuery,
-          MembersQueryVariables
-        >({
+        const existingMembers = cache.readQuery<MembersQuery, MembersQueryVariables>({
           query: GET_MEMBERS,
           variables: {
             workspaceId,
@@ -64,10 +60,8 @@ export function useTransferOwnership() {
           data: {
             ...existingMembers,
             members: existingMembers.members.map((member) => {
-              if (member.id === transferedToUser.data.id)
-                return { ...member, isOwner: true };
-              if (member.user.id === variables.ownerId)
-                return { ...member, isOwner: false };
+              if (member.id === transferedToUser.data.id) return { ...member, isOwner: true };
+              if (member.user.id === variables.ownerId) return { ...member, isOwner: false };
               return member;
             }),
           },

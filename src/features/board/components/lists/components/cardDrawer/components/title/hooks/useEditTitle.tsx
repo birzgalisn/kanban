@@ -1,21 +1,21 @@
-import { gql, useMutation } from "@apollo/client";
-import { useState } from "react";
-import { z } from "zod";
+import { gql, useMutation } from '@apollo/client';
+import { useState } from 'react';
+import { z } from 'zod';
 
-import { GET_CARD } from "@/features/board/components/lists/hooks";
+import { GET_CARD } from '@/features/board/components/lists/hooks';
 
 import type {
   CardQuery,
   CardQueryVariables,
-} from "@/features/board/components/lists/hooks/__generated__/useViewCard.generated";
+} from '@/features/board/components/lists/hooks/__generated__/useViewCard.generated';
 import type {
   EditCardTitleMutation,
   EditCardTitleMutationVariables,
-} from "./__generated__/useEditTitle.generated";
+} from './__generated__/useEditTitle.generated';
 
-import { useZodForm } from "@/components/form";
+import { useZodForm } from '@/components/form';
 
-import { input as cardValidateError } from "@/fixtures/card/error";
+import { input as cardValidateError } from '@/fixtures/card/error';
 
 const EditTitleSchema = z.object({
   title: z
@@ -24,15 +24,12 @@ const EditTitleSchema = z.object({
     .max(50, { message: cardValidateError.title.length.tooBig }),
 });
 
-type Card = CardQuery["card"];
+type Card = CardQuery['card'];
 
-type UseEditCardTitleProps = {} & EditCardTitleMutationVariables;
+type UseEditCardTitleProps = EditCardTitleMutationVariables;
 
 export function useEditCardTitle() {
-  const [editCardTitle] = useMutation<
-    EditCardTitleMutation,
-    EditCardTitleMutationVariables
-  >(
+  const [editCardTitle] = useMutation<EditCardTitleMutation, EditCardTitleMutationVariables>(
     gql`
       mutation EditCardTitle($input: EditCardTitleInput!, $cardId: String!) {
         editCardTitle(input: $input, cardId: $cardId) {
@@ -49,7 +46,7 @@ export function useEditCardTitle() {
       update(cache, { data }) {
         const editedCard = data?.editCardTitle;
 
-        if (editedCard?.__typename !== "MutationEditCardTitleSuccess") return;
+        if (editedCard?.__typename !== 'MutationEditCardTitleSuccess') return;
 
         const cachedCard = cache.readQuery<CardQuery, CardQueryVariables>({
           query: GET_CARD,
@@ -78,7 +75,7 @@ export function useEditCardTitle() {
 
   const [isCardTitleInEdit, setIsCardTitleInEdit] = useState<boolean>();
   const toggleEdit = (card?: Card) => {
-    if (card) form.reset({ title: card.title ?? "" });
+    if (card) form.reset({ title: card.title ?? '' });
     setIsCardTitleInEdit((prev) => !prev);
   };
 

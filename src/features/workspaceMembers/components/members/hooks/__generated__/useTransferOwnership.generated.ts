@@ -1,19 +1,19 @@
-import * as Types from "../../../../../../__generated__/types";
+import * as Types from '../../../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type TransferOwnershipMutationVariables = Types.Exact<{
-  memberId: Types.Scalars["String"];
+  memberId: Types.Scalars['String'];
 }>;
 
 export type TransferOwnershipMutation = {
-  __typename?: "Mutation";
+  __typename?: 'Mutation';
   transferOwnership:
     | {
-        __typename?: "MutationTransferOwnershipSuccess";
-        data: { __typename?: "Member"; id: string };
+        __typename?: 'MutationTransferOwnershipSuccess';
+        data: { __typename?: 'Member'; id: string };
       }
-    | { __typename?: "ZodError" };
+    | { __typename?: 'ZodError' };
 };
 
 export const TransferOwnershipDocument = gql`
@@ -31,8 +31,7 @@ export type TransferOwnershipMutationFn = Apollo.MutationFunction<
   TransferOwnershipMutation,
   TransferOwnershipMutationVariables
 >;
-export type TransferOwnershipMutationResult =
-  Apollo.MutationResult<TransferOwnershipMutation>;
+export type TransferOwnershipMutationResult = Apollo.MutationResult<TransferOwnershipMutation>;
 export type TransferOwnershipMutationOptions = Apollo.BaseMutationOptions<
   TransferOwnershipMutation,
   TransferOwnershipMutationVariables

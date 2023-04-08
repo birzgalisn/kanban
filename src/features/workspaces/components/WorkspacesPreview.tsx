@@ -1,14 +1,14 @@
-import { WorkspacesQuery } from "../hooks/__generated__/useWorkspaces.generated";
+import { WorkspacesQuery } from '../hooks/__generated__/useWorkspaces.generated';
 
-import type { ModalHandle } from "@/components/modal";
+import type { ModalHandle } from '@/components/modal';
 
-import { Avatar } from "@/ui/avatar";
-import { BoardButton } from "@/ui/boardButton";
-import { PreviewCard } from "./PreviewCard";
-import { PreviewCardSekeleton } from "./PreviewCardSkeleton";
+import { Avatar } from '@/ui/avatar';
+import { BoardButton } from '@/ui/boardButton';
+import { PreviewCard } from './PreviewCard';
+import { PreviewCardSekeleton } from './PreviewCardSkeleton';
 
 export const WorkspacesPreview: React.FC<{
-  workspaces?: WorkspacesQuery["workspaces"];
+  workspaces?: WorkspacesQuery['workspaces'];
   isLoading: boolean;
   createWorkspaceModalRef: React.RefObject<ModalHandle>;
 }> = ({ workspaces, isLoading, createWorkspaceModalRef }) => {
@@ -26,12 +26,7 @@ export const WorkspacesPreview: React.FC<{
               href={`/workspaces/${workspace.id}`}
             >
               {workspace.members.map((member) => (
-                <Avatar
-                  className="-ml-2"
-                  key={member.id}
-                  src={member.user.image}
-                  size="w-6 h-6"
-                />
+                <Avatar className="-ml-2" key={member.id} src={member.user.image} size="w-6 h-6" />
               ))}
             </PreviewCard>
           ))}

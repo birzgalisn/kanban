@@ -1,16 +1,16 @@
-import React, { useMemo } from "react";
+import React, { useMemo } from 'react';
 
-import { useAddMember } from "./hooks";
+import { useAddMember } from './hooks';
 
-import type { MembersQuery } from "../../hooks/__generated__/useMembers.generated";
+import type { MembersQuery } from '../../hooks/__generated__/useMembers.generated';
 
-import { Form, Input } from "@/components/form";
-import { Section } from "@/components/section";
-import { Button } from "@/ui/button";
-import { Member } from "./components/Member";
-import { MemberPreview } from "./components/MemberPreview";
+import { Form, Input } from '@/components/form';
+import { Section } from '@/components/section';
+import { Button } from '@/ui/button';
+import { Member } from './components/Member';
+import { MemberPreview } from './components/MemberPreview';
 
-type Members = MembersQuery["members"];
+type Members = MembersQuery['members'];
 
 type MembersProps = {
   isLoading: boolean;
@@ -19,10 +19,7 @@ type MembersProps = {
 
 export const Members: React.FC<MembersProps> = ({ isLoading, members }) => {
   const [addMemberForm, handleAddMemberSubmit] = useAddMember();
-  const workspaceOwner = useMemo(
-    () => members?.find((m) => m.isOwner),
-    [members],
-  );
+  const workspaceOwner = useMemo(() => members?.find((m) => m.isOwner), [members]);
 
   return (
     <Section>
@@ -36,7 +33,7 @@ export const Members: React.FC<MembersProps> = ({ isLoading, members }) => {
           <Input
             className="h-10"
             placeholder="Add by email address"
-            {...addMemberForm.register("email")}
+            {...addMemberForm.register('email')}
           />
           <Button type="submit" variant="primary" size="sm">
             Add
@@ -48,11 +45,7 @@ export const Members: React.FC<MembersProps> = ({ isLoading, members }) => {
         {!isLoading
           ? members &&
             members.map((member) => (
-              <Member
-                key={member.id}
-                workspaceOwner={workspaceOwner}
-                member={member}
-              />
+              <Member key={member.id} workspaceOwner={workspaceOwner} member={member} />
             ))
           : Array(4)
               .fill(0)

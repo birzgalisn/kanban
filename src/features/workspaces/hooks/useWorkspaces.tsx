@@ -1,6 +1,6 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery } from '@apollo/client';
 
-import type { WorkspacesQuery } from "./__generated__/useWorkspaces.generated";
+import type { WorkspacesQuery } from './__generated__/useWorkspaces.generated';
 
 export const WORKSPACE_PREVIEW_FIELDS = gql`
   fragment WorkspacePreviewFields on Workspace {

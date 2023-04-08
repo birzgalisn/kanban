@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 
-import { useEditBoardTitle } from "../hooks/useEditBoardTitle";
+import { useEditBoardTitle } from '../hooks/useEditBoardTitle';
 
-import type { WorkspaceQuery } from "../hooks/__generated__/useWorkspace.generated";
+import type { WorkspaceQuery } from '../hooks/__generated__/useWorkspace.generated';
 
-import { Form, Input } from "@/components/form";
-import { Modal } from "@/components/modal";
-import { Section } from "@/components/section";
-import { BoardButton } from "@/ui/boardButton";
-import { Button } from "@/ui/button";
-import clsx from "clsx";
-import { Board } from "./Board";
-import { BoardPreview } from "./BoardPreview";
+import { Form, Input } from '@/components/form';
+import { Modal } from '@/components/modal';
+import { Section } from '@/components/section';
+import { BoardButton } from '@/ui/boardButton';
+import { Button } from '@/ui/button';
+import clsx from 'clsx';
+import { Board } from './Board';
+import { BoardPreview } from './BoardPreview';
 
-type Boards = WorkspaceQuery["workspace"]["boards"];
+type Boards = WorkspaceQuery['workspace']['boards'];
 
 export type BoardsProps = {
   isLoading: boolean;
@@ -21,31 +21,22 @@ export type BoardsProps = {
   openCreateBoard: () => void;
 };
 
-export const Boards: React.FC<BoardsProps> = ({
-  isLoading,
-  boards,
-  openCreateBoard,
-}) => {
+export const Boards: React.FC<BoardsProps> = ({ isLoading, boards, openCreateBoard }) => {
   const hasBoards = !isLoading && boards;
-  const [form, handleSubmit, editOnBoard, modalRef, openEditModal] =
-    useEditBoardTitle();
+  const [form, handleSubmit, editOnBoard, modalRef, openEditModal] = useEditBoardTitle();
 
   return (
     <Section>
       <h2 className="mb-4 text-xl font-semibold">Select board to view</h2>
       <div
         className={clsx(
-          "mb-4 flex h-full w-full flex-col items-center rounded-lg border",
-          hasBoards && boards.length === 0 && "hidden",
+          'mb-4 flex h-full w-full flex-col items-center rounded-lg border',
+          hasBoards && boards.length === 0 && 'hidden',
         )}
       >
         {hasBoards
           ? boards.map((board) => (
-              <Board
-                key={board.id}
-                board={board}
-                openEditModal={openEditModal}
-              />
+              <Board key={board.id} board={board} openEditModal={openEditModal} />
             ))
           : Array(4)
               .fill(0)
@@ -65,7 +56,7 @@ export const Boards: React.FC<BoardsProps> = ({
           <Input
             label="Title"
             placeholder="Enter the new board title"
-            {...form.register("title")}
+            {...form.register('title')}
             autoFocus
           />
           <Button type="submit">Edit</Button>

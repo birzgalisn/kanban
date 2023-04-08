@@ -1,25 +1,25 @@
-import * as Types from "../../../../../../__generated__/types";
+import * as Types from '../../../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import { MemberPreviewFieldsFragmentDoc } from "../../../../hooks/__generated__/useMembers.generated";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import { MemberPreviewFieldsFragmentDoc } from '../../../../hooks/__generated__/useMembers.generated';
+import * as Apollo from '@apollo/client';
 export type AddMemberMutationVariables = Types.Exact<{
   input: Types.AddMemberInput;
-  workspaceId: Types.Scalars["String"];
+  workspaceId: Types.Scalars['String'];
 }>;
 
 export type AddMemberMutation = {
-  __typename?: "Mutation";
+  __typename?: 'Mutation';
   addMember:
     | {
-        __typename?: "MutationAddMemberSuccess";
+        __typename?: 'MutationAddMemberSuccess';
         data: {
-          __typename?: "Member";
+          __typename?: 'Member';
           id: string;
           isOwner: boolean;
           createdAt: any;
           user: {
-            __typename?: "User";
+            __typename?: 'User';
             id: string;
             email?: string | null;
             name?: string | null;
@@ -28,12 +28,8 @@ export type AddMemberMutation = {
         };
       }
     | {
-        __typename?: "ZodError";
-        fieldErrors: Array<{
-          __typename?: "ZodFieldError";
-          path: Array<string>;
-          message: string;
-        }>;
+        __typename?: 'ZodError';
+        fieldErrors: Array<{ __typename?: 'ZodFieldError'; path: Array<string>; message: string }>;
       };
 };
 

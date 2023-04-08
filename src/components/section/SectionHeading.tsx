@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import { Section } from "./Section";
+import { Section } from './Section';
 
 export const SectionHeading: React.FC<{
   title: string;
@@ -12,9 +12,7 @@ export const SectionHeading: React.FC<{
       <div className="flex justify-between">
         <div className="flex flex-col">
           <h1 className="text-3xl font-bold">{title}</h1>
-          {subtitle && (
-            <p className="mt-2 font-semibold text-gray-900">{subtitle}</p>
-          )}
+          {subtitle && <p className="mt-2 font-semibold text-gray-900">{subtitle}</p>}
         </div>
         {action}
       </div>

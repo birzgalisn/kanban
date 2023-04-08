@@ -1,49 +1,39 @@
-import * as Types from "../../../../__generated__/types";
+import * as Types from '../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type CardPreviewFieldsFragment = {
-  __typename?: "Card";
+  __typename?: 'Card';
   id: string;
   title: string;
   listId: string;
 };
 
 export type ListPreviewFieldsFragment = {
-  __typename?: "List";
+  __typename?: 'List';
   id: string;
   title: string;
-  cards: Array<{
-    __typename?: "Card";
-    id: string;
-    title: string;
-    listId: string;
-  }>;
+  cards: Array<{ __typename?: 'Card'; id: string; title: string; listId: string }>;
 };
 
 export type BoardQueryVariables = Types.Exact<{
-  boardId: Types.Scalars["String"];
-  withWorkspace: Types.Scalars["Boolean"];
+  boardId: Types.Scalars['String'];
+  withWorkspace: Types.Scalars['Boolean'];
 }>;
 
 export type BoardQuery = {
-  __typename?: "Query";
+  __typename?: 'Query';
   board: {
-    __typename?: "Board";
+    __typename?: 'Board';
     id: string;
     title: string;
     lists: Array<{
-      __typename?: "List";
+      __typename?: 'List';
       id: string;
       title: string;
-      cards: Array<{
-        __typename?: "Card";
-        id: string;
-        title: string;
-        listId: string;
-      }>;
+      cards: Array<{ __typename?: 'Card'; id: string; title: string; listId: string }>;
     }>;
-    workspace?: { __typename?: "Workspace"; id: string; title: string };
+    workspace?: { __typename?: 'Workspace'; id: string; title: string };
   };
 };
 
@@ -80,7 +70,4 @@ export const BoardDocument = gql`
   }
   ${ListPreviewFieldsFragmentDoc}
 `;
-export type BoardQueryResult = Apollo.QueryResult<
-  BoardQuery,
-  BoardQueryVariables
->;
+export type BoardQueryResult = Apollo.QueryResult<BoardQuery, BoardQueryVariables>;

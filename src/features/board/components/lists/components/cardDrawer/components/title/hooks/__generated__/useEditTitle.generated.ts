@@ -1,20 +1,20 @@
-import * as Types from "../../../../../../../../../../__generated__/types";
+import * as Types from '../../../../../../../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type EditCardTitleMutationVariables = Types.Exact<{
   input: Types.EditCardTitleInput;
-  cardId: Types.Scalars["String"];
+  cardId: Types.Scalars['String'];
 }>;
 
 export type EditCardTitleMutation = {
-  __typename?: "Mutation";
+  __typename?: 'Mutation';
   editCardTitle:
     | {
-        __typename?: "MutationEditCardTitleSuccess";
-        data: { __typename?: "Card"; id: string; title: string };
+        __typename?: 'MutationEditCardTitleSuccess';
+        data: { __typename?: 'Card'; id: string; title: string };
       }
-    | { __typename?: "ZodError" };
+    | { __typename?: 'ZodError' };
 };
 
 export const EditCardTitleDocument = gql`
@@ -33,8 +33,7 @@ export type EditCardTitleMutationFn = Apollo.MutationFunction<
   EditCardTitleMutation,
   EditCardTitleMutationVariables
 >;
-export type EditCardTitleMutationResult =
-  Apollo.MutationResult<EditCardTitleMutation>;
+export type EditCardTitleMutationResult = Apollo.MutationResult<EditCardTitleMutation>;
 export type EditCardTitleMutationOptions = Apollo.BaseMutationOptions<
   EditCardTitleMutation,
   EditCardTitleMutationVariables

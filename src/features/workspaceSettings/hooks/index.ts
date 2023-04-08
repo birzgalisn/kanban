@@ -1,1 +1,1 @@
-export * from "./useEditSettings";
+export * from './useEditSettings';

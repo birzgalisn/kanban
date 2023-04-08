@@ -1,27 +1,24 @@
-import { gql, useMutation } from "@apollo/client";
-import { useRouter } from "next/router";
+import { gql, useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
 
-import { GET_WORKSPACES } from "@/features/workspaces/hooks";
+import { GET_WORKSPACES } from '@/features/workspaces/hooks';
 
 import type {
   WorkspacesQuery,
   WorkspacesQueryVariables,
-} from "@/features/workspaces/hooks/__generated__/useWorkspaces.generated";
+} from '@/features/workspaces/hooks/__generated__/useWorkspaces.generated';
 import type {
   DeleteWorkspaceMutation,
   DeleteWorkspaceMutationVariables,
-} from "./__generated__/useDeleteWorkspace.generated";
+} from './__generated__/useDeleteWorkspace.generated';
 
-type UseDeleteWorkspace = {} & DeleteWorkspaceMutationVariables;
+type UseDeleteWorkspace = DeleteWorkspaceMutationVariables;
 
 export function useDeleteWorkspace() {
   const router = useRouter();
   const workspaceId = router.query.workspaceId as string;
 
-  const [deleteWorkspace] = useMutation<
-    DeleteWorkspaceMutation,
-    DeleteWorkspaceMutationVariables
-  >(
+  const [deleteWorkspace] = useMutation<DeleteWorkspaceMutation, DeleteWorkspaceMutationVariables>(
     gql`
       mutation DeleteWorkspace($workspaceId: String!) {
         deleteWorkspace(workspaceId: $workspaceId) {
@@ -35,10 +32,9 @@ export function useDeleteWorkspace() {
 
         if (!deletedWorkspace) return;
 
-        const existingWorkspaces = cache.readQuery<
-          WorkspacesQuery,
-          WorkspacesQueryVariables
-        >({ query: GET_WORKSPACES })?.workspaces;
+        const existingWorkspaces = cache.readQuery<WorkspacesQuery, WorkspacesQueryVariables>({
+          query: GET_WORKSPACES,
+        })?.workspaces;
 
         if (!existingWorkspaces) return;
 

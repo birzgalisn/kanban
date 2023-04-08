@@ -1,4 +1,4 @@
-import { withAuth } from "next-auth/middleware";
+import { withAuth } from 'next-auth/middleware';
 
 /**
  * More on how NextAuth.js middleware works:
@@ -16,4 +16,4 @@ export default withAuth({
   },
 });
 
-export const config = { matcher: ["/workspaces/:path*", "/settings/:path*"] };
+export const config = { matcher: ['/workspaces/:path*', '/settings/:path*'] };

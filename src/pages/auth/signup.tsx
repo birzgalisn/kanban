@@ -1,8 +1,8 @@
-import Head from "next/head";
+import Head from 'next/head';
 
-import type { NextPage } from "next";
+import type { NextPage } from 'next';
 
-import { SignUp } from "@/features/auth/signup";
+import { SignUp } from '@/features/auth/signup';
 
 const SignUpPage: NextPage = () => {
   return (

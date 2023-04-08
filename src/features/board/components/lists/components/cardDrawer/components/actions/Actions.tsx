@@ -1,21 +1,17 @@
-import React from "react";
+import React from 'react';
 
-import { useDelete } from "./hooks";
+import { useDelete } from './hooks';
 
-import type { Card } from "../../CardDrawer";
-import type { UseDeleteProps } from "./hooks";
+import type { Card } from '../../CardDrawer';
+import type { UseDeleteProps } from './hooks';
 
-import { ButtonSkeleton } from "@/components/skeleton";
-import { Button } from "@/ui/button";
-import { HiOutlineArchiveBox, HiOutlineTrash } from "react-icons/hi2";
+import { ButtonSkeleton } from '@/components/skeleton';
+import { Button } from '@/ui/button';
+import { HiOutlineArchiveBox, HiOutlineTrash } from 'react-icons/hi2';
 
 type ActionsProps = { isLoading: boolean; card?: Card } & UseDeleteProps;
 
-export const Actions: React.FC<ActionsProps> = ({
-  isLoading,
-  card,
-  drawerRef,
-}) => {
+export const Actions: React.FC<ActionsProps> = ({ isLoading, card, drawerRef }) => {
   const deleteCard = useDelete({ drawerRef });
 
   if (isLoading) {
@@ -32,14 +28,7 @@ export const Actions: React.FC<ActionsProps> = ({
 
   return (
     <div className="flex w-full flex-col gap-1 p-6">
-      <Button
-        icon={<HiOutlineArchiveBox />}
-        variant="transparent"
-        size="xs"
-        fluid
-        left
-        disabled
-      >
+      <Button icon={<HiOutlineArchiveBox />} variant="transparent" size="xs" fluid left disabled>
         Achive
       </Button>
       <Button

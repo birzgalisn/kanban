@@ -1,12 +1,12 @@
-import * as Types from "../../../../__generated__/types";
+import * as Types from '../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type DeleteMeMutationVariables = Types.Exact<{ [key: string]: never }>;
 
 export type DeleteMeMutation = {
-  __typename?: "Mutation";
-  deleteMe: { __typename?: "User"; id: string };
+  __typename?: 'Mutation';
+  deleteMe: { __typename?: 'User'; id: string };
 };
 
 export const DeleteMeDocument = gql`

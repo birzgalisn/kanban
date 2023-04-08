@@ -1,19 +1,19 @@
-import React from "react";
+import React from 'react';
 
-import { useCreateWorkspace, useWorkspaces } from "./hooks";
+import { useCreateWorkspace, useWorkspaces } from './hooks';
 
-import { Form, Input } from "@/components/form";
-import { Layout } from "@/components/layout";
-import { LayoutWrapper } from "@/components/layoutWrapper";
-import { Modal } from "@/components/modal";
-import { Navbar } from "@/components/navbar";
-import { Section, SectionWrapper } from "@/components/section";
-import { SectionHeading } from "@/components/section/SectionHeading";
-import { Button } from "@/ui/button";
-import { HiPlus } from "react-icons/hi2";
-import { WorkspacesPreview } from "./components/WorkspacesPreview";
+import { Form, Input } from '@/components/form';
+import { Layout } from '@/components/layout';
+import { LayoutWrapper } from '@/components/layoutWrapper';
+import { Modal } from '@/components/modal';
+import { Navbar } from '@/components/navbar';
+import { Section, SectionWrapper } from '@/components/section';
+import { SectionHeading } from '@/components/section/SectionHeading';
+import { Button } from '@/ui/button';
+import { HiPlus } from 'react-icons/hi2';
+import { WorkspacesPreview } from './components/WorkspacesPreview';
 
-export const Workspaces: React.FC<{}> = () => {
+export const Workspaces: React.FC = () => {
   const workspaces = useWorkspaces();
 
   const [
@@ -32,12 +32,7 @@ export const Workspaces: React.FC<{}> = () => {
             title="Workspaces"
             subtitle="Your most recent workspaces"
             action={
-              <Button
-                icon={<HiPlus />}
-                size="sm"
-                wrap
-                onClick={toggleCreateWorkspaceModal}
-              >
+              <Button icon={<HiPlus />} size="sm" wrap onClick={toggleCreateWorkspaceModal}>
                 Workspace
               </Button>
             }
@@ -55,20 +50,14 @@ export const Workspaces: React.FC<{}> = () => {
           subtitle="The beginning is always now"
           ref={createWorkspaceModalRef}
         >
-          <Form
-            form={createWorkspaceForm}
-            onSubmit={handleCreateWorkspaceSubmit}
-          >
+          <Form form={createWorkspaceForm} onSubmit={handleCreateWorkspaceSubmit}>
             <Input
               label="Title"
               placeholder="Enter the new workspace title"
-              {...createWorkspaceForm.register("title")}
+              {...createWorkspaceForm.register('title')}
               autoFocus
             />
-            <Button
-              type="submit"
-              isLoading={createWorkspaceForm.formState.isSubmitting}
-            >
+            <Button type="submit" isLoading={createWorkspaceForm.formState.isSubmitting}>
               Create
             </Button>
           </Form>

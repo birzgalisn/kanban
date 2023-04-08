@@ -1,31 +1,26 @@
-import * as Types from "../../../../../../__generated__/types";
+import * as Types from '../../../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import { ListPreviewFieldsFragmentDoc } from "../../../../hooks/__generated__/useBoard.generated";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import { ListPreviewFieldsFragmentDoc } from '../../../../hooks/__generated__/useBoard.generated';
+import * as Apollo from '@apollo/client';
 export type CreateListMutationVariables = Types.Exact<{
   input: Types.CreateListInput;
-  boardId: Types.Scalars["String"];
+  boardId: Types.Scalars['String'];
 }>;
 
 export type CreateListMutation = {
-  __typename?: "Mutation";
+  __typename?: 'Mutation';
   createList:
     | {
-        __typename?: "MutationCreateListSuccess";
+        __typename?: 'MutationCreateListSuccess';
         data: {
-          __typename?: "List";
+          __typename?: 'List';
           id: string;
           title: string;
-          cards: Array<{
-            __typename?: "Card";
-            id: string;
-            title: string;
-            listId: string;
-          }>;
+          cards: Array<{ __typename?: 'Card'; id: string; title: string; listId: string }>;
         };
       }
-    | { __typename?: "ZodError" };
+    | { __typename?: 'ZodError' };
 };
 
 export const CreateListDocument = gql`
@@ -44,8 +39,7 @@ export type CreateListMutationFn = Apollo.MutationFunction<
   CreateListMutation,
   CreateListMutationVariables
 >;
-export type CreateListMutationResult =
-  Apollo.MutationResult<CreateListMutation>;
+export type CreateListMutationResult = Apollo.MutationResult<CreateListMutation>;
 export type CreateListMutationOptions = Apollo.BaseMutationOptions<
   CreateListMutation,
   CreateListMutationVariables

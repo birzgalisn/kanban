@@ -1,30 +1,30 @@
-import * as Types from "../../../../__generated__/types";
+import * as Types from '../../../../__generated__/types';
 
-import { gql } from "@apollo/client";
-import * as Apollo from "@apollo/client";
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type WorkspacePreviewFieldsFragment = {
-  __typename?: "Workspace";
+  __typename?: 'Workspace';
   id: string;
   title: string;
   members: Array<{
-    __typename?: "Member";
+    __typename?: 'Member';
     id: string;
-    user: { __typename?: "User"; image?: string | null };
+    user: { __typename?: 'User'; image?: string | null };
   }>;
 };
 
 export type WorkspacesQueryVariables = Types.Exact<{ [key: string]: never }>;
 
 export type WorkspacesQuery = {
-  __typename?: "Query";
+  __typename?: 'Query';
   workspaces?: Array<{
-    __typename?: "Workspace";
+    __typename?: 'Workspace';
     id: string;
     title: string;
     members: Array<{
-      __typename?: "Member";
+      __typename?: 'Member';
       id: string;
-      user: { __typename?: "User"; image?: string | null };
+      user: { __typename?: 'User'; image?: string | null };
     }>;
   }> | null;
 };
@@ -49,7 +49,4 @@ export const WorkspacesDocument = gql`
   }
   ${WorkspacePreviewFieldsFragmentDoc}
 `;
-export type WorkspacesQueryResult = Apollo.QueryResult<
-  WorkspacesQuery,
-  WorkspacesQueryVariables
->;
+export type WorkspacesQueryResult = Apollo.QueryResult<WorkspacesQuery, WorkspacesQueryVariables>;

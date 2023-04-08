@@ -1,13 +1,13 @@
-import { db } from "@/lib/db";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { compare } from "bcrypt";
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import DiscordProvider from "next-auth/providers/discord";
-import GitHubProvider from "next-auth/providers/github";
+import { db } from '@/lib/db';
+import { PrismaAdapter } from '@next-auth/prisma-adapter';
+import { compare } from 'bcrypt';
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import DiscordProvider from 'next-auth/providers/discord';
+import GitHubProvider from 'next-auth/providers/github';
 
-import type { NextApiRequest, NextApiResponse } from "next";
-import type { User } from "next-auth";
+import type { NextApiRequest, NextApiResponse } from 'next';
+import type { User } from 'next-auth';
 
 /**
  * For more information on each option (and a full list of options) go to
@@ -25,21 +25,21 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       DiscordProvider({
         clientId: process.env.DISCORD_CLIENT_ID,
         clientSecret: process.env.DISCORD_CLIENT_SECRET,
-        authorization: { params: { scope: "identify email" } },
+        authorization: { params: { scope: 'identify email' } },
       }),
       CredentialsProvider({
-        name: "Credentials",
+        name: 'Credentials',
         credentials: {
           email: {
-            label: "Email",
-            type: "email",
+            label: 'Email',
+            type: 'email',
           },
           password: {
-            label: "Password",
-            type: "password",
+            label: 'Password',
+            type: 'password',
           },
         },
-        async authorize(credentials, req) {
+        async authorize(credentials, _req) {
           if (!credentials?.email || !credentials?.password) return null;
 
           const user = await db.user.findUnique({
@@ -58,10 +58,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
 
           if (!user?.hashedPassword) return null;
 
-          const passwordCorrect = await compare(
-            credentials.password,
-            user.hashedPassword,
-          );
+          const passwordCorrect = await compare(credentials.password, user.hashedPassword);
 
           if (user && passwordCorrect) {
             /** Any object returned will be saved in `user` property of the JWT */
@@ -76,10 +73,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
       }),
     ],
     session: {
-      strategy: "jwt",
+      strategy: 'jwt',
     },
     pages: {
-      signIn: "/auth/signin", // Displays signin buttons
+      signIn: '/auth/signin', // Displays signin buttons
       // signOut: "/auth/signout", // Displays form with sign out button
       // error: "/auth/signin", // Error code passed in query string as ?error=
       // verifyRequest: "/auth/verify-request", // Used for check email page
@@ -88,7 +85,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     callbacks: {
       // async signIn({ user, account, profile, email, credentials }) { return true },
       // async redirect({ url, baseUrl }) { return baseUrl },
-      async session({ session, token, user }) {
+      async session({ session, token }) {
         session.user = {
           ...session.user,
           id: token.sub,
@@ -96,8 +93,8 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
         };
         return session;
       },
-      async jwt({ token, user, account, profile, isNewUser }) {
-        if (req.url === "/api/auth/session?update") {
+      async jwt({ token }) {
+        if (req.url === '/api/auth/session?update') {
           const { name } = await db.user.findFirstOrThrow({
             select: { name: true },
             where: { id: token.sub },

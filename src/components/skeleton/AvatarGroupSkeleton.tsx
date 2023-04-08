@@ -1,7 +1,7 @@
-import clsx from "clsx";
-import React from "react";
+import clsx from 'clsx';
+import React from 'react';
 
-import { AvatarSkeleton } from "./AvatarSkeleton";
+import { AvatarSkeleton } from './AvatarSkeleton';
 
 export const AvatarGroupSkeleton: React.FC<{
   count: number;
@@ -16,7 +16,7 @@ export const AvatarGroupSkeleton: React.FC<{
           return (
             <AvatarSkeleton
               key={idx}
-              className={clsx("bg-gray-200", size, isEven && "bg-gray-100")}
+              className={clsx('bg-gray-200', size, isEven && 'bg-gray-100')}
             />
           );
         })}

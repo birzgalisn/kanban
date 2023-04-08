@@ -1,10 +1,7 @@
-import { gql, useQuery } from "@apollo/client";
-import { useRouter } from "next/router";
+import { gql, useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 
-import type {
-  BoardQuery,
-  BoardQueryVariables,
-} from "./__generated__/useBoard.generated";
+import type { BoardQuery, BoardQueryVariables } from './__generated__/useBoard.generated';
 
 export const CARD_PREVIEW_FIELDS = gql`
   fragment CardPreviewFields on Card {

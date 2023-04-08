@@ -1,14 +1,14 @@
-import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import React from "react";
+import { signOut, useSession } from 'next-auth/react';
+import Link from 'next/link';
+import React from 'react';
 
-import { ActiveLink } from "@/ui/activeLink";
-import { Avatar } from "@/ui/avatar";
-import { Button } from "@/ui/button";
-import { Logo } from "@/ui/logo";
-import { Dropdown, DropdownGroup, DropdownItem } from "../dropdown";
-import { AvatarSkeleton, TextSkeleton } from "../skeleton";
-import { Divider } from "./components/Divider";
+import { ActiveLink } from '@/ui/activeLink';
+import { Avatar } from '@/ui/avatar';
+import { Button } from '@/ui/button';
+import { Logo } from '@/ui/logo';
+import { Dropdown, DropdownGroup, DropdownItem } from '../dropdown';
+import { AvatarSkeleton, TextSkeleton } from '../skeleton';
+import { Divider } from './components/Divider';
 
 type Path = {
   title?: string;
@@ -34,9 +34,7 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
               {user ? (
                 <>
                   <Avatar src={user?.image} alt={user?.name} size="w-7 h-7" />
-                  <span className="max-w-[7rem] truncate font-medium">
-                    {user?.name}
-                  </span>
+                  <span className="max-w-[7rem] truncate font-medium">{user?.name}</span>
                 </>
               ) : (
                 <>
@@ -50,10 +48,7 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
                 <React.Fragment key={p.url}>
                   <Divider />
                   {!isLoading ? (
-                    <Link
-                      className="max-w-[7rem] truncate font-medium"
-                      href={p.url!}
-                    >
+                    <Link className="max-w-[7rem] truncate font-medium" href={p.url ?? ''}>
                       {p.title}
                     </Link>
                   ) : (
@@ -77,8 +72,7 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
             <DropdownGroup>
               <DropdownItem>
                 <p className="truncate px-3 py-1">
-                  Signed in as{" "}
-                  <span className="font-semibold">{user?.name}</span>
+                  Signed in as <span className="font-semibold">{user?.name}</span>
                 </p>
               </DropdownItem>
             </DropdownGroup>
@@ -103,7 +97,7 @@ export const Navbar: React.FC<{ isLoading?: boolean; path?: Array<Path> }> = ({
                 <Button
                   variant="transparent"
                   size="xs"
-                  onClick={() => signOut({ callbackUrl: "/" })}
+                  onClick={() => signOut({ callbackUrl: '/' })}
                   fluid
                   left
                 >
