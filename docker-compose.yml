@@ -7,8 +7,8 @@ services:
     container_name: kanban-mysql
     image: mysql:8.0.32-debian
     environment:
-      MYSQL_DATABASE: kanban
-      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: "kanban"
+      MYSQL_ROOT_PASSWORD: "toor"
     ports:
       - "3306:3306"
     volumes:
@@ -25,7 +25,7 @@ services:
       target: builder
     entrypoint: ["npm", "run", "dev"]
     environment:
-      - NODE_ENV=development
+      NODE_ENV: "development"
     env_file:
       - .env
     ports:
@@ -41,6 +41,8 @@ services:
     container_name: kanban-studio
     image: kanban/next-dev
     entrypoint: ["npx", "prisma", "studio"]
+    environment:
+      NODE_ENV: "development"
     ports:
       - "5555:5555"
     depends_on:
@@ -52,6 +54,10 @@ services:
     container_name: kanban-codegen
     image: kanban/next-dev
     entrypoint: ["npm", "run", "codegen", "--", "--watch"]
+    environment:
+      NODE_ENV: "development"
+    volumes:
+      - ".:/app"
     depends_on:
       - next
 
