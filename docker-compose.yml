@@ -43,6 +43,8 @@ services:
     entrypoint: ["npx", "prisma", "studio"]
     environment:
       NODE_ENV: "development"
+    env_file:
+      - .env
     ports:
       - "5555:5555"
     depends_on:
