@@ -60,4 +60,4 @@ make db-init
 
 NB: To push the schema to DB, the Docker development environment needs to be running.
 
-Finally, when Docker is running and DB is configured, go to [http://localhost:3000](http://localhost:3000/) to begin.
+When Docker is running and DB is setup, the application is available at [http://kanban.localhost](http://kanban.localhost); Prisma studio - [http://studio.kanban.localhost](http://studio.kanban.localhost)

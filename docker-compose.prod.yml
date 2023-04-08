@@ -14,7 +14,9 @@ services:
     volumes:
       - "mysql:/var/lib/mysql"
     networks:
-      - app
+      app:
+        ipv4_address: 10.0.0.3
+    tty: true
 
   next:
     container_name: kanban-next
@@ -29,7 +31,23 @@ services:
     depends_on:
       - mysql
     networks:
-      - app
+      app:
+        ipv4_address: 10.0.0.4
+    tty: true
+
+  nginx:
+    container_name: kanban-nginx
+    image: nginx:1.23.4-alpine
+    volumes:
+      - "./nginx/nginx.prod.conf:/etc/nginx/nginx.conf"
+    ports:
+      - "80:80"
+    depends_on:
+      - next
+    networks:
+      app:
+        ipv4_address: 10.0.0.2
+    tty: true
 
 volumes:
   mysql:
@@ -39,3 +57,8 @@ networks:
   app:
     name: kanban_app
     driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.0.0/29
+          gateway: 10.0.0.1
