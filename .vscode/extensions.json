@@ -3,6 +3,8 @@
     "prisma.prisma",
     "esbenp.prettier-vscode",
     "bradlc.vscode-tailwindcss",
-    "apollographql.vscode-apollo"
+    "graphql.vscode-graphql",
+    "ms-azuretools.vscode-docker",
+    "redhat.vscode-yaml"
   ]
 }

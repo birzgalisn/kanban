@@ -1,20 +1,34 @@
 {
   "editor.tabSize": 2,
-  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
   "editor.formatOnPaste": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll": true,
     "source.organizeImports": true
   },
   "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
   "files.associations": {
-    "*.css": "tailwindcss"
+    "*.css": "tailwindcss",
+    "*.yml": "yaml",
+    "*.yaml": "yaml"
   },
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "typescript.updateImportsOnFileMove.enabled": "always",
+  "yaml.validate": true,
+  "yaml.format.enable": true,
+  "yaml.format.singleQuote": false,
+  "yaml.format.printWidth": 100,
+  "yaml.completion": true,
+  "yaml.keyOrdering": false,
+  "yaml.hover": true,
+  "[javascript][javascriptreact][typescript][typescriptreact][html][css][scss][json][jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
   }
 }
