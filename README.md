@@ -4,8 +4,6 @@ Kanban board management software with focus to simplicity.
 
 Workspace members can easily add other users to it, read, create and update issues created by themselves or others.
 
-View live version now at: [https://www.kanban.lv](https://www.kanban.lv)
-
 ## Used solutions to achieve MVP
 
 The project is build with [TypeScript](https://www.typescriptlang.org) and [React](https://reactjs.org) by leveraging powerfull features of [Next.js](https://nextjs.org) framework.
