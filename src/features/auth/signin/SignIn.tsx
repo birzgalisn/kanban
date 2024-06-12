@@ -9,7 +9,7 @@ import type { SignInOptions, SignInResponse } from 'next-auth/react';
 import { Container } from '@/components/container';
 import { Form, Input, useZodForm } from '@/components/form';
 import { Button } from '@/ui/button';
-import { FaDiscord, FaGithub } from 'react-icons/fa';
+// import { FaDiscord, FaGithub } from 'react-icons/fa';
 import { HiOutlineArrowLeft } from 'react-icons/hi2';
 import { AuthModal } from '../components/AuthModal';
 import { Divider } from '../components/Divider';
@@ -97,7 +97,7 @@ export const SignIn: React.FC = () => {
         <ErrorMessage message={message} />
         {!withCredentials ? (
           <>
-            <Button
+            {/* <Button
               variant="secondary"
               icon={<FaGithub />}
               onClick={() => signInWith('github', { callbackUrl: '/workspaces' })}
@@ -110,11 +110,11 @@ export const SignIn: React.FC = () => {
               onClick={() => signInWith('discord', { callbackUrl: '/workspaces' })}
             >
               Sign in with Discord
-            </Button>
-            <Divider text="Or" />
+            </Button> */}
             <Button variant="secondary" onClick={() => setWithCredentials(true)}>
               Continue with email and password
             </Button>
+            <Divider text="Or" />
             <Button
               variant="primary"
               isLoading={isLoading}

@@ -7,6 +7,11 @@ module.exports = {
     defaultLocale: 'en',
   },
   images: {
-    domains: ['www.kanban.lv', 'cdn.discordapp.com', 'avatars.githubusercontent.com'],
+    domains: [
+      'www.kanban.localhost',
+      'www.kanban.niksbirzgalis.com',
+      'cdn.discordapp.com',
+      'avatars.githubusercontent.com',
+    ],
   },
 };

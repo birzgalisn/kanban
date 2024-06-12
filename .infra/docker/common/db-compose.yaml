@@ -1,0 +1,20 @@
+volumes:
+  db:
+
+networks:
+  db:
+
+services:
+  db:
+    image: bitnami/mongodb:7.0
+    environment:
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ADVERTISED_HOSTNAME=db
+      - MONGODB_ADVERTISED_PORT_NUMBER=27017
+      - MONGODB_REPLICA_SET_KEY=replicasetkey
+      - MONGODB_ROOT_USER=kanban
+      - MONGODB_ROOT_PASSWORD=kanban
+    volumes:
+      - db:/data/db
+    networks:
+      - db

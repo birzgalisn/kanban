@@ -1,0 +1,19 @@
+services:
+  studio:
+    image: kanban/next:development
+    entrypoint: npx prisma studio
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=$DATABASE_URL
+    volumes:
+      - ../../../:/app
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.studio.rule=Host(`studio.kanban.$CNAME`)
+      - traefik.http.routers.studio.entrypoints=web
+      - traefik.http.services.studio.loadbalancer.server.port=5555
+    networks:
+      - db
+      - proxy
+    depends_on:
+      - next

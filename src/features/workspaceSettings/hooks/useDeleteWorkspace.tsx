@@ -50,7 +50,7 @@ export function useDeleteWorkspace() {
       onCompleted({ deleteWorkspace }) {
         if (!deleteWorkspace) return;
 
-        router.push(`${process.env.NEXT_PUBLIC_URL}/workspaces`);
+        router.push(`${process.env.NEXT_PUBLIC_BASE_URL}/workspaces`);
       },
     },
   );

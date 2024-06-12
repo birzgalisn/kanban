@@ -141,10 +141,16 @@ type Mutation {
   deleteMe: User!
   deleteWorkspace(workspaceId: String!): Workspace!
   editBoardTitle(boardId: String!, input: EditBoardTitleInput!): MutationEditBoardTitleResult!
-  editCardDescription(cardId: String!, input: EditCardDescriptionInput!): MutationEditCardDescriptionResult!
+  editCardDescription(
+    cardId: String!
+    input: EditCardDescriptionInput!
+  ): MutationEditCardDescriptionResult!
   editCardTitle(cardId: String!, input: EditCardTitleInput!): MutationEditCardTitleResult!
   editMeName(input: EditMeNameInput!): MutationEditMeNameResult!
-  editWorkspaceTitle(input: EditWorkspaceTitleInput!, workspaceId: String!): MutationEditWorkspaceTitleResult!
+  editWorkspaceTitle(
+    input: EditWorkspaceTitleInput!
+    workspaceId: String!
+  ): MutationEditWorkspaceTitleResult!
   moveCard(destination: String!, id: String!): Card!
   removeMember(memberId: String!): MutationRemoveMemberResult!
   renameList(id: String!, input: RenameListInput!): MutationRenameListResult!
@@ -255,7 +261,9 @@ input RenameListInput {
   title: String!
 }
 
-"""User roles"""
+"""
+User roles
+"""
 enum Roles {
   ADMIN
   USER

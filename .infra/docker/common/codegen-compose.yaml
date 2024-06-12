@@ -1,0 +1,10 @@
+services:
+  codegen:
+    image: kanban/next:development
+    entrypoint: npm run codegen -- --watch
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ../../../:/app
+    depends_on:
+      - next

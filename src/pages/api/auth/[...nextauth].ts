@@ -3,8 +3,8 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { compare } from 'bcrypt';
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import DiscordProvider from 'next-auth/providers/discord';
-import GitHubProvider from 'next-auth/providers/github';
+// import DiscordProvider from 'next-auth/providers/discord';
+// import GitHubProvider from 'next-auth/providers/github';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { User } from 'next-auth';
@@ -18,15 +18,15 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   return await NextAuth(req, res, {
     adapter: PrismaAdapter(db),
     providers: [
-      GitHubProvider({
-        clientId: process.env.GITHUB_ID,
-        clientSecret: process.env.GITHUB_SECRET,
-      }),
-      DiscordProvider({
-        clientId: process.env.DISCORD_CLIENT_ID,
-        clientSecret: process.env.DISCORD_CLIENT_SECRET,
-        authorization: { params: { scope: 'identify email' } },
-      }),
+      // GitHubProvider({
+      //   clientId: process.env.GITHUB_ID,
+      //   clientSecret: process.env.GITHUB_SECRET,
+      // }),
+      // DiscordProvider({
+      //   clientId: process.env.DISCORD_CLIENT_ID,
+      //   clientSecret: process.env.DISCORD_CLIENT_SECRET,
+      //   authorization: { params: { scope: 'identify email' } },
+      // }),
       CredentialsProvider({
         name: 'Credentials',
         credentials: {

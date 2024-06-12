@@ -15,7 +15,7 @@ const errorLink = onError(({ graphQLErrors, networkError, response }) => {
   if (graphQLErrors)
     graphQLErrors.forEach(({ message, locations, path, extensions }) => {
       if (extensions.code.includes('FORBIDDEN') && typeof window !== 'undefined') {
-        window.location.replace(`${process.env.NEXT_PUBLIC_URL}/workspaces`);
+        window.location.replace(`${process.env.NEXT_PUBLIC_BASE_URL}/workspaces`);
       }
     });
 });

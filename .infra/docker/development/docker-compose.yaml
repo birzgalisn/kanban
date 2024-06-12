@@ -1,0 +1,32 @@
+name: kanban-development
+
+include:
+  - ../common/db-compose.yaml
+  - ../common/studio-compose.yaml
+  - ../common/codegen-compose.yaml
+  - ../common/traefik-compose.yaml
+
+services:
+  next:
+    image: kanban/next:development
+    build:
+      context: ../../../
+      dockerfile: ./Dockerfile
+      target: deps
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=$DATABASE_URL
+      - NEXTAUTH_URL=$NEXTAUTH_URL
+      - NEXTAUTH_SECRET=$NEXTAUTH_SECRET
+      - NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+    volumes:
+      - ../../../:/app
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.next.rule=Host(`www.kanban.$CNAME`)
+      - traefik.http.routers.next.entrypoints=web
+      - traefik.http.services.next.loadbalancer.server.port=3000
+    networks:
+      - db
+      - proxy

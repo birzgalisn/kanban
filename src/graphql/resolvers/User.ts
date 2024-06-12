@@ -100,7 +100,9 @@ builder.mutationField('createUser', (t) =>
           email: input.email,
           name: input.name,
           hashedPassword: await hash(input.password, 10),
-          image: `${process.env.NEXT_PUBLIC_URL}/avatars/${Math.floor(Math.random() * 12)}.svg`,
+          image: `${process.env.NEXT_PUBLIC_BASE_URL}/avatars/${Math.floor(
+            Math.random() * 12,
+          )}.svg`,
         },
       });
     },

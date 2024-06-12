@@ -21,17 +21,15 @@ const MeSchema = z.object({
 type UseMeProps = { me: string } & EditMeMutationVariables;
 
 export function useMe() {
-  const meQuery = useQuery<MeQuery>(
-    gql`
-      query Me {
-        me {
-          id
-          name
-          email
-        }
+  const meQuery = useQuery<MeQuery>(gql`
+    query Me {
+      me {
+        id
+        name
+        email
       }
-    `,
-  );
+    }
+  `);
 
   const [editMe] = useMutation<EditMeMutation, EditMeMutationVariables>(gql`
     mutation EditMe($input: EditMeNameInput!) {
@@ -54,7 +52,7 @@ export function useMe() {
         editMeName: { data: { id: me, name: input.name } },
       },
     });
-    await fetch(`${process.env.NEXT_PUBLIC_URL}/api/auth/session?update`);
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/session?update`);
     document.dispatchEvent(new Event('visibilitychange'));
   };
 
