@@ -8,8 +8,7 @@ module.exports = {
   },
   images: {
     domains: [
-      'www.kanban.localhost',
-      'www.kanban.niksbirzgalis.com',
+      'kanban.niksbirzgalis.com',
       'cdn.discordapp.com',
       'avatars.githubusercontent.com',
     ],
